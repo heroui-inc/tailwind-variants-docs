@@ -1,18 +1,66 @@
 # React
 
-import { Callout } from 'nextra-theme-docs';
+```jsx
+// /app/page.tsx
 
-<Callout type="warning" emoji="🚧">
-  <div className="text-sm">
-    This page is a work in progress. If you have any questions, please ask in
-    the{' '}
-    <a
-      href="https://discord.gg/9b6yyZKmH4"
-      target="_blank"
-      className="underline"
-    >
-      Discord
-    </a>
-    .
-  </div>
-</Callout>
+import {title} from "@/components/primitives";
+
+export default function Home() => (
+  <h1 className={title({color: "diamondGradient"})}>
+    Tailwind Variants
+  </h1>
+)
+```
+
+```ts
+// /components/primitives
+import { tv } from "tailwind-variants";
+
+export const title = tv({
+	base: "tracking-tight inline font-semibold",
+	variants: {
+		color: {
+			violet: "from-[#FF1CF7] to-[#b249f8]",
+			yellow: "from-[#FF705B] to-[#FFB457]",
+			blue: "from-[#5EA2EF] to-[#0072F5]",
+			cyan: "from-[#00b7fa] to-[#01cfea]",
+			green: "from-[#6FEE8D] to-[#17c964]",
+			pink: "from-[#FF72E1] to-[#F54C7A]",
+			foreground: "dark:from-[#FFFFFF] dark:to-[#4B4B4B]",
+			diamondGradient: "bg-gradient-to-br from-[#4F67C9] via-[#020E41] to-[#4F67C9] bg-clip-text text-transparent",
+		},
+		size: {
+			xxs: "text-xl lg:text-2xl",
+			xs: "text-2xl lg:text-3xl",
+			sm: "text-3xl lg:text-4xl",
+			md: "text-[2.3rem] lg:text-5xl leading-9",
+			lg: "text-4xl lg:text-6xl",
+		},
+		fullWidth: {
+			true: "w-full block",
+		},
+		center: {
+			true: "text-center align-middle",
+		},
+	},
+	defaultVariants: {
+		size: "md",
+	},
+	compoundVariants: [
+		{
+			color: [
+				"violet",
+				"yellow",
+				"blue",
+				"cyan",
+				"green",
+				"pink",
+				"foreground",
+			],
+			class: "bg-clip-text text-transparent bg-gradient-to-b",
+		},
+	],
+});
+
+
+```
