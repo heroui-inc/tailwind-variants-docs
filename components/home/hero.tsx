@@ -34,7 +34,7 @@ const Hero: FC<HeroProps> = () => {
             flat: true,
             color: 'neutral'
           })}
-          href="https://github.com/nextui-org/tailwind-variants"
+          href="https://github.com/heroui-inc/tailwind-variants"
           rel="noopener noreferrer"
           target="_blank"
           title="github homepage"

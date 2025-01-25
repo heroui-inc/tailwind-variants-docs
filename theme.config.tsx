@@ -72,7 +72,7 @@ const config: DocsThemeConfig = {
         <meta content={description} name="description" />
         <meta content={description} name="og:description" />
         <meta content="summary_large_image" name="twitter:card" />
-        <meta content="@nextui-org" name="twitter:site" />
+        <meta content="@hero_ui" name="twitter:site" />
         <meta content={image} name="twitter:image" />
         <meta content={`${config.title} – tailwind-variants`} name="og:title" />
         <meta content={image} name="og:image" />
@@ -93,13 +93,13 @@ const config: DocsThemeConfig = {
     };
   },
   project: {
-    link: 'https://github.com/nextui-org/tailwind-variants'
+    link: 'https://github.com/heroui-inc/tailwind-variants'
   },
   chat: {
     link: 'https://discord.gg/9b6yyZKmH4'
   },
   docsRepositoryBase:
-    'https://github.com/nextui-org/tailwind-variants-docs/blob/main',
+    'https://github.com/heroui-inc/tailwind-variants-docs/blob/main',
   gitTimestamp: '',
   sidebar: {
     defaultMenuCollapseLevel: 1
@@ -110,10 +110,10 @@ const config: DocsThemeConfig = {
         <div>
           <a
             className="flex items-center gap-1 text-current"
-            href="https://nextui.org?utm_source=tailwind-variants.org"
+            href="https://heroui.com?utm_source=tailwind-variants.org"
             rel="noopener noreferrer"
             target="_blank"
-            title="nextui.org homepage"
+            title="heroui.com homepage"
           >
             <span className="mr-1">Powered by</span>
             <NextUILogo height={30} />

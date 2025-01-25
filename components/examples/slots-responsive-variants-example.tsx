@@ -70,7 +70,7 @@ const SlotsExample: FC<SlotsExampleProps> = () => {
         </blockquote>
         <figcaption className={infoWrapper()}>
           <div className={name()}>Zoey Lang</div>
-          <div className={role()}>Full-stack developer, NextUI</div>
+          <div className={role()}>Full-stack developer, HeroUI</div>
         </figcaption>
       </div>
     </figure>
