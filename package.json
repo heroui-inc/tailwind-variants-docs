@@ -5,13 +5,13 @@
   "version": "0.0.1",
   "description": "Tailwind variants documentation site",
   "author": "Junior Garcia <jrgarciadev@gmail.com>",
-  "homepage": "https://github.com/nextui-org/tailwind-variants-docs#readme",
+  "homepage": "https://github.com/heroui-inc/tailwind-variants-docs#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nextui-org/tailwind-variants-docs.git"
+    "url": "git+https://github.com/heroui-inc/tailwind-variants-docs.git"
   },
   "bugs": {
-    "url": "https://github.com/nextui-org/tailwind-variants-docs/issues"
+    "url": "https://github.com/heroui-inc/tailwind-variants-docs/issues"
   },
   "scripts": {
     "dev": "next dev",
