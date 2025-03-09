@@ -23,6 +23,7 @@
     "fmt:check": "prettier --check ."
   },
   "dependencies": {
+    "@heroui/theme": "2.4.12",
     "@react-aria/interactions": "3.17.0",
     "@react-aria/radio": "3.7.0",
     "@react-aria/ssr": "3.7.1",
@@ -31,8 +32,6 @@
     "@react-stately/radio": "3.8.3",
     "@react-stately/tooltip": "3.4.3",
     "@vercel/analytics": "1.0.2",
-    "classnames": "2.3.2",
-    "clsx": "2.0.0",
     "framer-motion": "10.16.2",
     "next": "13.4.19",
     "nextra": "2.12.3",

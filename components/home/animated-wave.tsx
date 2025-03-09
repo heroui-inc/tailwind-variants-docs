@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-import clsx from 'clsx';
+import { cn } from '@heroui/theme';
 
 const DarkWave = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -329,8 +329,8 @@ const LightWave = (props: SVGProps<SVGSVGElement>) => (
 );
 
 const AnimatedWave = (props: SVGProps<SVGSVGElement>) => {
-  const darkWaveClassNames = clsx('hidden dark:block', props.className);
-  const lightWaveClassNames = clsx('block dark:hidden', props.className);
+  const darkWaveClassNames = cn('hidden dark:block', props.className);
+  const lightWaveClassNames = cn('block dark:hidden', props.className);
 
   return (
     <>
