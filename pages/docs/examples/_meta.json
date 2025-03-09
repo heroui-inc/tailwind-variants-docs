@@ -5,43 +5,7 @@
   "svelte": "Svelte",
   "astro": "Astro",
   "remix": "Remix",
-  "responsive-variants": {
-    "display": "hidden",
-    "type": "page",
-    "theme": {
-      "navbar": false,
-      "sidebar": false,
-      "footer": false,
-      "breadcrumb": false,
-      "pagination": false,
-      "toc": false
-    }
-  },
-  "intro-responsive-variants": {
-    "display": "hidden",
-    "type": "page",
-    "theme": {
-      "navbar": false,
-      "sidebar": false,
-      "footer": false,
-      "breadcrumb": false,
-      "pagination": false,
-      "toc": false
-    }
-  },
   "intro-slots": {
-    "display": "hidden",
-    "type": "page",
-    "theme": {
-      "navbar": false,
-      "sidebar": false,
-      "footer": false,
-      "breadcrumb": false,
-      "pagination": false,
-      "toc": false
-    }
-  },
-  "slots-responsive-variants": {
     "display": "hidden",
     "type": "page",
     "theme": {

@@ -18,7 +18,7 @@ You can add slots by using the `slots` key. There's no limit to how many slots y
 
 <WindowResizer
   iframeSrc="/docs/examples/intro-slots"
-  iframeTitle="Responsive variants"
+  iframeTitle="Intro slots"
   iframeInitialWidth={380}
   height="400px"
   minWidth={400}
@@ -591,108 +591,6 @@ const pagination = tv({
 ```
 
   </div>
-</details>
-
-### Slots with responsive variants
-
-**Tailwind Variants** also allows you to apply responsive variants to your slots. See more about responsive variants [here](/docs/variants#responsive-variants).
-
-<br />
-
-<WindowResizer
-  iframeSrc="/docs/examples/slots-responsive-variants"
-  iframeTitle="Slots responsive variants"
-  iframeInitialWidth={380}
-  height="400px"
-  minWidth={400}
-/>
-
-```js copy {34, 39-41} /base/ /name/ /role/ /base()/ /name()/ /role()/
-import { tv } from 'tailwind-variants';
-
-const card = tv(
-  {
-    slots: {
-      base: 'md:flex rounded-xl p-8 md:p-0 ',
-      avatar:
-        'w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto drop-shadow-lg',
-      wrapper: 'flex-1 pt-6 md:p-8 text-center md:text-left space-y-4',
-      description: 'text-md font-medium',
-      infoWrapper: 'font-medium',
-      name: 'text-sm',
-      role: 'text-sm'
-    },
-    variants: {
-      color: {
-        primary: {
-          base: 'bg-blue-100 dark:bg-blue-900',
-          name: 'text-blue-500 dark:text-blue-400',
-          role: 'text-blue-700 dark:text-blue-500'
-        },
-        secondary: {
-          base: 'bg-purple-100 dark:bg-purple-900',
-          name: 'text-purple-500 dark:text-purple-400',
-          role: 'text-purple-700 dark:text-purple-500'
-        },
-        warning: {
-          base: 'bg-yellow-100 dark:bg-yellow-900',
-          name: 'text-yellow-500 dark:text-yellow-400',
-          role: 'text-yellow-700 dark:text-yellow-500'
-        }
-      }
-    }
-  },
-  {
-    responsiveVariants: ['sm', 'md'] // `true` to apply to all screen sizes
-  }
-);
-
-const { base, avatar, wrapper, description, infoWrapper, name, role } = card({
-  color: {
-    initial: 'primary',
-    sm: 'secondary',
-    md: 'warning'
-  }
-});
-
-return (
-  <figure className={base()}>
-    <img
-      className={avatar()}
-      src="/intro-avatar.png"
-      alt=""
-      width="384"
-      height="512"
-    />
-    <div className={wrapper()}>
-      <blockquote>
-        <p className={description()}>
-          “Tailwind variants allows you to reduce repeated code in your project
-          and make it more readable. They fixed the headache of building a
-          design system with TailwindCSS.”
-        </p>
-      </blockquote>
-      <figcaption className={infoWrapper()}>
-        <div className={name()}>Zoey Lang</div>
-        <div className={role()}>Full-stack developer, NextUI</div>
-      </figcaption>
-    </div>
-  </figure>
-);
-```
-
-<details>
-  <summary>Troubleshooting: The responsive variants are not working</summary>
-  <ul className="py-2 pl-3">
-    <li>
-      - Make sure you have followed this
-      [step](/docs/getting-started#responsive-variants-optional)
-    </li>
-    <li>
-      - Make sure you declared either the `initial` variant or
-      `defaultVariants`.
-    </li>
-  </ul>
 </details>
 
 ### Slot variant overrides

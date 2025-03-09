@@ -1,0 +1,46 @@
+import { Tab, Tabs } from 'nextra-theme-docs';
+
+# Upgrade guide
+
+Upgrade `tailwind-variants` to `v1.x`.
+
+### Tailwindcss v4 Support
+
+`tailwind-variants` `v1.x` now supports `Tailwindcss v4`. You can use all the new features and improvements from `Tailwindcss v4` in your projects.
+
+### Run the upgrade script
+
+To upgrade your project to `v1.x`, you can run the upgrade script.
+
+<Tabs items={['npm', 'yarn', 'pnpm']}>
+  <Tab>
+
+    ```bash copy
+    npm install tailwind-variants@latest
+    ```
+
+  </Tab>
+  <Tab>
+
+    ```bash copy
+    yarn upgrade tailwind-variants@latest
+    ```
+
+  </Tab>
+  <Tab>
+
+    ```bash copy
+    pnpm upgrade tailwind-variants@latest
+    ```
+
+  </Tab>
+</Tabs>
+
+### Breaking changes
+
+- The `responsiveVariants` option has been removed.
+
+> ❕ Note: `Tailwindcss v4` no longer supports the `config.content.transform` so we remove the `responsiveVariants` feature
+> 
+> If you want to use `responsiveVariants`, you need to add it manually to your classname.
+
