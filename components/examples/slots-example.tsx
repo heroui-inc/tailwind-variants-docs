@@ -55,7 +55,7 @@ const SlotsExample: FC<SlotsExampleProps> = (props) => {
         <figcaption className={infoWrapper({ class: styles?.infoWrapper })}>
           <div className={name({ class: styles?.name })}>Zoey Lang</div>
           <div className={role({ class: styles?.role })}>
-            Full-stack developer, NextUI
+            Full-stack developer, HeroUI
           </div>
         </figcaption>
       </div>

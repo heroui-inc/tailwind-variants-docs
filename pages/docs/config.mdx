@@ -56,7 +56,6 @@ tv({ base: '' });
 type TvConfig = {
   twMerge?: boolean;
   twMergeConfig?: TwMergeConfig;
-  responsiveVariants?: string[] | boolean;
 };
 ```
 
@@ -76,11 +75,3 @@ It's avoid to have duplicate tailwind classes. (Recommended) see more [here](htt
 **type:** `TwMergeConfig`
 
 **default**: `{}`
-
-### `responsiveVariants`
-
-**description:** Whether to add the responsive variants to the component.
-
-**type:** `string[]` | `boolean`
-
-**default**: `false`

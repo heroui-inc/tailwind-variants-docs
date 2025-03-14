@@ -92,57 +92,6 @@ return (
 
 To learn more about variants, check the [variants](/docs/variants) page.
 
-#### Responsive variants
-
-**Tailwind Variants** allows you to apply variants to different screen sizes.
-
-<br />
-
-<WindowResizer
-  iframeSrc="/docs/examples/intro-responsive-variants"
-  iframeTitle="Responsive variants"
-  height="120px"
-/>
-
-```js copy {15, 20-23}
-import { tv } from 'tailwind-variants';
-
-const button = tv(
-  {
-    base: 'font-semibold text-white py-1 px-3 rounded-full active:opacity-80',
-    variants: {
-      color: {
-        primary: 'bg-blue-500 hover:bg-blue-700',
-        secondary: 'bg-purple-500 hover:bg-purple-700',
-        success: 'bg-green-500 hover:bg-green-700',
-        error: 'bg-red-500 hover:bg-red-700'
-      }
-    }
-  },
-  {
-    responsiveVariants: ['xs', 'sm', 'md'] // `true` to apply to all screen sizes
-  }
-);
-
-button({
-  color: {
-    initial: 'primary',
-    xs: 'secondary',
-    sm: 'success',
-    md: 'error'
-  }
-});
-
-/**
- * Result:
- * font-semibold text-white py-1 px-3 rounded-full active:opacity-80 bg-blue-500 hover:bg-blue-700
- * xs:bg-purple-500 xs:hover:bg-purple-700 sm:bg-green-500 sm:hover:bg-green-700 md:bg-red-500
- * md:hover:bg-red-700
- */
-```
-
-To learn more about responsive variants, check the [variants](/docs/variants#responsive-variants) page and the slots [page](/docs/slots#slots-with-responsive-variants)
-
 #### Split components into multiple slots
 
 You can style multiple components at once using the `slots` property.
@@ -151,13 +100,13 @@ You can style multiple components at once using the `slots` property.
 
 <WindowResizer
   iframeSrc="/docs/examples/intro-slots"
-  iframeTitle="Responsive variants"
+  iframeTitle="Intro slots"
   iframeInitialWidth={380}
   height="400px"
   minWidth={400}
 />
 
-```js copy {5-11} /base()/ /avatar()/ /wrapper()/ /description()/ /infoWrapper()/ /name()/ /role()/
+```js copy {5-12} /base()/ /avatar()/ /wrapper()/ /description()/ /infoWrapper()/ /name()/ /role()/
 import { tv } from 'tailwind-variants';
 
 const card = tv({
@@ -194,7 +143,7 @@ return (
       </blockquote>
       <figcaption className={infoWrapper()}>
         <div className={name()}>Zoey Lang</div>
-        <div className={role()}>Full-stack developer, NextUI</div>
+        <div className={role()}>Full-stack developer, HeroUI</div>
       </figcaption>
     </div>
   </figure>
@@ -322,14 +271,18 @@ To learn more about **Components composition**, check out this [page](/docs/comp
 
 **Tailwind Variants** is a utility library that works with any framework. It's not tied to React.
 
+#### Tailwindcss v4 Support
+
+**Tailwind Variants** `v1.x` now supports `Tailwindcss v4`. You can check more details in the [upgrade guide](/docs/upgrade-guide).
+
 ## Community
 
-We're excited to see the community adopt NextUI, raise issues, and provide feedback. Whether it's a feature request, bug report, or a project to showcase, please get involved!
+We're excited to see the community adopt HeroUI, raise issues, and provide feedback. Whether it's a feature request, bug report, or a project to showcase, please get involved!
 
 - [Discord](https://discord.gg/9b6yyZKmH4)
-- [Twitter](https://twitter.com/getnextui)
-- [GitHub Discussions](https://github.com/nextui-org/tailwind-variants/discussions)
-- [GitHub](https://github.com/nextui-org/tailwind-variants)
+- [Twitter](https://x.com/hero_ui)
+- [GitHub Discussions](https://github.com/heroui-inc/tailwind-variants/discussions)
+- [GitHub](https://github.com/heroui-inc/tailwind-variants)
 
 ## Credits
 

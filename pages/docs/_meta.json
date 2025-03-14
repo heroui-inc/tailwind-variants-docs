@@ -7,6 +7,7 @@
     "display": "hidden"
   },
   "getting-started": "Getting Started",
+  "tailwind-v4": "Tailwindcss v4",
   "comparison": "Comparison",
   "variants": "Variants",
   "slots": "Slots",

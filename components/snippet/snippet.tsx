@@ -1,7 +1,7 @@
 import type { FC, HTMLAttributes } from 'react';
 
 import { useState } from 'react';
-import cn from 'classnames';
+import { cn } from '@heroui/theme';
 
 import { CopyIcon, CheckIcon, Tooltip } from '@components';
 
