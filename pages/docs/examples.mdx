@@ -1,0 +1,330 @@
+import { Tab, Tabs, Callout } from 'nextra-theme-docs';
+import { TVComponent, WindowResizer, SlotsExample } from '@components';
+
+# Examples
+
+The following examples will show you how to use the `tailwind-variants` in your project and what you can do with it.
+
+### Installation
+
+> Require: `tailwindcss` using in your project.
+
+<Tabs items={['npm', 'yarn', 'pnpm']}>
+  <Tab>
+
+    ```bash copy
+    npm install tailwind-variants
+    ```
+
+  </Tab>
+  <Tab>
+
+    ```bash copy
+    yarn add tailwind-variants
+    ```
+
+  </Tab>
+  <Tab>
+
+    ```bash copy
+    pnpm add tailwind-variants
+    ```
+
+  </Tab>
+</Tabs>
+
+### Usage
+
+Basic usage of `tailwind-variants` is very simple it show `color` and `size` variants and how to use them.
+
+<br />
+
+<TVComponent
+  as="button"
+  size="sm"
+  color="secondary"
+  tv={{
+    base: 'font-medium bg-blue-500 text-white rounded-full active:opacity-80',
+    variants: {
+      color: {
+        primary: 'bg-blue-500 text-white',
+        secondary: 'bg-purple-500 text-white'
+      },
+      size: {
+        sm: 'text-sm',
+        md: 'text-base',
+        lg: 'px-4 py-3 text-lg'
+      }
+    },
+    defaultVariants: {
+      size: 'md',
+      color: 'primary'
+    },
+    compoundVariants: [
+      {
+        size: ['sm', 'md'],
+        class: 'px-3 py-1'
+      }
+    ]
+  }}
+>
+  Click me
+</TVComponent>
+
+```js copy
+import { tv } from 'tailwind-variants';
+
+const button = tv({
+  base: 'font-medium bg-blue-500 text-white rounded-full active:opacity-80',
+  variants: {
+    color: {
+      primary: 'bg-blue-500 text-white',
+      secondary: 'bg-purple-500 text-white'
+    },
+    size: {
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'px-4 py-3 text-lg'
+    }
+  },
+  compoundVariants: [
+    {
+      size: ['sm', 'md'],
+      class: 'px-3 py-1'
+    }
+  ],
+  defaultVariants: {
+    size: 'md',
+    color: 'primary'
+  }
+});
+
+return (
+  <button className={button({ size: 'sm', color: 'secondary' })}>
+    Click me
+  </button>
+);
+```
+
+### Adding variants
+
+You can add variants by using the `variants` key. There's no limit to how many variants you can add.
+
+<br />
+
+<TVComponent
+  as="button"
+  color="secondary"
+  tv={{
+    base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
+    variants: {
+      color: {
+        primary: 'bg-blue-500 hover:bg-blue-700',
+        secondary: 'bg-purple-500 hover:bg-purple-700',
+        success: 'bg-green-500 hover:bg-green-700'
+      }
+    }
+  }}
+>
+  Button
+</TVComponent>
+
+```js copy /variants/2 /color/
+import { tv } from 'tailwind-variants';
+
+const button = tv({
+  base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
+  variants: {
+    color: {
+      primary: 'bg-blue-500 hover:bg-blue-700',
+      secondary: 'bg-purple-500 hover:bg-purple-700',
+      success: 'bg-green-500 hover:bg-green-700'
+    }
+  }
+});
+
+button({ color: 'secondary' });
+/**
+ * Result:
+ * font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80 bg-purple-500
+ * hover:bg-purple-700
+ */
+```
+
+<Callout type="info">
+  <div className="text-sm">
+    You can also use the values as an array. e.g.&nbsp;
+    <code>base: ['font-semibold', 'text-white', ...]</code>
+  </div>
+</Callout>
+
+More details can be found in the [Variants](/docs/variants) page.
+
+### Slots
+
+You can add slots by using the `slots` key. There's no limit to how many slots you can add.
+
+<br />
+
+<WindowResizer
+  iframeSrc="/docs/examples/intro-slots"
+  iframeTitle="Intro slots"
+  iframeInitialWidth={380}
+  height="400px"
+  minWidth={400}
+/>
+
+```js copy /base/1 /avatar/1 /wrapper/1 /description/1 /infoWrapper/1 /name/1 /role/1 /base()/ /avatar()/ /wrapper()/ /description()/ /infoWrapper()/ /name()/ /role()/
+import { tv } from 'tailwind-variants';
+
+const card = tv({
+  slots: {
+    base: 'md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-gray-900',
+    avatar:
+      'w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto drop-shadow-lg',
+    wrapper: 'flex-1 pt-6 md:p-8 text-center md:text-left space-y-4',
+    description: 'text-md font-medium',
+    infoWrapper: 'font-medium',
+    name: 'text-sm text-sky-500 dark:text-sky-400',
+    role: 'text-sm text-slate-700 dark:text-slate-500'
+  }
+});
+
+const { base, avatar, wrapper, description, infoWrapper, name, role } = card();
+
+return (
+  <figure className={base()}>
+    <img
+      className={avatar()}
+      src="/intro-avatar.png"
+      alt=""
+      width="384"
+      height="512"
+    />
+    <div className={wrapper()}>
+      <blockquote>
+        <p className={description()}>
+          “Tailwind variants allows you to reduce repeated code in your project
+          and make it more readable. They fixed the headache of building a
+          design system with TailwindCSS.”
+        </p>
+      </blockquote>
+      <figcaption className={infoWrapper()}>
+        <div className={name()}>Zoey Lang</div>
+        <div className={role()}>Full-stack developer, HeroUI</div>
+      </figcaption>
+    </div>
+  </figure>
+);
+```
+
+More details can be found in the [Slots](/docs/slots) page.
+
+### Overriding styles
+
+All **Tailwind Variants** components provide an optional `class` / `className` for overriding classes on any component.
+
+<br />
+
+<button className="rounded-full bg-pink-500 px-3 py-1 font-semibold text-white hover:bg-pink-500 active:opacity-80">
+  Button
+</button>
+
+```js {17}
+import { tv } from 'tailwind-variants';
+
+const button = tv({
+  base: 'font-semibold text-white py-1 px-3 rounded-full active:opacity-80',
+  variants: {
+    color: {
+      primary: 'bg-blue-500 hover:bg-blue-700',
+      secondary: 'bg-purple-500 hover:bg-purple-700',
+      success: 'bg-green-500 hover:bg-green-700',
+      error: 'bg-red-500 hover:bg-red-700'
+    }
+  }
+});
+
+button({
+  color: 'secondary',
+  class: 'bg-pink-500 hover:bg-pink-500' // overrides the color variant
+});
+
+/**
+ * Result:
+ * font-semibold text-white py-1 px-3 rounded-full active:opacity-80 bg-pink-500 hover:bg-pink-500
+ */
+```
+
+More details can be found in the [Overriding Styles](/docs/overriding-styles) page.
+
+### Composing components
+
+**Tailwind Variants** allows you to easily compose components using the `extend` prop or the resultant function.
+
+The `extend` prop allows you to extend the component including its `variants`, `slots`, `defaultVariants` and `compoundVariants`. It automatically merges the values of same keys and offers Typescript autocomplete.
+
+<br />
+
+<div className="flex gap-3">
+  <button className="rounded-full bg-zinc-100 px-3 py-1 font-semibold hover:bg-zinc-200 active:opacity-80 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-800">
+    Button
+  </button>
+  <button className="rounded-lg bg-blue-500 px-3 py-1 text-sm font-semibold uppercase tracking-wider text-white shadow-lg shadow-blue-500/50 hover:bg-blue-600 active:opacity-80 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-600">
+    Buy button
+  </button>
+</div>
+
+```js copy /extend: baseButton/
+import { tv } from 'tailwind-variants';
+
+const baseButton = tv({
+  base: [
+    'font-semibold',
+    'dark:text-white',
+    'py-1',
+    'px-3',
+    'rounded-full',
+    'active:opacity-80',
+    'bg-zinc-100',
+    'hover:bg-zinc-200',
+    'dark:bg-zinc-800',
+    'dark:hover:bg-zinc-800'
+  ]
+});
+
+const buyButton = tv({
+  extend: baseButton,
+  base: [
+    'text-sm',
+    'text-white',
+    'rounded-lg',
+    'shadow-lg',
+    'uppercase',
+    'tracking-wider',
+    'bg-blue-500',
+    'hover:bg-blue-600',
+    'shadow-blue-500/50',
+    'dark:bg-blue-500',
+    'dark:hover:bg-blue-600'
+  ]
+});
+
+return (
+  <div className="flex gap-3">
+    <button className={baseButton()}>Button</button>
+    <button className={buyButton()}>Buy button</button>
+  </div>
+);
+
+/**
+ * buyButton();
+ *
+ * Result:
+ * font-semibold dark:text-white py-1 px-3 active:opacity-80 text-sm text-white rounded-lg
+ * shadow-lg shadow-blue-500/50 uppercase tracking-wider bg-blue-500 hover:bg-blue-600
+ * dark:bg-blue-500 dark:hover:bg-blue-600
+ */
+```
+
+More details can be found in the [Composing Components](/docs/composing-components) page.
