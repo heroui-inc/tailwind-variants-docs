@@ -1,10 +1,4 @@
 {
-  "vanilla": "Vanilla JS",
-  "react": "React",
-  "vue": "VueJS",
-  "svelte": "Svelte",
-  "astro": "Astro",
-  "remix": "Remix",
   "intro-slots": {
     "display": "hidden",
     "type": "page",
