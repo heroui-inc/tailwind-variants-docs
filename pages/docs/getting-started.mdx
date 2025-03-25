@@ -115,15 +115,17 @@ To enable autocompletion for **Tailwind Variants** you can follow the instructio
 
 <Tabs items={['VSCode', 'Neovim', 'IntelliJ']}>
   <Tab>
-    If you are using **VSCode** and the [**TailwindCSS IntelliSense Extension**](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), you have to add the following to your `settings.json` file.
+     If you are using **VSCode** and the [**TailwindCSS IntelliSense Extension**](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), you can enable autocompletion for Tailwind Variants by adding the following to your `settings.json` file. 
 
     ```json copy
     {
-      "tailwindCSS.experimental.classRegex": [
-        ["([\"'`][^\"'`]*.*?[\"'`])", "[\"'`]([^\"'`]*).*?[\"'`]"]
-      ]
+      "tailwindCSS.classFunctions": ["tv"]
     }
     ```
+
+This configuration replaces the older approach where you needed to use tailwindCSS.experimental.classRegex. The new method is simpler and enables autocompletion for Tailwind Variants with just the classFunctions setting.
+
+For more information, check the official Tailwind CSS IntelliSense Documentation. </Tab>
 
   </Tab>
   <Tab>
