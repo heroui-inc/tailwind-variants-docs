@@ -50,6 +50,62 @@ const tv = createTV({
 tv({ base: '' });
 ```
 
+### Advanced: Custom `tv` wrapper
+
+For more advanced use cases, you can create a custom `tv` wrapper that extends the default configuration with your own custom merge config:
+
+```ts
+// tv.ts
+import type {TV} from "tailwind-variants";
+import {tv as tvBase} from "tailwind-variants";
+
+const COMMON_UNITS = ["small", "medium", "large"];
+
+const twMergeConfig = {
+  theme: {
+    spacing: ["divider"],
+    radius: COMMON_UNITS,
+  },
+  classGroups: {
+    shadow: [{shadow: COMMON_UNITS}],
+    opacity: [{opacity: ["disabled"]}],
+    "font-size": [{text: ["tiny", ...COMMON_UNITS]}],
+    "border-w": [{border: COMMON_UNITS}],
+    "bg-image": [
+      "bg-stripe-gradient-default",
+      "bg-stripe-gradient-primary",
+      "bg-stripe-gradient-secondary",
+      "bg-stripe-gradient-success",
+      "bg-stripe-gradient-warning",
+      "bg-stripe-gradient-danger",
+    ],
+  },
+};
+
+export const tv: TV = (options, config) =>
+  tvBase(options, {
+    ...config,
+    twMerge: config?.twMerge ?? true,
+    twMergeConfig: {
+      ...config?.twMergeConfig,
+      theme: {
+        ...config?.twMergeConfig?.theme,
+        ...twMergeConfig.theme,
+      },
+      classGroups: {
+        ...config?.twMergeConfig?.classGroups,
+        ...twMergeConfig.classGroups,
+      },
+    },
+  });
+```
+
+This approach allows you to:
+- Extend the default `tailwind-merge` configuration with custom theme values
+- Add custom class groups for your design system
+- Maintain type safety with the `TV` type
+- Override any default configuration while preserving the rest
+
 ## Config Options
 
 ```ts

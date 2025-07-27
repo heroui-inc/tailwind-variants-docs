@@ -6,7 +6,7 @@ import { Callout } from 'nextra-theme-docs';
 
 ### Why is tailwind-merge now optional?
 
-In v2, we made `tailwind-merge` an optional peer dependency to give users more control over their bundle size. Not all projects need automatic conflict resolution, and by making it optional, users who don't need this feature can save ~3KB in their bundle size.
+In v2, we made `tailwind-merge` an optional peer dependency to give users more control over their bundle size. Not all projects need automatic conflict resolution, and by making it optional, users who don't need this feature can save significant bundle size. The library itself is now up to **80% smaller** - only 5.5KB minified (2.1KB gzipped), compared to v1's 28.3KB minified (9.2KB gzipped).
 
 ### Do I need to install tailwind-merge separately?
 
