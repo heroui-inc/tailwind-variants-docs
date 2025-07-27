@@ -64,6 +64,8 @@ type TvConfig = {
 **description:** Whether to merge class names with the `tailwind-merge` library.
 It avoids having duplicate tailwind classes. (Recommended) see more [here](https://github.com/dcastil/tailwind-merge/blob/v2.2.2/README.md)
 
+> **Note:** Starting from v2, `tailwind-merge` is an optional peer dependency. You need to install it separately if you want to use this feature (enabled by default). If you don't install `tailwind-merge`, you must set `twMerge: false`.
+
 **type:** `boolean`
 
 **default**: `true`

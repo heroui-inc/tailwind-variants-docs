@@ -38,6 +38,36 @@ To use **Tailwind Variants** in your project, you can install it as a dependency
   </Tab>
 </Tabs>
 
+### Optional: Install tailwind-merge
+
+Starting from v2, `tailwind-merge` is an optional peer dependency. If you want automatic conflict resolution for Tailwind CSS classes (recommended), install it separately:
+
+<Tabs items={['npm', 'yarn', 'pnpm']}>
+  <Tab>
+
+    ```bash copy
+    npm install tailwind-merge
+    ```
+
+  </Tab>
+  <Tab>
+
+    ```bash copy
+    yarn add tailwind-merge
+    ```
+
+  </Tab>
+  <Tab>
+
+    ```bash copy
+    pnpm add tailwind-merge
+    ```
+
+  </Tab>
+</Tabs>
+
+> **Note**: If you don't install `tailwind-merge`, you can still use Tailwind Variants but you'll need to set `twMerge: false` in your config to disable conflict resolution.
+
 ## Usage
 
 <br />

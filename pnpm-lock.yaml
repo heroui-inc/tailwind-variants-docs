@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.32.5
     version: 0.32.5
   tailwind-variants:
-    specifier: 1.0.0
-    version: 1.0.0(tailwindcss@3.3.3)
+    specifier: 2.0.0
+    version: 2.0.0(tailwindcss@3.3.3)
 
 devDependencies:
   '@types/node':
@@ -5971,10 +5971,6 @@ packages:
     resolution: {integrity: sha512-0q8cfZHMu9nuYP/b5Shb7Y7Sh1B7Nnl5GqNr1U+n2p6+mybvRtayrQ+0042Z5byvTA8ihjlP8Odo8/VnHbZu4Q==}
     dev: false
 
-  /tailwind-merge@3.0.2:
-    resolution: {integrity: sha512-l7z+OYZ7mu3DTqrL88RiKrKIqO3NcpEO8V/Od04bNpvk0kiIFndGEoqfuzvj4yuhRkHKjRkII2z+KS2HfPcSxw==}
-    dev: false
-
   /tailwind-variants@0.3.0(tailwindcss@3.3.3):
     resolution: {integrity: sha512-ho2k5kn+LB1fT5XdNS3Clb96zieWxbStE9wNLK7D0AV64kdZMaYzAKo0fWl6fXLPY99ffF9oBJnIj5escEl/8A==}
     engines: {node: '>=16.x', pnpm: '>=7.x'}
@@ -5985,13 +5981,16 @@ packages:
       tailwindcss: 3.3.3
     dev: false
 
-  /tailwind-variants@1.0.0(tailwindcss@3.3.3):
-    resolution: {integrity: sha512-2WSbv4ulEEyuBKomOunut65D8UZwxrHoRfYnxGcQNnHqlSCp2+B7Yz2W+yrNDrxRodOXtGD/1oCcKGNBnUqMqA==}
+  /tailwind-variants@2.0.0(tailwindcss@3.3.3):
+    resolution: {integrity: sha512-qXwOfOwrbXsVLgwHypDKQ0bXvqZLyJS5NdgsRFyNi+8NIFuJvx4hDwUFSIwJ3AMMwPlyf2hUGGuLZbT6I6Wldg==}
     engines: {node: '>=16.x', pnpm: '>=7.x'}
     peerDependencies:
+      tailwind-merge: '>=3.0.0'
       tailwindcss: '*'
+    peerDependenciesMeta:
+      tailwind-merge:
+        optional: true
     dependencies:
-      tailwind-merge: 3.0.2
       tailwindcss: 3.3.3
     dev: false
 

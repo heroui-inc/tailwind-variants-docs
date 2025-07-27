@@ -265,7 +265,7 @@ To learn more about **Components composition**, check out this [page](/docs/comp
 
 #### Automatic conflict resolution
 
-**Tailwind Variants** implements [**tailwind-merge**](https://github.com/dcastil/tailwind-merge) under the hood, so it will efficiently merge your classes, so you don't have to worry about TailwindCSS class conflicts.
+**Tailwind Variants** supports [**tailwind-merge**](https://github.com/dcastil/tailwind-merge) for automatic conflict resolution. Starting from v2, `tailwind-merge` is an optional peer dependency - install it separately if you need this feature. When enabled, it will efficiently merge your classes, so you don't have to worry about TailwindCSS class conflicts.
 
 #### Framework agnostic
 
@@ -274,6 +274,18 @@ To learn more about **Components composition**, check out this [page](/docs/comp
 #### Tailwindcss v4 Support
 
 **Tailwind Variants** `v1.x` now supports `Tailwindcss v4`. You can check more details in the [upgrade guide](/docs/upgrade-guide).
+
+## Performance Improvements in v2
+
+**Tailwind Variants** v2 brings significant performance enhancements:
+
+- **37-62% faster** for most operations
+- Optimized object creation and array operations
+- Reduced function call overhead
+- Better memory usage
+- Smaller bundle size with optional `tailwind-merge`
+
+These improvements make Tailwind Variants even more efficient for large-scale applications while maintaining full backward compatibility.
 
 ## Community
 

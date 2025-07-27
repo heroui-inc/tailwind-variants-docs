@@ -2,17 +2,185 @@
 
 import { Callout } from 'nextra-theme-docs';
 
-<Callout type="warning" emoji="🚧">
-  <div className="text-sm">
-    This page is a work in progress. If you have any questions, please ask in
-    the{' '}
-    <a
-      href="https://discord.gg/9b6yyZKmH4"
-      target="_blank"
-      className="underline"
-    >
-      Discord
-    </a>
-    .
-  </div>
+## v2 Migration
+
+### Why is tailwind-merge now optional?
+
+In v2, we made `tailwind-merge` an optional peer dependency to give users more control over their bundle size. Not all projects need automatic conflict resolution, and by making it optional, users who don't need this feature can save ~3KB in their bundle size.
+
+### Do I need to install tailwind-merge separately?
+
+Yes, if you want to use the automatic conflict resolution feature (which is enabled by default), you need to install `tailwind-merge` as a peer dependency:
+
+```bash
+npm install tailwind-merge
+```
+
+If you don't need conflict resolution, you can disable it by setting `twMerge: false` in your config.
+
+### What happens if I don't install tailwind-merge but keep twMerge enabled?
+
+Your application will throw an error at runtime when trying to use tailwind-variants. You must either:
+1. Install `tailwind-merge` as a dependency, or
+2. Set `twMerge: false` in your configuration
+
+### How much faster is v2 compared to v1?
+
+v2 is **37-62% faster** for most operations. The performance improvements come from:
+- Optimized object creation and array operations
+- Reduced function call overhead
+- Better memory management
+- More efficient class merging algorithms
+
+## Common Issues
+
+### Why are my Tailwind classes not being applied correctly?
+
+This usually happens when:
+1. **Conflict resolution is disabled**: Make sure you have `tailwind-merge` installed and `twMerge` is set to `true` (default)
+2. **Class order matters**: Later classes in your variants override earlier ones
+3. **Specificity issues**: Custom classes passed via `class`/`className` prop will override variant classes
+
+### How do I override styles from a variant?
+
+You can override styles in several ways:
+
+```js
+// Using the class prop
+button({ color: 'primary', class: 'bg-pink-500' })
+
+// Using compound variants
+tv({
+  variants: { /* ... */ },
+  compoundVariants: [
+    {
+      color: 'primary',
+      size: 'large',
+      class: 'bg-pink-500'
+    }
+  ]
+})
+```
+
+### Why is TypeScript not inferring my variant types correctly?
+
+Make sure you're using `as const` for your variant definitions if you're defining them outside of the `tv` function:
+
+```ts
+const variants = {
+  color: {
+    primary: 'bg-blue-500',
+    secondary: 'bg-gray-500'
+  }
+} as const;
+
+const button = tv({ variants });
+```
+
+## Performance
+
+### Should I disable twMerge for better performance?
+
+While disabling `twMerge` can provide a small performance boost, we recommend keeping it enabled unless:
+- You're building a performance-critical application
+- You're confident you won't have class conflicts
+- You're already handling class merging manually
+
+### How can I optimize my tailwind-variants usage?
+
+1. **Reuse tv instances**: Create tv components once and reuse them
+2. **Avoid dynamic class generation**: Define all variants upfront rather than generating classes dynamically
+3. **Use compound variants wisely**: They add overhead, so use them only when necessary
+
+```js
+// Good - defined once
+const button = tv({ /* ... */ });
+
+// Avoid - creates new instance each render
+function Component() {
+  const button = tv({ /* ... */ });
+}
+```
+
+## Usage Patterns
+
+### Can I use tailwind-variants without React?
+
+Yes! Tailwind Variants is framework agnostic. It works with any JavaScript framework or vanilla JavaScript:
+
+```js
+// Vanilla JS
+const button = tv({ /* ... */ });
+document.getElementById('button').className = button({ color: 'primary' });
+```
+
+```vue
+// Vue
+<template>
+  <button :class="button({ color: 'primary' })">Click me</button>
+</template>
+```
+
+```svelte
+// Svelte
+<button class={button({ color: 'primary' })}>Click me</button>
+```
+
+### How do I handle responsive variants?
+
+You can use Tailwind's responsive prefixes directly in your variant definitions:
+
+```js
+const component = tv({
+  base: 'text-sm md:text-base lg:text-lg',
+  variants: {
+    color: {
+      primary: 'text-blue-500 md:text-blue-600',
+      secondary: 'text-gray-500 md:text-gray-600'
+    }
+  }
+});
+```
+
+### Can I extend multiple components?
+
+No, you can only extend one component at a time. However, you can compose multiple components manually:
+
+```js
+const baseButton = tv({ /* ... */ });
+const iconButton = tv({ /* ... */ });
+
+// Compose manually
+const combinedButton = tv({
+  base: [baseButton(), iconButton()],
+  // additional variants...
+});
+```
+
+### How do I use slots with TypeScript?
+
+When using slots with TypeScript, you can extract the slot functions for better type inference:
+
+```ts
+const card = tv({
+  slots: {
+    base: 'p-4',
+    title: 'text-lg font-bold',
+    content: 'text-sm'
+  }
+});
+
+// Extract with types
+const { base, title, content } = card();
+
+// Or use directly
+<div className={card().base()}>
+  <h1 className={card().title()}>Title</h1>
+</div>
+```
+
+## Still have questions?
+
+<Callout type="info">
+  If you have any questions not covered here, please ask in the [Discord](https://discord.gg/9b6yyZKmH4) or open a [GitHub Discussion](https://github.com/heroui-inc/tailwind-variants/discussions).
 </Callout>
