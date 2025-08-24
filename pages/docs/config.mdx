@@ -6,6 +6,35 @@ Tailwind Variants has several ways to specify config options:
 1. Creating a custom `tv` instance using `createTV`
 1. Modifying the `defaultConfig` variable
 
+## Build Options (v3+)
+
+Starting from v3, Tailwind Variants offers two build options:
+
+### Original Build (Default)
+- Import from `tailwind-variants`
+- Includes `tailwind-merge` for automatic conflict resolution
+- Supports all configuration options including `twMerge` and `twMergeConfig`
+- Requires `tailwind-merge` to be installed as a dependency
+
+```ts
+import { tv, createTV, cn } from 'tailwind-variants';
+```
+
+### Lite Build
+- Import from `tailwind-variants/lite`
+- Excludes `tailwind-merge` for a smaller bundle (~80% smaller)
+- **Does not support** `twMerge` or `twMergeConfig` options
+- No external dependencies required
+
+```ts
+import { tv, createTV, cn } from 'tailwind-variants/lite';
+```
+
+Choose the lite build if:
+- You don't need automatic Tailwind class conflict resolution
+- Bundle size is a critical concern
+- You handle class merging manually or don't have conflicting classes
+
 ### Local Config
 
 The easiest way to configure Tailwind Variants is using the second argument of
@@ -120,11 +149,16 @@ type TvConfig = {
 **description:** Whether to merge class names with the `tailwind-merge` library.
 It avoids having duplicate tailwind classes. (Recommended) see more [here](https://github.com/dcastil/tailwind-merge/blob/v2.2.2/README.md)
 
-> **Note:** Starting from v2, `tailwind-merge` is an optional peer dependency. You need to install it separately if you want to use this feature (enabled by default). If you don't install `tailwind-merge`, you must set `twMerge: false`.
+> **Note:** 
+> - Starting from v2, `tailwind-merge` is an optional peer dependency that needs to be installed separately.
+> - Starting from v3, this option is **only available in the original build** (`tailwind-variants`), not in the lite build (`tailwind-variants/lite`).
+> - If you don't install `tailwind-merge`, you must either use the lite build or set `twMerge: false`.
 
 **type:** `boolean`
 
-**default**: `true`
+**default**: `true` (original build only)
+
+**availability**: Original build only (`tailwind-variants`)
 
 ### `twMergeConfig`
 
@@ -133,3 +167,5 @@ It avoids having duplicate tailwind classes. (Recommended) see more [here](https
 **type:** `TwMergeConfig`
 
 **default**: `{}`
+
+**availability**: Original build only (`tailwind-variants`)

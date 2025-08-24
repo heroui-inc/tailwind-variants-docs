@@ -2,6 +2,46 @@
 
 import { Callout } from 'nextra-theme-docs';
 
+## v3 Migration
+
+### What's new in v3?
+
+v3 introduces two major improvements:
+1. **Two build options**: Original (with tailwind-merge) and Lite (without tailwind-merge)
+2. **Massive performance improvements**: Up to 500x faster when using tailwind-merge
+3. **Enhanced `cn` utility**: Now supports functionality similar to `classnames`/`clsx`
+
+### Should I use the original build or lite build?
+
+**Use the original build if:**
+- You need automatic Tailwind CSS conflict resolution
+- You're already using tailwind-merge in your project
+- Performance with conflict resolution is important (v3 is 400-500x faster)
+
+**Use the lite build if:**
+- Bundle size is critical (~80% smaller)
+- You don't need automatic conflict resolution
+- You handle class merging manually
+
+### How do I migrate from v2 to v3?
+
+For most users, just ensure `tailwind-merge` is installed:
+```bash
+npm install tailwind-merge
+```
+
+If you want to use the lite build instead:
+```ts
+// Change your imports from:
+import { tv } from 'tailwind-variants';
+// To:
+import { tv } from 'tailwind-variants/lite';
+```
+
+### What happened to lazy loading in v3?
+
+v3 removes lazy loading of `tailwind-merge` in favor of two separate builds. This fixes issues where classes wouldn't merge correctly on first render. The original build now statically imports `tailwind-merge`, while the lite build doesn't include it at all.
+
 ## v2 Migration
 
 ### Why is tailwind-merge now optional?

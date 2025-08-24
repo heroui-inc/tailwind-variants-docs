@@ -1,18 +1,95 @@
-# Migration Guide: v1 to v2
+# Migration Guide
 
-## Breaking Changes
+## v2 to v3
 
-### tailwind-merge is now an optional peer dependency
+### Breaking Changes
+
+#### Introduction of `/lite` entry point (no `tailwind-merge`)
+
+In v3, `tailwind-variants` is now offered in two builds:
+
+- **Original build** – includes `tailwind-merge` (same as before)
+- **Lite build** – excludes `tailwind-merge` for a smaller bundle and faster runtime
+
+##### What changed?
+
+- `tailwind-merge` is no longer lazily loaded; it's statically included in the original build only
+- Lite build completely removes `tailwind-merge` and its config
+- `createTV`, `tv`, and `cn` in the lite build **no longer accept `config` (tailwind-merge config)**
+- The `cn` utility (previously `cnBase`) is now exported from both builds with enhanced functionality
+
+##### Migration Steps
+
+If you use the default configuration with `twMerge: true` (conflict resolution enabled), make sure to install `tailwind-merge` in your project:
+
+```bash
+# npm
+npm install tailwind-merge
+
+# yarn
+yarn add tailwind-merge
+
+# pnpm
+pnpm add tailwind-merge
+```
+
+If you do not need conflict resolution, switch to the lite build by importing from `tailwind-variants/lite`:
+
+```ts
+import {createTV, tv, cn, cnBase} from "tailwind-variants/lite";
+```
+
+#### Enhanced `cn` utility (formerly `cnBase`)
+
+The `cn` utility has been significantly enhanced to support functionality similar to `classnames` / `clsx`. It now properly filters and handles various input types and formats the final result.
+
+```ts
+// v2
+import {cnBase} from 'tailwind-variants';
+
+// v3 - Original build (with tailwind-merge)
+import {cn, cnBase} from 'tailwind-variants';
+
+// v3 - Lite build (without tailwind-merge)
+import {cn, cnBase} from 'tailwind-variants/lite';
+```
+
+Both `cn` and `cnBase` are exported for backwards compatibility, but `cn` is the recommended import.
+
+### Performance Improvements
+
+v3 includes significant performance improvements for projects using `tailwind-merge`:
+
+| Test Case | v2 (ops/sec) | v3 (ops/sec) | Change |
+|-----------|--------------|--------------|--------|
+| TV without slots & tw-merge | 1,397 | 572,465 | ⬆️ Up (~410x) |
+| TV with slots & tw-merge | 692 | 306,297 | ⬆️ Up (~442x) |
+| TV with custom tw-merge config | 700 | 359,269 | ⬆️ Up (~513x) |
+
+> Note: Performance for the lite build (without tw-merge) may be slightly lower due to enhanced `cn` functionality, but this will be optimized in future updates.
+
+### Bundle Size Comparison
+
+- **Original build** (`tailwind-variants`): Includes `tailwind-merge` statically
+- **Lite build** (`tailwind-variants/lite`): ~80% smaller without `tailwind-merge`
+
+---
+
+## v1 to v2
+
+### Breaking Changes
+
+#### tailwind-merge is now an optional peer dependency
 
 In v2, we've made `tailwind-merge` an optional peer dependency to reduce bundle size for users who don't need Tailwind CSS conflict resolution.
 
-#### What changed?
+##### What changed?
 
 - `tailwind-merge` is no longer bundled with tailwind-variants
 - Users who want conflict resolution must install it separately
 - Users who don't need conflict resolution can save ~3KB in bundle size
 
-#### Migration Steps
+##### Migration Steps
 
 If you use the default configuration with `twMerge: true` (conflict resolution enabled):
 
@@ -46,7 +123,7 @@ const button = tv(
 );
 ```
 
-## Performance Improvements
+### Performance Improvements
 
 v2 also includes significant performance optimizations:
 

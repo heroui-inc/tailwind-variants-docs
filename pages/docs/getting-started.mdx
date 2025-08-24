@@ -38,9 +38,13 @@ To use **Tailwind Variants** in your project, you can install it as a dependency
   </Tab>
 </Tabs>
 
-### Optional: Install tailwind-merge
+### Choose Your Build (v3+)
 
-Starting from v2, `tailwind-merge` is an optional peer dependency. If you want automatic conflict resolution for Tailwind CSS classes (recommended), install it separately:
+Starting from v3, Tailwind Variants offers two build options:
+
+#### Option 1: Original Build (with tailwind-merge)
+
+For automatic Tailwind CSS conflict resolution, install `tailwind-merge` as a dependency:
 
 <Tabs items={['npm', 'yarn', 'pnpm']}>
   <Tab>
@@ -66,7 +70,21 @@ Starting from v2, `tailwind-merge` is an optional peer dependency. If you want a
   </Tab>
 </Tabs>
 
-> **Note**: If you don't install `tailwind-merge`, you can still use Tailwind Variants but you'll need to set `twMerge: false` in your config to disable conflict resolution.
+Then import from the default entry point:
+
+```ts
+import { tv, createTV, cn } from 'tailwind-variants';
+```
+
+#### Option 2: Lite Build (without tailwind-merge)
+
+For a smaller bundle size (~80% smaller), use the lite build which doesn't include `tailwind-merge`:
+
+```ts
+import { tv, createTV, cn } from 'tailwind-variants/lite';
+```
+
+> **Note**: The lite build doesn't support the `twMerge` and `twMergeConfig` options. Choose this if bundle size is critical and you don't need automatic conflict resolution.
 
 ## Usage
 

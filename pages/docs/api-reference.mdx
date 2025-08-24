@@ -2,6 +2,10 @@
 
 Here's the API reference for the `tailwind-variants` exported types and functions.
 
+## Main Functions
+
+### `tv`
+
 ```js
 import { tv } from 'tailwind-variants'
 
@@ -27,6 +31,40 @@ element.defaultVariants // => Record<string, string>
 element.compoundVariants // => Array<Record<string, string>>
 element.compoundSlots // => Array<Record<string, string>>
 ```
+
+### `createTV`
+
+Creates a custom `tv` instance with the specified default configuration.
+
+```ts
+import { createTV } from 'tailwind-variants';
+
+const tv = createTV({
+  twMerge: true,
+  twMergeConfig: {
+    // custom config
+  }
+});
+```
+
+### `cn` / `cnBase`
+
+A utility function for concatenating and merging class names. Enhanced in v3 to support functionality similar to `classnames`/`clsx`.
+
+```ts
+// Original build (with tailwind-merge)
+import { cn, cnBase } from 'tailwind-variants';
+
+// Lite build (without tailwind-merge)
+import { cn, cnBase } from 'tailwind-variants/lite';
+
+// Usage
+cn('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
+cn(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
+cn('text-blue-500', { 'font-bold': true, 'italic': false }); // => "text-blue-500 font-bold"
+```
+
+> **Note**: Both `cn` and `cnBase` are exported for backwards compatibility, but `cn` is the recommended import name in v3+.
 
 ### Options
 
