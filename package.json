@@ -39,7 +39,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sharp": "0.32.5",
-    "tailwind-variants": "3.0.0"
+    "tailwind-variants": "3.2.2"
   },
   "devDependencies": {
     "@types/node": "20.5.8",
