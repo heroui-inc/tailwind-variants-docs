@@ -47,16 +47,16 @@ const tv = createTV({
 });
 ```
 
-### `cn` / `cnBase`
+### `cn`
 
-A utility function for concatenating and merging class names. Enhanced in v3 to support functionality similar to `classnames`/`clsx`. In v3.2.0+, `cn` defaults `twMerge` to `true` and uses `tailwind-merge` for conflict resolution in the original build.
+A utility function for concatenating and merging class names with automatic conflict resolution. In v3.2.2+, `cn` returns a string directly with default twMerge config - no function call needed.
 
 ```ts
 // Original build (with tailwind-merge)
-import { cn, cnBase } from 'tailwind-variants';
+import { cn } from 'tailwind-variants';
 
 // Lite build (without tailwind-merge)
-import { cn, cnBase } from 'tailwind-variants/lite';
+import { cn } from 'tailwind-variants/lite';
 
 // Usage - with conflict resolution (original build)
 cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflicts resolved)
@@ -65,11 +65,44 @@ cn(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-
 cn('text-blue-500', { 'font-bold': true, 'italic': false }); // => "text-blue-500 font-bold"
 ```
 
-> **Note**: Both `cn` and `cnBase` are exported for backwards compatibility, but `cn` is the recommended import name in v3+.
-> 
-> **v3.2.0+**: 
-> - In the original build, `cn` now defaults `twMerge` to `true` and uses `tailwind-merge` for automatic conflict resolution. Use `cx` if you need a lightweight utility without conflict resolution.
-> - **Breaking change**: `cnBase` should be replaced with `cx`. The `cx` function provides the same functionality with a clearer name.
+> **Note**: 
+> - **v3.2.2+**: `cn` now returns a string directly (no config support). For custom twMerge config, use `cnMerge`.
+> - In the original build, `cn` defaults `twMerge` to `true` and uses `tailwind-merge` for automatic conflict resolution. Use `cx` if you need a lightweight utility without conflict resolution.
+
+### `cnMerge`
+
+A utility function for concatenating and merging class names with support for custom twMerge configuration. Use `cnMerge` when you need to customize the twMerge behavior.
+
+**Added in v3.2.2** - This function provides config-based usage that was previously available through `cn`'s Proxy implementation.
+
+```ts
+// Original build (with tailwind-merge)
+import { cnMerge } from 'tailwind-variants';
+
+// Lite build (without tailwind-merge)
+import { cnMerge } from 'tailwind-variants/lite';
+
+// Usage with custom config
+cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4" (no conflict resolution)
+cnMerge('px-2', 'px-4')(); // => "px-4" (with default config, conflicts resolved)
+cnMerge('text-blue-500', 'text-red-500')({ twMerge: true }); // => "text-red-500" (conflicts resolved)
+
+// With custom twMergeConfig
+cnMerge('px-2', 'px-4')({
+  twMerge: true,
+  twMergeConfig: {
+    // custom tailwind-merge config
+  }
+});
+```
+
+> **When to use `cnMerge` vs `cn`?**
+> - Use `cn` for the common case - it returns a string directly with default config
+> - Use `cnMerge` when you need to customize twMerge behavior (disable it, or provide custom config)
+
+### `cnBase`
+
+> **Deprecated**: `cnBase` is exported for backwards compatibility but should be replaced with `cx` (v3.2.0+). The `cx` function provides the same functionality with a clearer name.
 
 ### `cx`
 

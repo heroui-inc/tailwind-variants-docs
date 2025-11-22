@@ -61,9 +61,9 @@ import { cx } from 'tailwind-variants';
 
 The API is identical - both functions combine class names without conflict resolution. `cnBase` is still exported for backwards compatibility, but `cx` is the recommended replacement.
 
-### What's the difference between `cx` and `cn`? (v3.2.0+)
+### What's the difference between `cx`, `cn`, and `cnMerge`? (v3.2.2+)
 
-`cx` and `cn` are both utility functions for concatenating class names, but they serve different purposes:
+There are three utility functions for concatenating class names, each serving different purposes:
 
 **`cx`** - Lightweight utility without conflict resolution:
 - Available in both original and lite builds
@@ -77,19 +77,30 @@ cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both in
 ```
 
 **`cn`** - Full-featured utility with conflict resolution (original build only):
-- Uses `tailwind-merge` for automatic conflict resolution (v3.2.0+)
-- Resolves conflicting Tailwind classes intelligently
-- Defaults `twMerge` to `true` in the original build
-- Use when you need automatic conflict resolution
+- Uses `tailwind-merge` for automatic conflict resolution
+- Returns a string directly (v3.2.2+)
+- Resolves conflicting Tailwind classes intelligently with default config
+- Use for the common case when you need conflict resolution
 
 ```ts
 import { cn } from 'tailwind-variants';
 cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflict resolved)
 ```
 
+**`cnMerge`** - Configurable utility with conflict resolution (original build only):
+- Supports custom twMerge configuration via second function call
+- Use when you need to customize twMerge behavior (disable it or provide custom config)
+
+```ts
+import { cnMerge } from 'tailwind-variants';
+cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4" (no conflict resolution)
+cnMerge('px-2', 'px-4')(); // => "px-4" (with default config)
+```
+
 **When to use each:**
 - Use `cx` when you don't need conflict resolution and want a smaller bundle
-- Use `cn` when you need automatic Tailwind CSS conflict resolution (original build only)
+- Use `cn` when you need automatic Tailwind CSS conflict resolution with default config (most common case)
+- Use `cnMerge` when you need to customize twMerge behavior (disable it or provide custom config)
 
 ## v2 Migration
 

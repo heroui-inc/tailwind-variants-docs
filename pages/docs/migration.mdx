@@ -1,5 +1,53 @@
 # Migration Guide
 
+## v3.2.0 to v3.2.2
+
+### Breaking Changes
+
+#### `cn` split into `cn` and `cnMerge`
+
+In v3.2.2, the `cn` function has been simplified to eliminate Proxy complexity. The function now returns a string directly with default twMerge config. For custom twMerge configuration, use the new `cnMerge` function.
+
+**Before (v3.2.0 - v3.2.1):**
+```ts
+import { cn } from 'tailwind-variants';
+
+// cn could be called with config (using Proxy)
+cn('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4"
+cn('px-2', 'px-4')(); // => "px-4" (with default config)
+```
+
+**After (v3.2.2+):**
+```ts
+import { cn, cnMerge } from 'tailwind-variants';
+
+// cn now returns a string directly (no config support)
+cn('px-2', 'px-4'); // => "px-4" (conflicts resolved with default config)
+
+// cnMerge supports custom config via second function call
+cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4"
+cnMerge('px-2', 'px-4')(); // => "px-4" (with default config)
+```
+
+**Migration:**
+- If you were using `cn(...)` directly (most common case), no changes needed - it now works more intuitively by returning a string directly.
+- If you were using `cn(...)(config)` or `cn(...)()`, migrate to `cnMerge`:
+  ```ts
+  // Before
+  cn('px-2', 'px-4')({ twMerge: false });
+  
+  // After
+  cnMerge('px-2', 'px-4')({ twMerge: false });
+  ```
+
+**Benefits:**
+- Better TypeScript support (no Proxy types)
+- Clearer API intent
+- Better performance (no Proxy overhead)
+- Easier maintenance
+
+---
+
 ## v3.1.1 to v3.2.0
 
 ### New Features
