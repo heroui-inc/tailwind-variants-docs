@@ -24,6 +24,17 @@ const Hero: FC<HeroProps> = () => {
         <p className="mt-2 text-center text-lg font-medium">
           The power of Tailwind combined with a first-class variant API.
         </p>
+        <p className="mt-1 text-center text-sm text-gray-600 dark:text-gray-400">
+          Created by{' '}
+          <a
+            className="font-semibold text-gray-700 transition-colors hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
+            href="https://v3.heroui.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            HeroUI Team
+          </a>
+        </p>
       </div>
       <div className={tvs.box({ row: true, class: 'z-10 gap-2' })}>
         <a className={tvs.button()} href="/docs/introduction">
