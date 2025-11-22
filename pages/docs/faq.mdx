@@ -44,6 +44,23 @@ import { tv } from 'tailwind-variants/lite';
 
 v3 removes lazy loading of `tailwind-merge` in favor of two separate builds. This fixes issues where classes wouldn't merge correctly on first render. The original build now statically imports `tailwind-merge`, while the lite build doesn't include it at all.
 
+### Should I replace `cnBase` with `cx`? (v3.2.0+)
+
+Yes! In v3.2.0+, `cnBase` should be replaced with `cx`. The `cx` function provides the same functionality (simple concatenation without conflict resolution) with a clearer name.
+
+**Migration example:**
+```ts
+// Before (v3.1.1 and earlier)
+import { cnBase } from 'tailwind-variants';
+{cnBase("flex items-center justify-center gap-2", className)}
+
+// After (v3.2.0+)
+import { cx } from 'tailwind-variants';
+{cx("flex items-center justify-center gap-2", className)}
+```
+
+The API is identical - both functions combine class names without conflict resolution. `cnBase` is still exported for backwards compatibility, but `cx` is the recommended replacement.
+
 ### What's the difference between `cx` and `cn`? (v3.2.0+)
 
 `cx` and `cn` are both utility functions for concatenating class names, but they serve different purposes:
