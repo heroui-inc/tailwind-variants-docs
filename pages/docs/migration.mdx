@@ -1,5 +1,67 @@
 # Migration Guide
 
+## v3.1.1 to v3.2.0
+
+### New Features
+
+#### Introduction of `cx` function
+
+A new lightweight utility function `cx` has been added for concatenating class names without `tailwind-merge` conflict resolution. This is useful when you don't need automatic conflict resolution and want a smaller bundle size.
+
+```ts
+// v3.2.0+
+import { cx, cn } from 'tailwind-variants';
+
+// cx - no conflict resolution
+cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500"
+
+// cn - with conflict resolution (original build)
+cn('text-blue-500', 'text-red-500'); // => "text-red-500"
+```
+
+### Breaking Changes
+
+#### `cn` now defaults `twMerge` to `true`
+
+In v3.2.0+, the `cn` function in the original build now defaults `twMerge` to `true` and uses `tailwind-merge` for conflict resolution. This means conflicting Tailwind classes will be automatically resolved.
+
+**Before (v3.1.1 and earlier):**
+```ts
+cn('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both classes)
+```
+
+**After (v3.2.0+):**
+```ts
+cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflict resolved)
+```
+
+**Migration:** If you relied on `cn` not merging conflicts, you can:
+1. Use the new `cx` function instead: `import { cx } from 'tailwind-variants'`
+2. Or continue using `cn` if conflict resolution is desired (recommended)
+
+#### `defaultConfig` exported as value
+
+Starting in v3.2.0, `defaultConfig` is now exported as an actual value (not just a type), allowing direct import and modification:
+
+```ts
+// v3.2.0+
+import { defaultConfig } from 'tailwind-variants';
+
+defaultConfig.twMerge = false;
+```
+
+This enables easier global configuration management.
+
+#### `responsiveVariants` removed
+
+The `responsiveVariants` option has been removed. For more details, see the [Tailwind v4 documentation](/docs/tailwind-v4).
+
+### Bug Fixes
+
+- Code is no longer minified in the build output (improves debugging experience)
+
+---
+
 ## v2 to v3
 
 ### Breaking Changes

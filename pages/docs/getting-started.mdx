@@ -73,7 +73,7 @@ For automatic Tailwind CSS conflict resolution, install `tailwind-merge` as a de
 Then import from the default entry point:
 
 ```ts
-import { tv, createTV, cn } from 'tailwind-variants';
+import { tv, createTV, cn, cx } from 'tailwind-variants';
 ```
 
 #### Option 2: Lite Build (without tailwind-merge)
@@ -81,10 +81,10 @@ import { tv, createTV, cn } from 'tailwind-variants';
 For a smaller bundle size (~80% smaller), use the lite build which doesn't include `tailwind-merge`:
 
 ```ts
-import { tv, createTV, cn } from 'tailwind-variants/lite';
+import { tv, createTV, cn, cx } from 'tailwind-variants/lite';
 ```
 
-> **Note**: The lite build doesn't support the `twMerge` and `twMergeConfig` options. Choose this if bundle size is critical and you don't need automatic conflict resolution.
+> **Note**: The lite build doesn't support the `twMerge` and `twMergeConfig` options. Choose this if bundle size is critical and you don't need automatic conflict resolution. Both `cn` and `cx` are available in both builds, with `cn` providing conflict resolution in the original build (v3.2.0+).
 
 ## Usage
 
@@ -163,12 +163,26 @@ To enable autocompletion for **Tailwind Variants** you can follow the instructio
 
 <Tabs items={['VSCode', 'Neovim', 'IntelliJ']}>
   <Tab>
-    If you are using **VSCode** and the [**TailwindCSS IntelliSense Extension**](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), you have to add the following to your `settings.json` file.
+    If you are using **VSCode** and the [**TailwindCSS IntelliSense Extension**](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), you can use either of the following configurations in your `settings.json` file.
+
+    **Option 1: Using `classFunctions` (Recommended)**
+
+    This is the simplest approach and directly specifies the `tv` function:
+
+    ```json copy
+    {
+      "tailwindCSS.classFunctions": ["tv"]
+    }
+    ```
+
+    **Option 2: Using `classRegex`**
+
+    For more advanced regex matching patterns:
 
     ```json copy
     {
       "tailwindCSS.experimental.classRegex": [
-        ["([\"'`][^\"'`]*.*?[\"'`])", "[\"'`]([^\"'`]*).*?[\"'`]"]
+        ["(`.*?`)", "(\".*?\")", "('.*?')"]
       ]
     }
     ```
@@ -183,7 +197,7 @@ To enable autocompletion for **Tailwind Variants** you can follow the instructio
         tailwindCSS = {
           experimental = {
             classRegex = {
-              { "([\"'`][^\"'`]*.*?[\"'`])", "[\"'`]([^\"'`]*).*?[\"'`]" }
+              { "(`.*?`)", "(\".*?\")", "('.*?')" }
             },
           },
         },
@@ -199,7 +213,7 @@ To enable autocompletion for **Tailwind Variants** you can follow the instructio
      "experimental": {
        "configFile": null,
        "classRegex": [
-          ["([\"'`][^\"'`]*.*?[\"'`])", "[\"'`]([^\"'`]*).*?[\"'`]"]
+          ["(`.*?`)", "(\".*?\")", "('.*?')"]
        ]
      }
     ```

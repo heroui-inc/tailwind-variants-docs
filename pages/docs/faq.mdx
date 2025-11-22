@@ -6,10 +6,12 @@ import { Callout } from 'nextra-theme-docs';
 
 ### What's new in v3?
 
-v3 introduces two major improvements:
+v3 introduces several major improvements:
 1. **Two build options**: Original (with tailwind-merge) and Lite (without tailwind-merge)
 2. **Massive performance improvements**: Up to 500x faster when using tailwind-merge
 3. **Enhanced `cn` utility**: Now supports functionality similar to `classnames`/`clsx`
+4. **New `cx` function** (v3.2.0+): Lightweight utility without conflict resolution
+5. **`cn` defaults to conflict resolution** (v3.2.0+): `cn` now uses `tailwind-merge` by default in the original build
 
 ### Should I use the original build or lite build?
 
@@ -41,6 +43,36 @@ import { tv } from 'tailwind-variants/lite';
 ### What happened to lazy loading in v3?
 
 v3 removes lazy loading of `tailwind-merge` in favor of two separate builds. This fixes issues where classes wouldn't merge correctly on first render. The original build now statically imports `tailwind-merge`, while the lite build doesn't include it at all.
+
+### What's the difference between `cx` and `cn`? (v3.2.0+)
+
+`cx` and `cn` are both utility functions for concatenating class names, but they serve different purposes:
+
+**`cx`** - Lightweight utility without conflict resolution:
+- Available in both original and lite builds
+- Simply concatenates class names without merging conflicts
+- Smaller bundle size
+- Use when you don't need conflict resolution
+
+```ts
+import { cx } from 'tailwind-variants';
+cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both included)
+```
+
+**`cn`** - Full-featured utility with conflict resolution (original build only):
+- Uses `tailwind-merge` for automatic conflict resolution (v3.2.0+)
+- Resolves conflicting Tailwind classes intelligently
+- Defaults `twMerge` to `true` in the original build
+- Use when you need automatic conflict resolution
+
+```ts
+import { cn } from 'tailwind-variants';
+cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflict resolved)
+```
+
+**When to use each:**
+- Use `cx` when you don't need conflict resolution and want a smaller bundle
+- Use `cn` when you need automatic Tailwind CSS conflict resolution (original build only)
 
 ## v2 Migration
 

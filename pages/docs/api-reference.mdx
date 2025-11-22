@@ -49,7 +49,7 @@ const tv = createTV({
 
 ### `cn` / `cnBase`
 
-A utility function for concatenating and merging class names. Enhanced in v3 to support functionality similar to `classnames`/`clsx`.
+A utility function for concatenating and merging class names. Enhanced in v3 to support functionality similar to `classnames`/`clsx`. In v3.2.0+, `cn` defaults `twMerge` to `true` and uses `tailwind-merge` for conflict resolution in the original build.
 
 ```ts
 // Original build (with tailwind-merge)
@@ -58,13 +58,38 @@ import { cn, cnBase } from 'tailwind-variants';
 // Lite build (without tailwind-merge)
 import { cn, cnBase } from 'tailwind-variants/lite';
 
-// Usage
+// Usage - with conflict resolution (original build)
+cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflicts resolved)
 cn('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
 cn(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
 cn('text-blue-500', { 'font-bold': true, 'italic': false }); // => "text-blue-500 font-bold"
 ```
 
 > **Note**: Both `cn` and `cnBase` are exported for backwards compatibility, but `cn` is the recommended import name in v3+.
+> 
+> **v3.2.0+**: In the original build, `cn` now defaults `twMerge` to `true` and uses `tailwind-merge` for automatic conflict resolution. Use `cx` if you need a lightweight utility without conflict resolution.
+
+### `cx`
+
+A lightweight utility function for concatenating class names without `tailwind-merge` conflict resolution. Use `cx` when you don't need automatic conflict resolution and want a smaller bundle size.
+
+```ts
+// Original build (with tailwind-merge)
+import { cx } from 'tailwind-variants';
+
+// Lite build (without tailwind-merge)
+import { cx } from 'tailwind-variants/lite';
+
+// Usage - no conflict resolution
+cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both classes included)
+cx('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
+cx(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
+cx('text-blue-500', { 'font-bold': true, 'italic': false }); // => "text-blue-500 font-bold"
+```
+
+> **When to use `cx` vs `cn`?**
+> - Use `cx` when you don't need conflict resolution and want a smaller bundle
+> - Use `cn` when you need automatic Tailwind CSS conflict resolution (original build only)
 
 ### Options
 
