@@ -151,6 +151,7 @@ type TVOptions = {
   slots?: Record<string, ClassValue>;
   variants?: Record<string, Record<string, ClassValue>>;
   defaultVariants?: Record<string, ClassValue>;
+  requiredVariants?: string[];
   compoundVariants?: Array<Record<string, string> & ClassProp>;
   compoundSlots?: Array<Record<string, string> & ClassProp>;
 };
@@ -204,6 +205,16 @@ To learn more about variants and how to use them, check out the [Variants](/docs
 **default**: `{}`
 
 To learn more about default variants and how to use them, check out the [Default Variants](/docs/variants#default-variants) page.
+
+#### `requiredVariants`
+
+**description:** This property allows you to define which variants must be provided at both runtime and TypeScript level.
+
+**type:** `string[]` | `undefined`
+
+**default**: `undefined`
+
+To learn more about required variants and how to use them, check out the [Required Variants](/docs/variants#required-variants) page.
 
 #### `compoundVariants`
 

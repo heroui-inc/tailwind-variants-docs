@@ -143,6 +143,53 @@ button({ color: 'success', size: 'lg' });
  */
 ```
 
+### Required variants
+
+You can enforce that certain variants must be provided at both runtime and TypeScript level by using the `requiredVariants` property. This helps prevent missing critical variant configurations.
+
+```js copy /requiredVariants/
+import { tv } from 'tailwind-variants';
+
+const button = tv({
+  base: 'font-semibold text-white py-2 px-4 rounded-full active:opacity-80',
+  variants: {
+    intent: {
+      primary: 'bg-blue-500 hover:bg-blue-700',
+      secondary: 'bg-gray-500 hover:bg-gray-700',
+      danger: 'bg-red-500 hover:bg-red-700'
+    },
+    size: {
+      sm: 'text-sm py-1 px-3',
+      md: 'text-md py-2 px-4',
+      lg: 'text-lg py-3 px-6'
+    }
+  },
+  requiredVariants: ['intent']
+});
+
+// ✅ Valid - intent is provided
+button({ intent: 'primary', size: 'md' });
+/**
+ * Result:
+ * font-semibold text-white py-2 px-4 rounded-full active:opacity-80 bg-blue-500 hover:bg-blue-700
+ */
+
+// ❌ TypeScript Error & Runtime Error - intent is missing
+button({ size: 'md' });
+/**
+ * Runtime Error:
+ * Tailwind Variants: Missing required variant(s): intent
+ */
+```
+
+<Callout type="warning" emoji="⚠️">
+  <div className="text-sm">
+    Required variants provide both TypeScript type checking and runtime
+    validation. If a required variant is not provided, an error will be thrown
+    at runtime.
+  </div>
+</Callout>
+
 ### Boolean variants
 
 You can also add boolean variants to a component. This is useful when you want to add a state variant e.g. `disabled`.
