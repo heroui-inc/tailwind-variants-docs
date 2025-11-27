@@ -210,12 +210,7 @@ To enable autocompletion for **Tailwind Variants** you can follow the instructio
     If you are using **IntelliJ** and the [**Tailwind CSS Plugin**](https://plugins.jetbrains.com/plugin/15321-tailwind-css), go to **settings** -> **Languages & Frameworks** -> **Style Sheets** -> **Tailwind CSS** and add the following to the configuration.
 
      ```json copy
-     "experimental": {
-       "configFile": null,
-       "classRegex": [
-          ["(`.*?`)", "(\".*?\")", "('.*?')"]
-       ]
-     }
+     "tailwindCSS.classFunctions": ["tv"]
     ```
 
   </Tab>
@@ -227,11 +222,12 @@ If you are using [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/p
 to sort your class names, you can add `tv` to the list of functions that
 should be sorted.
 
-```js
-module.exports = {
-  plugins: [require('prettier-plugin-tailwindcss')],
-  tailwindFunctions: ['tv']
-};
+```json
+// .prettierrc
+"plugins": [
+  "prettier-plugin-tailwindcss"
+],
+"tailwindFunctions": ["tv"]
 ```
 
 ## Contributing
