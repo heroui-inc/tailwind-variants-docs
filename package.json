@@ -20,7 +20,13 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "fmt:check": "prettier --check .",
+    "clean": "rm -rf .next node_modules .turbo dist",
+    "build:cf": "opennextjs-cloudflare build",
+    "deploy:cf": "opennextjs-cloudflare deploy",
+    "upload:cf": "opennextjs-cloudflare upload",
+    "preview:cf": "opennextjs-cloudflare preview",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts"
   },
   "dependencies": {
     "@react-aria/interactions": "3.28.1",
@@ -39,7 +45,8 @@
     "react-dom": "19.2.6",
     "sharp": "0.34.5",
     "tailwind-merge": "3.6.0",
-    "tailwind-variants": "3.2.2"
+    "tailwind-variants": "3.2.2",
+    "@opennextjs/cloudflare": "1.19.11"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.0",
@@ -61,7 +68,8 @@
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "0.6.14",
     "tailwindcss": "4.3.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "wrangler": "4.95.0"
   },
   "engines": {
     "node": ">=20.x",
