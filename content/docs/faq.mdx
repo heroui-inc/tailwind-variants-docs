@@ -1,12 +1,13 @@
 # Frequently Asked Questions (FAQ)
 
-import { Callout } from 'nextra-theme-docs';
+import { Callout } from 'nextra/components';
 
 ## v3 Migration
 
 ### What's new in v3?
 
 v3 introduces several major improvements:
+
 1. **Two build options**: Original (with tailwind-merge) and Lite (without tailwind-merge)
 2. **Massive performance improvements**: Up to 500x faster when using tailwind-merge
 3. **Enhanced `cn` utility**: Now supports functionality similar to `classnames`/`clsx`
@@ -16,11 +17,13 @@ v3 introduces several major improvements:
 ### Should I use the original build or lite build?
 
 **Use the original build if:**
+
 - You need automatic Tailwind CSS conflict resolution
 - You're already using tailwind-merge in your project
 - Performance with conflict resolution is important (v3 is 400-500x faster)
 
 **Use the lite build if:**
+
 - Bundle size is critical (~80% smaller)
 - You don't need automatic conflict resolution
 - You handle class merging manually
@@ -28,11 +31,13 @@ v3 introduces several major improvements:
 ### How do I migrate from v2 to v3?
 
 For most users, just ensure `tailwind-merge` is installed:
+
 ```bash
 npm install tailwind-merge
 ```
 
 If you want to use the lite build instead:
+
 ```ts
 // Change your imports from:
 import { tv } from 'tailwind-variants';
@@ -49,14 +54,19 @@ v3 removes lazy loading of `tailwind-merge` in favor of two separate builds. Thi
 Yes! In v3.2.0+, `cnBase` should be replaced with `cx`. The `cx` function provides the same functionality (simple concatenation without conflict resolution) with a clearer name.
 
 **Migration example:**
+
 ```ts
 // Before (v3.1.1 and earlier)
 import { cnBase } from 'tailwind-variants';
-{cnBase("flex items-center justify-center gap-2", className)}
+{
+  cnBase('flex items-center justify-center gap-2', className);
+}
 
 // After (v3.2.0+)
 import { cx } from 'tailwind-variants';
-{cx("flex items-center justify-center gap-2", className)}
+{
+  cx('flex items-center justify-center gap-2', className);
+}
 ```
 
 The API is identical - both functions combine class names without conflict resolution. `cnBase` is still exported for backwards compatibility, but `cx` is the recommended replacement.
@@ -66,6 +76,7 @@ The API is identical - both functions combine class names without conflict resol
 There are three utility functions for concatenating class names, each serving different purposes:
 
 **`cx`** - Lightweight utility without conflict resolution:
+
 - Available in both original and lite builds
 - Simply concatenates class names without merging conflicts
 - Smaller bundle size
@@ -77,6 +88,7 @@ cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both in
 ```
 
 **`cn`** - Full-featured utility with conflict resolution (original build only):
+
 - Uses `tailwind-merge` for automatic conflict resolution
 - Returns a string directly (v3.2.2+)
 - Resolves conflicting Tailwind classes intelligently with default config
@@ -88,6 +100,7 @@ cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflict resolved)
 ```
 
 **`cnMerge`** - Configurable utility with conflict resolution (original build only):
+
 - Supports custom twMerge configuration via second function call
 - Use when you need to customize twMerge behavior (disable it or provide custom config)
 
@@ -98,6 +111,7 @@ cnMerge('px-2', 'px-4')(); // => "px-4" (with default config)
 ```
 
 **When to use each:**
+
 - Use `cx` when you don't need conflict resolution and want a smaller bundle
 - Use `cn` when you need automatic Tailwind CSS conflict resolution with default config (most common case)
 - Use `cnMerge` when you need to customize twMerge behavior (disable it or provide custom config)
@@ -121,12 +135,14 @@ If you don't need conflict resolution, you can disable it by setting `twMerge: f
 ### What happens if I don't install tailwind-merge but keep twMerge enabled?
 
 Your application will throw an error at runtime when trying to use tailwind-variants. You must either:
+
 1. Install `tailwind-merge` as a dependency, or
 2. Set `twMerge: false` in your configuration
 
 ### How much faster is v2 compared to v1?
 
 v2 is **37-62% faster** for most operations. The performance improvements come from:
+
 - Optimized object creation and array operations
 - Reduced function call overhead
 - Better memory management
@@ -137,6 +153,7 @@ v2 is **37-62% faster** for most operations. The performance improvements come f
 ### Why are my Tailwind classes not being applied correctly?
 
 This usually happens when:
+
 1. **Conflict resolution is disabled**: Make sure you have `tailwind-merge` installed and `twMerge` is set to `true` (default)
 2. **Class order matters**: Later classes in your variants override earlier ones
 3. **Specificity issues**: Custom classes passed via `class`/`className` prop will override variant classes
@@ -147,11 +164,13 @@ You can override styles in several ways:
 
 ```js
 // Using the class prop
-button({ color: 'primary', class: 'bg-pink-500' })
+button({ color: 'primary', class: 'bg-pink-500' });
 
 // Using compound variants
 tv({
-  variants: { /* ... */ },
+  variants: {
+    /* ... */
+  },
   compoundVariants: [
     {
       color: 'primary',
@@ -159,7 +178,7 @@ tv({
       class: 'bg-pink-500'
     }
   ]
-})
+});
 ```
 
 ### Why is TypeScript not inferring my variant types correctly?
@@ -182,6 +201,7 @@ const button = tv({ variants });
 ### Should I disable twMerge for better performance?
 
 While disabling `twMerge` can provide a small performance boost, we recommend keeping it enabled unless:
+
 - You're building a performance-critical application
 - You're confident you won't have class conflicts
 - You're already handling class merging manually
@@ -194,11 +214,15 @@ While disabling `twMerge` can provide a small performance boost, we recommend ke
 
 ```js
 // Good - defined once
-const button = tv({ /* ... */ });
+const button = tv({
+  /* ... */
+});
 
 // Avoid - creates new instance each render
 function Component() {
-  const button = tv({ /* ... */ });
+  const button = tv({
+    /* ... */
+  });
 }
 ```
 
@@ -210,7 +234,9 @@ Yes! Tailwind Variants is framework agnostic. It works with any JavaScript frame
 
 ```js
 // Vanilla JS
-const button = tv({ /* ... */ });
+const button = tv({
+  /* ... */
+});
 document.getElementById('button').className = button({ color: 'primary' });
 ```
 
@@ -247,12 +273,16 @@ const component = tv({
 No, you can only extend one component at a time. However, you can compose multiple components manually:
 
 ```js
-const baseButton = tv({ /* ... */ });
-const iconButton = tv({ /* ... */ });
+const baseButton = tv({
+  /* ... */
+});
+const iconButton = tv({
+  /* ... */
+});
 
 // Compose manually
 const combinedButton = tv({
-  base: [baseButton(), iconButton()],
+  base: [baseButton(), iconButton()]
   // additional variants...
 });
 ```
@@ -282,5 +312,7 @@ const { base, title, content } = card();
 ## Still have questions?
 
 <Callout type="info">
-  If you have any questions not covered here, please ask in the [Discord](https://discord.gg/9b6yyZKmH4) or open a [GitHub Discussion](https://github.com/heroui-inc/tailwind-variants/discussions).
+  If you have any questions not covered here, please ask in the
+  [Discord](https://discord.gg/9b6yyZKmH4) or open a [GitHub
+  Discussion](https://github.com/heroui-inc/tailwind-variants/discussions).
 </Callout>

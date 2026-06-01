@@ -9,6 +9,7 @@
 In v3.2.2, the `cn` function has been simplified to eliminate Proxy complexity. The function now returns a string directly with default twMerge config. For custom twMerge configuration, use the new `cnMerge` function.
 
 **Before (v3.2.0 - v3.2.1):**
+
 ```ts
 import { cn } from 'tailwind-variants';
 
@@ -18,6 +19,7 @@ cn('px-2', 'px-4')(); // => "px-4" (with default config)
 ```
 
 **After (v3.2.2+):**
+
 ```ts
 import { cn, cnMerge } from 'tailwind-variants';
 
@@ -30,17 +32,20 @@ cnMerge('px-2', 'px-4')(); // => "px-4" (with default config)
 ```
 
 **Migration:**
+
 - If you were using `cn(...)` directly (most common case), no changes needed - it now works more intuitively by returning a string directly.
 - If you were using `cn(...)(config)` or `cn(...)()`, migrate to `cnMerge`:
+
   ```ts
   // Before
   cn('px-2', 'px-4')({ twMerge: false });
-  
+
   // After
   cnMerge('px-2', 'px-4')({ twMerge: false });
   ```
 
 **Benefits:**
+
 - Better TypeScript support (no Proxy types)
 - Clearer API intent
 - Better performance (no Proxy overhead)
@@ -74,19 +79,25 @@ cn('text-blue-500', 'text-red-500'); // => "text-red-500"
 In v3.2.0+, `cnBase` should be replaced with the new `cx` function. The `cx` function provides the same functionality as `cnBase` (simple concatenation without conflict resolution) with a clearer name.
 
 **Before (v3.1.1 and earlier):**
+
 ```ts
 import { cnBase } from 'tailwind-variants';
 
 // ...
-{cnBase("flex items-center justify-center gap-2", className)}
+{
+  cnBase('flex items-center justify-center gap-2', className);
+}
 ```
 
 **After (v3.2.0+):**
+
 ```ts
 import { cx } from 'tailwind-variants';
 
 // ...
-{cx("flex items-center justify-center gap-2", className)}
+{
+  cx('flex items-center justify-center gap-2', className);
+}
 ```
 
 **Migration:** Replace all instances of `cnBase` with `cx`. The API is identical - both functions combine class names without conflict resolution.
@@ -96,16 +107,19 @@ import { cx } from 'tailwind-variants';
 In v3.2.0+, the `cn` function in the original build now defaults `twMerge` to `true` and uses `tailwind-merge` for conflict resolution. This means conflicting Tailwind classes will be automatically resolved.
 
 **Before (v3.1.1 and earlier):**
+
 ```ts
 cn('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both classes)
 ```
 
 **After (v3.2.0+):**
+
 ```ts
 cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflict resolved)
 ```
 
 **Migration:** If you relied on `cn` not merging conflicts, you can:
+
 1. Use the new `cx` function instead: `import { cx } from 'tailwind-variants'`
 2. Or continue using `cn` if conflict resolution is desired (recommended)
 
@@ -168,7 +182,7 @@ pnpm add tailwind-merge
 If you do not need conflict resolution, switch to the lite build by importing from `tailwind-variants/lite`:
 
 ```ts
-import {createTV, tv, cn, cnBase} from "tailwind-variants/lite";
+import { createTV, tv, cn, cnBase } from 'tailwind-variants/lite';
 ```
 
 #### Enhanced `cn` utility (formerly `cnBase`)
@@ -177,13 +191,13 @@ The `cn` utility has been significantly enhanced to support functionality simila
 
 ```ts
 // v2
-import {cnBase} from 'tailwind-variants';
+import { cnBase } from 'tailwind-variants';
 
 // v3 - Original build (with tailwind-merge)
-import {cn, cnBase} from 'tailwind-variants';
+import { cn, cnBase } from 'tailwind-variants';
 
 // v3 - Lite build (without tailwind-merge)
-import {cn, cnBase} from 'tailwind-variants/lite';
+import { cn, cnBase } from 'tailwind-variants/lite';
 ```
 
 Both `cn` and `cnBase` are exported for backwards compatibility, but `cn` is the recommended import.
@@ -192,11 +206,11 @@ Both `cn` and `cnBase` are exported for backwards compatibility, but `cn` is the
 
 v3 includes significant performance improvements for projects using `tailwind-merge`:
 
-| Test Case | v2 (ops/sec) | v3 (ops/sec) | Change |
-|-----------|--------------|--------------|--------|
-| TV without slots & tw-merge | 1,397 | 572,465 | ⬆️ Up (~410x) |
-| TV with slots & tw-merge | 692 | 306,297 | ⬆️ Up (~442x) |
-| TV with custom tw-merge config | 700 | 359,269 | ⬆️ Up (~513x) |
+| Test Case                      | v2 (ops/sec) | v3 (ops/sec) | Change        |
+| ------------------------------ | ------------ | ------------ | ------------- |
+| TV without slots & tw-merge    | 1,397        | 572,465      | ⬆️ Up (~410x) |
+| TV with slots & tw-merge       | 692          | 306,297      | ⬆️ Up (~442x) |
+| TV with custom tw-merge config | 700          | 359,269      | ⬆️ Up (~513x) |
 
 > Note: Performance for the lite build (without tw-merge) may be slightly lower due to enhanced `cn` functionality, but this will be optimized in future updates.
 
@@ -241,17 +255,17 @@ If you don't need conflict resolution, disable it in your config:
 ```js
 const button = tv(
   {
-    base: "px-4 py-2 rounded",
+    base: 'px-4 py-2 rounded',
     variants: {
       color: {
-        primary: "bg-blue-500 text-white",
-        secondary: "bg-gray-500 text-white",
-      },
-    },
+        primary: 'bg-blue-500 text-white',
+        secondary: 'bg-gray-500 text-white'
+      }
+    }
   },
   {
-    twMerge: false, // Disable conflict resolution
-  },
+    twMerge: false // Disable conflict resolution
+  }
 );
 ```
 

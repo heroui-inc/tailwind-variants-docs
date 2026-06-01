@@ -45,7 +45,7 @@ const Features: FC<FeaturesProps> = () => {
             className={card({ class: 'gap-2 p-4 backdrop-blur' })}
           >
             <div className="flex items-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral/10 dark:bg-white/10">
+              <div className="bg-neutral/10 flex h-12 w-12 items-center justify-center rounded-full dark:bg-white/10">
                 {feature.icon}
               </div>
               <h3 className="mx-3 text-lg font-bold text-black dark:text-white">

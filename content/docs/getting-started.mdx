@@ -1,4 +1,4 @@
-import { Tab, Tabs } from 'nextra-theme-docs';
+import { Tabs } from 'nextra/components';
 import { TVComponent, WindowResizer, NXLink } from '@components';
 
 # Getting started
@@ -10,32 +10,34 @@ import { TVComponent, WindowResizer, NXLink } from '@components';
 **Tailwind Variants** requires you to have TailwindCSS installed in your project. If you haven't installed
 TailwindCSS yet, you can follow the [TailwindCSS installation guide](https://tailwindcss.com/docs/installation).
 
+> **Compatibility**: Tailwind Variants v3.x supports **Tailwind CSS v4.x** and requires **`tailwind-merge` v3.x** when using the original build. If you are still on Tailwind CSS v3.x, use `tailwind-variants` v0.x with [`tailwind-merge` v2.6.0](https://github.com/dcastil/tailwind-merge/tree/v2.6.0).
+
 ## Installation
 
 To use **Tailwind Variants** in your project, you can install it as a dependency:
 
 <Tabs items={['npm', 'yarn', 'pnpm']}>
-  <Tab>
+  <Tabs.Tab>
 
     ```bash copy
     npm install tailwind-variants
     ```
 
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
 
     ```bash copy
     yarn add tailwind-variants
     ```
 
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
 
     ```bash copy
     pnpm add tailwind-variants
     ```
 
-  </Tab>
+  </Tabs.Tab>
 </Tabs>
 
 ### Choose Your Build (v3+)
@@ -47,27 +49,27 @@ Starting from v3, Tailwind Variants offers two build options:
 For automatic Tailwind CSS conflict resolution, install `tailwind-merge` as a dependency:
 
 <Tabs items={['npm', 'yarn', 'pnpm']}>
-  <Tab>
+  <Tabs.Tab>
 
     ```bash copy
     npm install tailwind-merge
     ```
 
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
 
     ```bash copy
     yarn add tailwind-merge
     ```
 
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
 
     ```bash copy
     pnpm add tailwind-merge
     ```
 
-  </Tab>
+  </Tabs.Tab>
 </Tabs>
 
 Then import from the default entry point:
@@ -81,10 +83,10 @@ import { tv, createTV, cn, cnMerge, cx } from 'tailwind-variants';
 For a smaller bundle size (~80% smaller), use the lite build which doesn't include `tailwind-merge`:
 
 ```ts
-import { tv, createTV, cn, cnMerge, cx } from 'tailwind-variants/lite';
+import { tv, createTV, cn, cx } from 'tailwind-variants/lite';
 ```
 
-> **Note**: The lite build doesn't support the `twMerge` and `twMergeConfig` options. Choose this if bundle size is critical and you don't need automatic conflict resolution. Both `cn`, `cnMerge`, and `cx` are available in both builds, with `cn` and `cnMerge` providing conflict resolution in the original build (v3.2.2+).
+> **Note**: The lite build doesn't include `tailwind-merge`, so it doesn't export `cnMerge` and doesn't support the `twMerge` or `twMergeConfig` options. In the lite build, `cn` is a no-merge adapter that returns a curried `(config) => string` — use it for simple concatenation only. Choose this build if bundle size is critical and you don't need automatic conflict resolution. `cnMerge` (v3.2.2+) is available only in the original build.
 
 ## Usage
 
@@ -162,12 +164,8 @@ return (
 To enable autocompletion for **Tailwind Variants** you can follow the instructions below.
 
 <Tabs items={['VSCode', 'Neovim', 'IntelliJ']}>
-  <Tab>
-    If you are using **VSCode** and the [**TailwindCSS IntelliSense Extension**](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), you can use either of the following configurations in your `settings.json` file.
-
-    **Option 1: Using `classFunctions` (Recommended)**
-
-    This is the simplest approach and directly specifies the `tv` function:
+  <Tabs.Tab>
+    If you are using **VSCode** and the [**TailwindCSS IntelliSense Extension**](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), add the following to your `settings.json` file:
 
     ```json copy
     {
@@ -175,50 +173,31 @@ To enable autocompletion for **Tailwind Variants** you can follow the instructio
     }
     ```
 
-    **Option 2: Using `classRegex`**
-
-    For more advanced regex matching patterns:
-
-    ```json copy
-    {
-      "tailwindCSS.experimental.classRegex": [
-        ["(`.*?`)", "(\".*?\")", "('.*?')"]
-      ]
-    }
-    ```
-
-  </Tab>
-  <Tab>
-    If you are using **Neovim**, install [**Tailwind CSS Language Server**](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tailwindcss) and add the following to your configuration.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    If you are using **Neovim**, install [**Tailwind CSS Language Server**](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tailwindcss) and add the following to your configuration:
 
     ```lua copy
     require('lspconfig').tailwindcss.setup({
       settings = {
         tailwindCSS = {
-          experimental = {
-            classRegex = {
-              { "(`.*?`)", "(\".*?\")", "('.*?')" }
-            },
-          },
+          classFunctions = { "tv" },
         },
       },
     })
     ```
 
-  </Tab>
-  <Tab>
-    If you are using **IntelliJ** and the [**Tailwind CSS Plugin**](https://plugins.jetbrains.com/plugin/15321-tailwind-css), go to **settings** -> **Languages & Frameworks** -> **Style Sheets** -> **Tailwind CSS** and add the following to the configuration.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    If you are using **IntelliJ** and the [**Tailwind CSS Plugin**](https://plugins.jetbrains.com/plugin/15321-tailwind-css), go to **Settings** → **Languages & Frameworks** → **Style Sheets** → **Tailwind CSS** and add the following to the configuration:
 
-     ```json copy
-     "experimental": {
-       "configFile": null,
-       "classRegex": [
-          ["(`.*?`)", "(\".*?\")", "('.*?')"]
-       ]
-     }
+    ```json copy
+    {
+      "classFunctions": ["tv"]
+    }
     ```
 
-  </Tab>
+  </Tabs.Tab>
 </Tabs>
 
 ## Prettier plugin setup (optional)

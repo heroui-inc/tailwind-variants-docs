@@ -1,3 +1,5 @@
+'use client';
+
 import type { TooltipTriggerState } from '@react-stately/tooltip';
 import type { FC, ReactNode } from 'react';
 
@@ -65,7 +67,7 @@ const TooltipContent: FC<TooltipContentProps> = ({
 
 const Tooltip: FC<TooltipProps> = (props) => {
   const state = useTooltipTriggerState(props);
-  const ref = useRef();
+  const ref = useRef<HTMLButtonElement>(null);
 
   // Get props for the trigger and its tooltip
   const { triggerProps, tooltipProps } = useTooltipTrigger(props, state, ref);

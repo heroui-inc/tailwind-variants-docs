@@ -6,6 +6,7 @@ interface TVComponentProps {
   as: ElementType;
   tv: object;
   children?: ReactNode;
+  [key: string]: unknown;
 }
 
 const TVComponent: FC<TVComponentProps> = ({

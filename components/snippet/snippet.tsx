@@ -1,7 +1,9 @@
+'use client';
+
 import type { FC, HTMLAttributes } from 'react';
 
 import { useState } from 'react';
-import { cn } from '@heroui/theme';
+import { cn } from 'tailwind-variants';
 
 import { CopyIcon, CheckIcon, Tooltip } from '@components';
 
@@ -25,7 +27,7 @@ const Snippet: FC<SnippetProps> = ({ className }) => {
   return (
     <div
       className={cn(
-        'flex h-10 w-[320px] items-center justify-between rounded-full bg-neutral/20 px-6 py-2 font-mono text-xs text-black backdrop-blur md:w-[420px] md:text-sm',
+        'bg-neutral/20 flex h-10 w-[320px] items-center justify-between rounded-full px-6 py-2 font-mono text-xs text-black backdrop-blur md:w-[420px] md:text-sm',
         className
       )}
     >

@@ -1,3 +1,5 @@
+'use client';
+
 import { useRadioGroupState } from '@react-stately/radio';
 import { useRadio, useRadioGroup } from '@react-aria/radio';
 import { createContext, useContext, useRef } from 'react';

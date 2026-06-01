@@ -1,4 +1,4 @@
-import { Tab, Tabs } from 'nextra-theme-docs';
+import { Tabs } from 'nextra/components';
 
 # Tailwind v4
 
@@ -11,27 +11,27 @@ Upgrade `tailwind-variants` to `v1.x` to use it.
 To upgrade your project to `v1.x`, you can run the upgrade script.
 
 <Tabs items={['npm', 'yarn', 'pnpm']}>
-  <Tab>
+  <Tabs.Tab>
 
     ```bash copy
     npm install tailwind-variants@latest
     ```
 
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
 
     ```bash copy
     yarn upgrade tailwind-variants@latest
     ```
 
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
 
     ```bash copy
     pnpm upgrade tailwind-variants@latest
     ```
 
-  </Tab>
+  </Tabs.Tab>
 </Tabs>
 
 ### Breaking changes
@@ -40,8 +40,7 @@ To upgrade your project to `v1.x`, you can run the upgrade script.
 - `withTv` has been removed.
 
 > ❕ Note: `Tailwindcss v4` no longer supports the `config.content.transform` so we remove the `responsiveVariants` feature
-> 
+>
 > If you want to use `responsiveVariants`, you need to add it manually to your classname.
 >
 > e.g. `className="sm:text-sm md:text-base lg:text-lg"` more info [here](https://tailwindcss.com/docs/responsive-design).
-
