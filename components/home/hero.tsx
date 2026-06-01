@@ -1,5 +1,7 @@
 import type { FC } from 'react';
 
+import Link from 'next/link';
+
 import { tvs, LinkIcon, Snippet, Logo } from '@components';
 
 import AnimatedWave from './animated-wave';
@@ -18,7 +20,7 @@ const Hero: FC<HeroProps> = () => {
       <GradientBG className="absolute -z-10 aspect-[605/509] w-full -translate-y-[40%] animate-[appear_1s_ease]" />
       <div className={tvs.box({ class: 'relative z-10 w-full' })}>
         <Logo height={120} />
-        <h1 className="mt-4 text-center text-4xl font-extrabold text-black dark:text-white md:text-5xl">
+        <h1 className="mt-4 text-center text-4xl font-extrabold text-black md:text-5xl dark:text-white">
           Tailwind Variants
         </h1>
         <p className="mt-2 text-center text-lg font-medium">
@@ -37,9 +39,9 @@ const Hero: FC<HeroProps> = () => {
         </p>
       </div>
       <div className={tvs.box({ row: true, class: 'z-10 gap-2' })}>
-        <a className={tvs.button()} href="/docs/introduction">
+        <Link className={tvs.button()} href="/docs/introduction">
           Documentation
-        </a>
+        </Link>
         <a
           className={tvs.button({
             flat: true,

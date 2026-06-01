@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-import { cn } from '@heroui/theme';
+import { cn } from 'tailwind-variants';
 
 const DarkWave = (props: SVGProps<SVGSVGElement>) => (
   <svg

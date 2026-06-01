@@ -62,10 +62,11 @@ import { cn } from 'tailwind-variants/lite';
 cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflicts resolved)
 cn('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
 cn(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
-cn('text-blue-500', { 'font-bold': true, 'italic': false }); // => "text-blue-500 font-bold"
+cn('text-blue-500', { 'font-bold': true, italic: false }); // => "text-blue-500 font-bold"
 ```
 
-> **Note**: 
+> **Note**:
+>
 > - **v3.2.2+**: `cn` now returns a string directly (no config support). For custom twMerge config, use `cnMerge`.
 > - In the original build, `cn` defaults `twMerge` to `true` and uses `tailwind-merge` for automatic conflict resolution. Use `cx` if you need a lightweight utility without conflict resolution.
 
@@ -88,7 +89,10 @@ cnMerge('px-2', 'px-4')(); // => "px-4" (with default config, conflicts resolved
 cnMerge('text-blue-500', 'text-red-500')({ twMerge: true }); // => "text-red-500" (conflicts resolved)
 
 // With custom twMergeConfig
-cnMerge('px-2', 'px-4')({
+cnMerge(
+  'px-2',
+  'px-4'
+)({
   twMerge: true,
   twMergeConfig: {
     // custom tailwind-merge config
@@ -97,6 +101,7 @@ cnMerge('px-2', 'px-4')({
 ```
 
 > **When to use `cnMerge` vs `cn`?**
+>
 > - Use `cn` for the common case - it returns a string directly with default config
 > - Use `cnMerge` when you need to customize twMerge behavior (disable it, or provide custom config)
 
@@ -131,13 +136,14 @@ cx('text-xl', false && 'font-bold', null, undefined); // => 'text-xl'
 cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both classes included)
 cx('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
 cx(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
-cx('text-blue-500', { 'font-bold': true, 'italic': false }); // => "text-blue-500 font-bold"
+cx('text-blue-500', { 'font-bold': true, italic: false }); // => "text-blue-500 font-bold"
 ```
 
 > **When to use `cx` vs `cn`?**
+>
 > - Use `cx` when you don't need conflict resolution and want a smaller bundle
 > - Use `cn` when you need automatic Tailwind CSS conflict resolution (original build only)
-> 
+>
 > **Migration from `cnBase`**: In v3.2.0+, replace `cnBase` with `cx`. The API is identical.
 
 ### Options

@@ -1,5 +1,5 @@
-import { Callout } from 'nextra-theme-docs';
-import { TVComponent, WindowResizer } from '@components';
+import { Callout } from 'nextra/components';
+import { MultiVariantButton, TVComponent, WindowResizer } from '@components';
 
 # Variants
 
@@ -63,43 +63,16 @@ You can add multiple variants to a single component.
 
 <br />
 
-export const MVButton = ({ children, color, size }) => {
-  return (
-    <TVComponent
-      as="button"
-      color={color}
-      size={size}
-      tv={{
-        base: 'font-semibold text-white py-1 px-3 rounded-full active:opacity-80',
-        variants: {
-          color: {
-            primary: 'bg-blue-500 hover:bg-blue-700',
-            secondary: 'bg-purple-500 hover:bg-purple-700',
-            success: 'bg-green-500 hover:bg-green-700'
-          },
-          size: {
-            sm: 'py-1 px-3 text-xs',
-            md: 'py-1.5 px-4 text-sm',
-            lg: 'py-2 px-6 text-md'
-          }
-        }
-      }}
-    >
-      {children}
-    </TVComponent>
-  );
-};
-
 <div className="flex-start flex items-center gap-3">
-  <MVButton color="primary" size="sm">
+  <MultiVariantButton color="primary" size="sm">
     Primary
-  </MVButton>
-  <MVButton color="secondary" size="md">
+  </MultiVariantButton>
+  <MultiVariantButton color="secondary" size="md">
     Secondary
-  </MVButton>
-  <MVButton color="success" size="lg">
+  </MultiVariantButton>
+  <MultiVariantButton color="success" size="lg">
     Success
-  </MVButton>
+  </MultiVariantButton>
 </div>
 
 ```js copy /color/ /size/
@@ -383,6 +356,6 @@ button();
  * Result:
  *
  * font-semibold text-white rounded-full active:opacity-80 bg-blue-500 hover:bg-blue-700
- * py-1 px-3 text-sm
+ * py-1.5 px-4 text-md
  */
 ```

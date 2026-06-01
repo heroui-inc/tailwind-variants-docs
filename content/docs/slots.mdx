@@ -1,4 +1,4 @@
-import { Callout, Tabs, Tab } from 'nextra-theme-docs';
+import { Callout, Tabs } from 'nextra/components';
 import {
   WindowResizer,
   SlotsVariantsExample,
@@ -17,7 +17,7 @@ You can add slots by using the `slots` key. There's no limit to how many slots y
 <br />
 
 <WindowResizer
-  iframeSrc="/docs/examples/intro-slots"
+  iframeSrc="/docs/intro-slots"
   iframeTitle="Intro slots"
   iframeInitialWidth={380}
   height="400px"
@@ -86,7 +86,7 @@ You can also change the entire component and its slots by using the `variants`. 
 **React Example:**
 
 <Tabs items={['JS', 'TS']}>
-  <Tab>
+  <Tabs.Tab>
 
 ```js filename="App.jsx" copy /buyButton/ /sizeButton/ /addToBagButton/
 import { useState } from 'react';
@@ -200,8 +200,8 @@ const App = () => {
 export default App;
 ```
 
-  </Tab>
-  <Tab>
+  </Tabs.Tab>
+  <Tabs.Tab>
 
 ```js filename="App.tsx" copy /buyButton/ /sizeButton/ /addToBagButton/
 import type { VariantProps } from "tailwind-variants";
@@ -320,7 +320,7 @@ const App = () => {
 export default App;
 ```
 
-  </Tab>
+  </Tabs.Tab>
 </Tabs>
 
 ### Slots with compound variants
@@ -630,9 +630,9 @@ const { base, tab } = card({ color: 'primary' });
 return (
   <Tabs className={base()}>
     {items.map((item) => (
-      <Tab className={({ isSelected }) => tab({ isSelected })} id={item.id}>
+      <Tabs.Tab className={({ isSelected }) => tab({ isSelected })} id={item.id}>
         {item.label}
-      </Tab>
+      </Tabs.Tab>
     ))}
   </Tabs>
 );

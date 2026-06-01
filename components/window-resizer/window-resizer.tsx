@@ -1,7 +1,9 @@
+'use client';
+
 import type { FC } from 'react';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'motion/react';
 import { tv } from 'tailwind-variants';
 
 import { useIsomorphicLayoutEffect, useIsMobile } from '@hooks';
@@ -151,7 +153,7 @@ const WindowResizer: FC<WindowResizerProps> = (props) => {
       <div
         ref={constraintsResizerRef}
         className={base({
-          className: 'xs:w-mw-xs bottom-0 right-0 top-0'
+          className: 'xs:w-mw-xs top-0 right-0 bottom-0'
         })}
         style={{
           width: `calc(100% - ${

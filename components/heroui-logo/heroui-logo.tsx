@@ -1,6 +1,6 @@
 import type { SVGProps } from 'react';
 
-import { cn } from '@heroui/theme';
+import { cn } from 'tailwind-variants';
 
 interface LogoProps extends SVGProps<SVGSVGElement> {
   auto?: boolean;
@@ -21,7 +21,7 @@ const SmallLogoOutlined: React.FC<LogoProps> = ({
 }) => (
   <svg
     className={cn(
-      'block text-foreground dark:text-white sm:data-[auto=true]:hidden',
+      'text-foreground block sm:data-[auto=true]:hidden dark:text-white',
       className
     )}
     data-auto={auto ? 'true' : undefined}
@@ -80,7 +80,7 @@ export const SmallLogo: React.FC<LogoProps> = ({
 }) => (
   <svg
     className={cn(
-      'block text-foreground sm:data-[auto=true]:hidden',
+      'text-foreground block sm:data-[auto=true]:hidden',
       className
     )}
     data-auto={auto ? 'true' : undefined}
@@ -112,7 +112,7 @@ export const LargeLogo: React.FC<LogoProps> = ({
 }) => (
   <svg
     className={cn(
-      'block text-foreground data-[auto=true]:hidden dark:text-white sm:data-[auto=true]:block',
+      'text-foreground block data-[auto=true]:hidden sm:data-[auto=true]:block dark:text-white',
       className
     )}
     data-auto={auto ? 'true' : undefined}

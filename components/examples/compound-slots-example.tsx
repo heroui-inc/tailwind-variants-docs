@@ -32,7 +32,7 @@ const pagination = tv({
         'flex-wrap',
         'truncate',
         'box-border',
-        'outline-none',
+        'outline-hidden',
         'items-center',
         'justify-center',
         'bg-neutral-200',

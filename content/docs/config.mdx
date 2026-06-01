@@ -11,6 +11,7 @@ Tailwind Variants has several ways to specify config options:
 Starting from v3, Tailwind Variants offers two build options:
 
 ### Original Build (Default)
+
 - Import from `tailwind-variants`
 - Includes `tailwind-merge` for automatic conflict resolution
 - Supports all configuration options including `twMerge` and `twMergeConfig`
@@ -21,6 +22,7 @@ import { tv, createTV, cn, cnMerge, cx } from 'tailwind-variants';
 ```
 
 ### Lite Build
+
 - Import from `tailwind-variants/lite`
 - Excludes `tailwind-merge` for a smaller bundle (~80% smaller)
 - **Does not support** `twMerge` or `twMergeConfig` options
@@ -31,6 +33,7 @@ import { tv, createTV, cn, cnMerge, cx } from 'tailwind-variants/lite';
 ```
 
 Choose the lite build if:
+
 - You don't need automatic Tailwind class conflict resolution
 - Bundle size is a critical concern
 - You handle class merging manually or don't have conflicting classes
@@ -89,30 +92,30 @@ For more advanced use cases, you can create a custom `tv` wrapper that extends t
 
 ```ts
 // tv.ts
-import type {TV} from "tailwind-variants";
-import {tv as tvBase} from "tailwind-variants";
+import type { TV } from 'tailwind-variants';
+import { tv as tvBase } from 'tailwind-variants';
 
-const COMMON_UNITS = ["small", "medium", "large"];
+const COMMON_UNITS = ['small', 'medium', 'large'];
 
 const twMergeConfig = {
   theme: {
-    spacing: ["divider"],
-    radius: COMMON_UNITS,
+    spacing: ['divider'],
+    radius: COMMON_UNITS
   },
   classGroups: {
-    shadow: [{shadow: COMMON_UNITS}],
-    opacity: [{opacity: ["disabled"]}],
-    "font-size": [{text: ["tiny", ...COMMON_UNITS]}],
-    "border-w": [{border: COMMON_UNITS}],
-    "bg-image": [
-      "bg-stripe-gradient-default",
-      "bg-stripe-gradient-primary",
-      "bg-stripe-gradient-secondary",
-      "bg-stripe-gradient-success",
-      "bg-stripe-gradient-warning",
-      "bg-stripe-gradient-danger",
-    ],
-  },
+    shadow: [{ shadow: COMMON_UNITS }],
+    opacity: [{ opacity: ['disabled'] }],
+    'font-size': [{ text: ['tiny', ...COMMON_UNITS] }],
+    'border-w': [{ border: COMMON_UNITS }],
+    'bg-image': [
+      'bg-stripe-gradient-default',
+      'bg-stripe-gradient-primary',
+      'bg-stripe-gradient-secondary',
+      'bg-stripe-gradient-success',
+      'bg-stripe-gradient-warning',
+      'bg-stripe-gradient-danger'
+    ]
+  }
 };
 
 export const tv: TV = (options, config) =>
@@ -123,17 +126,18 @@ export const tv: TV = (options, config) =>
       ...config?.twMergeConfig,
       theme: {
         ...config?.twMergeConfig?.theme,
-        ...twMergeConfig.theme,
+        ...twMergeConfig.theme
       },
       classGroups: {
         ...config?.twMergeConfig?.classGroups,
-        ...twMergeConfig.classGroups,
-      },
-    },
+        ...twMergeConfig.classGroups
+      }
+    }
   });
 ```
 
 This approach allows you to:
+
 - Extend the default `tailwind-merge` configuration with custom theme values
 - Add custom class groups for your design system
 - Maintain type safety with the `TV` type
@@ -153,7 +157,8 @@ type TvConfig = {
 **description:** Whether to merge class names with the `tailwind-merge` library.
 It avoids having duplicate tailwind classes. (Recommended) see more [here](https://github.com/dcastil/tailwind-merge/blob/v2.2.2/README.md)
 
-> **Note:** 
+> **Note:**
+>
 > - Starting from v2, `tailwind-merge` is an optional peer dependency that needs to be installed separately.
 > - Starting from v3, this option is **only available in the original build** (`tailwind-variants`), not in the lite build (`tailwind-variants/lite`).
 > - If you don't install `tailwind-merge`, you must either use the lite build or set `twMerge: false`.
