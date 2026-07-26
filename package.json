@@ -38,8 +38,7 @@
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "sharp": "0.34.5",
-    "tailwind-merge": "3.6.0",
-    "tailwind-variants": "3.2.2"
+    "tailwind-variants": "3.3.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.0",
