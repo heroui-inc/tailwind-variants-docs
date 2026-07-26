@@ -2,25 +2,40 @@
 
 import { Callout } from 'nextra/components';
 
+## v3.3.0 Migration
+
+### What's new in v3.3.0?
+
+v3.3.0 introduces several major improvements:
+
+1. Fully rewritten in TypeScript with stronger types
+2. Conflict resolution included in the default build — no `tailwind-merge` install required
+3. Performance improvements
+
+See the [Release Notes](/docs/release-notes) for full details.
+
+### Do I still need to install `tailwind-merge`?
+
+**No** — not for Tailwind Variants. Conflict resolution is included in the default build. Keep `tailwind-merge` only if your app still calls it directly (`twMerge`, `extendTailwindMerge`, etc.).
+
 ## v3 Migration
 
 ### What's new in v3?
 
 v3 introduces several major improvements:
 
-1. **Two build options**: Original (with tailwind-merge) and Lite (without tailwind-merge)
-2. **Massive performance improvements**: Up to 500x faster when using tailwind-merge
+1. **Two build options**: Default (with conflict resolution) and Lite (without merge)
+2. **Significant performance improvements** when using conflict resolution
 3. **Enhanced `cn` utility**: Now supports functionality similar to `classnames`/`clsx`
 4. **New `cx` function** (v3.2.0+): Lightweight utility without conflict resolution
-5. **`cn` defaults to conflict resolution** (v3.2.0+): `cn` now uses `tailwind-merge` by default in the original build
+5. **`cn` defaults to conflict resolution** (v3.2.0+): `cn` now merges by default in the default build
 
-### Should I use the original build or lite build?
+### Should I use the default build or lite build?
 
-**Use the original build if:**
+**Use the default build if:**
 
 - You need automatic Tailwind CSS conflict resolution
-- You're already using tailwind-merge in your project
-- Performance with conflict resolution is important (v3 is 400-500x faster)
+- Performance with conflict resolution matters (v3 is much faster here)
 
 **Use the lite build if:**
 
@@ -30,10 +45,10 @@ v3 introduces several major improvements:
 
 ### How do I migrate from v2 to v3?
 
-For most users, just ensure `tailwind-merge` is installed:
+For most users on **v3.3.0+**, just install / upgrade `tailwind-variants` — no `tailwind-merge` required:
 
 ```bash
-npm install tailwind-merge
+npm install tailwind-variants
 ```
 
 If you want to use the lite build instead:
@@ -47,7 +62,7 @@ import { tv } from 'tailwind-variants/lite';
 
 ### What happened to lazy loading in v3?
 
-v3 removes lazy loading of `tailwind-merge` in favor of two separate builds. This fixes issues where classes wouldn't merge correctly on first render. The original build now statically imports `tailwind-merge`, while the lite build doesn't include it at all.
+v3 removes lazy loading of conflict resolution in favor of two separate builds. This fixes issues where classes wouldn't merge correctly on first render. The default build includes conflict resolution; the lite build does not.
 
 ### Should I replace `cnBase` with `cx`? (v3.2.0+)
 
@@ -77,7 +92,7 @@ There are three utility functions for concatenating class names, each serving di
 
 **`cx`** - Lightweight utility without conflict resolution:
 
-- Available in both original and lite builds
+- Available in both default and lite builds
 - Simply concatenates class names without merging conflicts
 - Smaller bundle size
 - Use when you don't need conflict resolution
@@ -87,11 +102,10 @@ import { cx } from 'tailwind-variants';
 cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both included)
 ```
 
-**`cn`** - Full-featured utility with conflict resolution (original build only):
+**`cn`** - Full-featured utility with conflict resolution (default build):
 
-- Uses `tailwind-merge` for automatic conflict resolution
+- Resolves conflicting Tailwind classes with the default config
 - Returns a string directly (v3.2.2+)
-- Resolves conflicting Tailwind classes intelligently with default config
 - Use for the common case when you need conflict resolution
 
 ```ts
@@ -99,10 +113,11 @@ import { cn } from 'tailwind-variants';
 cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflict resolved)
 ```
 
-**`cnMerge`** - Configurable utility with conflict resolution (original build only):
+**`cnMerge`** - Configurable utility with conflict resolution (default build only):
 
-- Supports custom twMerge configuration via second function call
-- Use when you need to customize twMerge behavior (disable it or provide custom config)
+- Supports custom merge configuration via second function call
+- Not exported from `/lite`
+- Use when you need to customize merge behavior (disable it or provide custom config)
 
 ```ts
 import { cnMerge } from 'tailwind-variants';
@@ -114,30 +129,21 @@ cnMerge('px-2', 'px-4')(); // => "px-4" (with default config)
 
 - Use `cx` when you don't need conflict resolution and want a smaller bundle
 - Use `cn` when you need automatic Tailwind CSS conflict resolution with default config (most common case)
-- Use `cnMerge` when you need to customize twMerge behavior (disable it or provide custom config)
+- Use `cnMerge` when you need to customize merge behavior (disable it or provide custom config)
 
 ## v2 Migration
 
-### Why is tailwind-merge now optional?
+### Why was tailwind-merge optional in v2?
 
-In v2, we made `tailwind-merge` an optional peer dependency to give users more control over their bundle size. Not all projects need automatic conflict resolution, and by making it optional, users who don't need this feature can save significant bundle size. The library itself is now up to **80% smaller** - only 5.5KB minified (2.1KB gzipped), compared to v1's 28.3KB minified (9.2KB gzipped).
+In v2, `tailwind-merge` was made an optional peer dependency to give users more control over their bundle size. Not all projects need automatic conflict resolution, and by making it optional, users who don't need this feature can save significant bundle size.
+
+> **Superseded in v3.3.0:** Conflict resolution is included in the default build — you no longer need to install `tailwind-merge` for Tailwind Variants.
 
 ### Do I need to install tailwind-merge separately?
 
-Yes, if you want to use the automatic conflict resolution feature (which is enabled by default), you need to install `tailwind-merge` as a peer dependency:
+**On v3.3.0+:** No, not for Tailwind Variants. Keep it only if your app still calls `twMerge` / `extendTailwindMerge` directly.
 
-```bash
-npm install tailwind-merge
-```
-
-If you don't need conflict resolution, you can disable it by setting `twMerge: false` in your config.
-
-### What happens if I don't install tailwind-merge but keep twMerge enabled?
-
-Your application will throw an error at runtime when trying to use tailwind-variants. You must either:
-
-1. Install `tailwind-merge` as a dependency, or
-2. Set `twMerge: false` in your configuration
+**On v2 / earlier v3:** Yes, if you wanted automatic conflict resolution (enabled by default), you needed to install `tailwind-merge` as a peer dependency. Alternatively, set `twMerge: false` or use the lite build.
 
 ### How much faster is v2 compared to v1?
 
@@ -154,7 +160,7 @@ v2 is **37-62% faster** for most operations. The performance improvements come f
 
 This usually happens when:
 
-1. **Conflict resolution is disabled**: Make sure you have `tailwind-merge` installed and `twMerge` is set to `true` (default)
+1. **Conflict resolution is disabled**: Make sure `twMerge` is set to `true` (default on the default build), or that you are not importing from `/lite` if you need merge
 2. **Class order matters**: Later classes in your variants override earlier ones
 3. **Specificity issues**: Custom classes passed via `class`/`className` prop will override variant classes
 
@@ -205,6 +211,8 @@ While disabling `twMerge` can provide a small performance boost, we recommend ke
 - You're building a performance-critical application
 - You're confident you won't have class conflicts
 - You're already handling class merging manually
+
+You can also use the lite build (`tailwind-variants/lite`) when merge is intentionally disabled globally.
 
 ### How can I optimize my tailwind-variants usage?
 

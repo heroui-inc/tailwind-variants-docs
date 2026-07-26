@@ -49,16 +49,12 @@ const tv = createTV({
 
 ### `cn`
 
-A utility function for concatenating and merging class names with automatic conflict resolution. In v3.2.2+, `cn` returns a string directly with default twMerge config - no function call needed.
+A utility function for concatenating and merging class names with automatic conflict resolution. In v3.2.2+, `cn` returns a string directly with the default merge config — no function call needed.
 
 ```ts
-// Original build (with tailwind-merge)
 import { cn } from 'tailwind-variants';
 
-// Lite build (without tailwind-merge)
-import { cn } from 'tailwind-variants/lite';
-
-// Usage - with conflict resolution (original build)
+// Usage - with conflict resolution (default build)
 cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflicts resolved)
 cn('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
 cn(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
@@ -67,21 +63,18 @@ cn('text-blue-500', { 'font-bold': true, italic: false }); // => "text-blue-500 
 
 > **Note**:
 >
-> - **v3.2.2+**: `cn` now returns a string directly (no config support). For custom twMerge config, use `cnMerge`.
-> - In the original build, `cn` defaults `twMerge` to `true` and uses `tailwind-merge` for automatic conflict resolution. Use `cx` if you need a lightweight utility without conflict resolution.
+> - **v3.2.2+**: `cn` returns a string directly (no per-call config). For custom merge config, use `cnMerge`.
+> - In the default build, `cn` resolves conflicting Tailwind classes. Use `cx` if you need a lightweight utility without conflict resolution.
+> - In the lite build, `cn` is a **curried** no-merge adapter: `cn(...)(config?)` → string (config ignored). Prefer `cx` for simple concatenation in lite.
 
 ### `cnMerge`
 
-A utility function for concatenating and merging class names with support for custom twMerge configuration. Use `cnMerge` when you need to customize the twMerge behavior.
+A utility function for concatenating and merging class names with support for custom merge configuration. Use `cnMerge` when you need to customize the merge behavior.
 
-**Added in v3.2.2** - This function provides config-based usage that was previously available through `cn`'s Proxy implementation.
+**Added in v3.2.2** — Available on the **default build only** (`tailwind-variants`). Not exported from `/lite`.
 
 ```ts
-// Original build (with tailwind-merge)
 import { cnMerge } from 'tailwind-variants';
-
-// Lite build (without tailwind-merge)
-import { cnMerge } from 'tailwind-variants/lite';
 
 // Usage with custom config
 cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4" (no conflict resolution)
@@ -95,15 +88,15 @@ cnMerge(
 )({
   twMerge: true,
   twMergeConfig: {
-    // custom tailwind-merge config
+    // custom config
   }
 });
 ```
 
 > **When to use `cnMerge` vs `cn`?**
 >
-> - Use `cn` for the common case - it returns a string directly with default config
-> - Use `cnMerge` when you need to customize twMerge behavior (disable it, or provide custom config)
+> - Use `cn` for the common case — it returns a string directly with default config
+> - Use `cnMerge` when you need to customize merge behavior (disable it, or provide custom config)
 
 ### `cnBase`
 
@@ -111,15 +104,15 @@ cnMerge(
 
 ### `cx`
 
-A lightweight utility function for concatenating class names without `tailwind-merge` conflict resolution. Similar to `clsx` - simple concatenation without merging conflicting classes. Use `cx` when you don't need automatic conflict resolution and want a smaller bundle size.
+A lightweight utility function for concatenating class names without conflict resolution. Similar to `clsx` — simple concatenation without merging conflicting classes. Use `cx` when you don't need automatic conflict resolution and want a smaller bundle size.
 
-**Added in v3.2.0** - This function replaces `cnBase` and provides the same functionality with a clearer name.
+**Added in v3.2.0** — This function replaces `cnBase` and provides the same functionality with a clearer name.
 
 ```ts
-// Original build (with tailwind-merge)
+// Default build
 import { cx } from 'tailwind-variants';
 
-// Lite build (without tailwind-merge)
+// Lite build
 import { cx } from 'tailwind-variants/lite';
 
 // Usage - no conflict resolution
@@ -142,7 +135,7 @@ cx('text-blue-500', { 'font-bold': true, italic: false }); // => "text-blue-500 
 > **When to use `cx` vs `cn`?**
 >
 > - Use `cx` when you don't need conflict resolution and want a smaller bundle
-> - Use `cn` when you need automatic Tailwind CSS conflict resolution (original build only)
+> - Use `cn` when you need automatic Tailwind CSS conflict resolution (default build only)
 >
 > **Migration from `cnBase`**: In v3.2.0+, replace `cnBase` with `cx`. The API is identical.
 
@@ -188,6 +181,8 @@ To learn more about Components composition, check out this [page](/docs/composin
 **type:** `Record<string, ClassValue>` | `undefined`
 
 **default**: `{}`
+
+> **Note:** Passing an explicit empty `slots: {}` enables slot mode and returns the implicit `base` slot. Omit `slots` when the component should keep returning a class string.
 
 To learn more about slots and how to use them, check out the [Slots](/docs/slots) page.
 
@@ -236,16 +231,16 @@ To learn more about compound slots and how to use them, check out the [Compound 
 The `config` argument is an object with the following properties:
 
 ```ts
-type TvConfig = {
+type TWMConfig = {
   twMerge?: boolean;
-  twMergeConfig?: TwMergeConfig;
+  twMergeConfig?: TWMergeConfig;
 };
 ```
 
 #### `twMerge`
 
-**description:** Whether to merge the class names with `tailwind-merge` library.
-It's avoid to have duplicate tailwind classes. (Recommended) see more [here](https://github.com/dcastil/tailwind-merge/blob/v2.2.2/README.md)
+**description:** Whether to merge conflicting Tailwind classes.
+It's avoid to have duplicate Tailwind classes. (Recommended) See more in [Conflict Resolution](/docs/conflict-resolution).
 
 **type:** `boolean`
 
@@ -253,9 +248,9 @@ It's avoid to have duplicate tailwind classes. (Recommended) see more [here](htt
 
 #### `twMergeConfig`
 
-**description:** The config object for `tailwind-merge` library. see more [here](https://github.com/dcastil/tailwind-merge/blob/v2.2.2/docs/configuration.md)
+**description:** Config object for conflict resolution. Prefer `{ extend, override }`. Compatible with common `tailwind-merge` config shapes. See [Conflict Resolution](/docs/conflict-resolution).
 
-**type:** `TwMergeConfig`
+**type:** `TWMergeConfig`
 
 **default**: `{}`
 
@@ -280,6 +275,19 @@ type ClassProp<V extends unknown = ClassValue> =
   | { class?: never; className: V }
   | { class?: never; className?: never };
 ```
+
+#### TWMergeConfig / TWMConfig / TVConfig
+
+```ts
+type TWMConfig = {
+  twMerge?: boolean;
+  twMergeConfig?: TWMergeConfig;
+};
+
+type TVConfig = TWMConfig;
+```
+
+`TWMergeConfig` accepts `{ extend?, override? }` with keys such as `theme`, `classGroups`, `conflictingClassGroups`, `conflictingClassGroupModifiers`, `postfixLookupClassGroups`, and `orderSensitiveModifiers`. Legacy flat fields are still accepted and normalized into `extend`.
 
 #### TVReturnType
 
