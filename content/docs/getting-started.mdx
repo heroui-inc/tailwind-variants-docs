@@ -10,7 +10,7 @@ import { TVComponent, WindowResizer, NXLink } from '@components';
 **Tailwind Variants** requires you to have TailwindCSS installed in your project. If you haven't installed
 TailwindCSS yet, you can follow the [TailwindCSS installation guide](https://tailwindcss.com/docs/installation).
 
-> **Compatibility**: Tailwind Variants v3.x supports **Tailwind CSS v4.x** and requires **`tailwind-merge` v3.x** when using the original build. If you are still on Tailwind CSS v3.x, use `tailwind-variants` v0.x with [`tailwind-merge` v2.6.0](https://github.com/dcastil/tailwind-merge/tree/v2.6.0).
+> **Compatibility**: Tailwind Variants v3.x supports **Tailwind CSS v4.x**. Conflict resolution is included in the default build. If you are still on Tailwind CSS v3.x, use `tailwind-variants` v0.x.
 
 ## Installation
 
@@ -44,49 +44,23 @@ To use **Tailwind Variants** in your project, you can install it as a dependency
 
 Starting from v3, Tailwind Variants offers two build options:
 
-#### Option 1: Original Build (with tailwind-merge)
+#### Option 1: Default Build (with conflict resolution)
 
-For automatic Tailwind CSS conflict resolution, install `tailwind-merge` as a dependency:
-
-<Tabs items={['npm', 'yarn', 'pnpm']}>
-  <Tabs.Tab>
-
-    ```bash copy
-    npm install tailwind-merge
-    ```
-
-  </Tabs.Tab>
-  <Tabs.Tab>
-
-    ```bash copy
-    yarn add tailwind-merge
-    ```
-
-  </Tabs.Tab>
-  <Tabs.Tab>
-
-    ```bash copy
-    pnpm add tailwind-merge
-    ```
-
-  </Tabs.Tab>
-</Tabs>
-
-Then import from the default entry point:
+Import from `tailwind-variants`:
 
 ```ts
 import { tv, createTV, cn, cnMerge, cx } from 'tailwind-variants';
 ```
 
-#### Option 2: Lite Build (without tailwind-merge)
+#### Option 2: Lite Build (without conflict resolution)
 
-For a smaller bundle size (~80% smaller), use the lite build which doesn't include `tailwind-merge`:
+For a smaller bundle size (~80% smaller), use the lite build:
 
 ```ts
 import { tv, createTV, cn, cx } from 'tailwind-variants/lite';
 ```
 
-> **Note**: The lite build doesn't include `tailwind-merge`, so it doesn't export `cnMerge` and doesn't support the `twMerge` or `twMergeConfig` options. In the lite build, `cn` is a no-merge adapter that returns a curried `(config) => string` — use it for simple concatenation only. Choose this build if bundle size is critical and you don't need automatic conflict resolution. `cnMerge` (v3.2.2+) is available only in the original build.
+> **Note**: The lite build does not export `cnMerge` and does not support `twMerge` or `twMergeConfig`. Lite `cn` is a no-merge adapter that returns a curried `(config?) => string` (the config is ignored). Choose this build if bundle size is critical and you don't need automatic conflict resolution.
 
 ## Usage
 

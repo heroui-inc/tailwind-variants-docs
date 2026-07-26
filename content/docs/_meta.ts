@@ -9,12 +9,14 @@ export default {
     display: 'hidden'
   },
   'getting-started': 'Getting Started',
-  migration: 'Migration to v3 (new)',
+  migration: 'Migration',
+  'release-notes': 'Release Notes',
   'tailwind-v4': 'Tailwindcss v4',
   comparison: 'Comparison',
   variants: 'Variants',
   slots: 'Slots',
   'overriding-styles': 'Overriding Styles',
+  'conflict-resolution': 'Conflict Resolution',
   'composing-components': 'Composing Components',
   examples: 'Examples',
   'intro-slots': {
