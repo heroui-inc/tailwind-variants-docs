@@ -1,0 +1,112 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.6/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/.next",
+      "!**/.source",
+      "!**/node_modules",
+      "!**/coverage",
+      "!**/build",
+      "!**/public",
+      "!**/pnpm-lock.yaml",
+      "!**/tsconfig.tsbuildinfo",
+      "!**/next-env.d.ts"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "lineEnding": "lf"
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "sortBareImports": true,
+            "groups": [
+              { "type": true },
+              ":BLANK_LINE:",
+              {
+                "kind": "!bare",
+                "source": [
+                  ":URL:",
+                  ":NODE:",
+                  ":BUN:",
+                  ":PACKAGE_WITH_PROTOCOL:",
+                  ":PACKAGE:"
+                ]
+              },
+              ":BLANK_LINE:",
+              {
+                "kind": "!bare",
+                "source": [":ALIAS:", ":PATH:"]
+              },
+              ":BLANK_LINE:",
+              { "kind": "bare" }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "correctness": {
+        "noUnusedImports": "warn",
+        "noUnusedVariables": "warn",
+        "useExhaustiveDependencies": "off"
+      },
+      "style": {
+        "useImportType": "error",
+        "noNonNullAssertion": "off"
+      },
+      "a11y": {
+        "preset": "recommended",
+        "noNoninteractiveElementToInteractiveRole": "off",
+        "useSemanticElements": "off",
+        "noSvgWithoutTitle": "off",
+        "useButtonType": "warn"
+      },
+      "complexity": {
+        "noImportantStyles": "off",
+        "noBannedTypes": "warn"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "none",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  }
+}

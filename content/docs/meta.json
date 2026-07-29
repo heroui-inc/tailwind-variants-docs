@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "introduction",
+    "getting-started",
+    "comparison",
+    "---Concepts---",
+    "variants",
+    "slots",
+    "overriding-styles",
+    "composing-components",
+    "conflict-resolution",
+    "---Guides---",
+    "examples",
+    "typescript",
+    "config",
+    "tailwind-v4",
+    "---Reference---",
+    "api-reference",
+    "migration",
+    "release-notes",
+    "---More---",
+    "faq",
+    "acknowledgements"
+  ]
+}

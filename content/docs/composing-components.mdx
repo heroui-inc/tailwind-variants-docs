@@ -1,176 +1,53 @@
-import { Callout } from 'nextra/components';
-import { SlotsExample } from '@components';
+---
+title: "Composing Components"
+description: "Extend and compose variant components."
+---
 
-# Composing components
+import { SlotsExample } from '@/components';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { DemoPreview } from '@/components/demo-preview';
+import { composeExtend } from '@/demos/code/compose-extend';
+import { composeVariants } from '@/demos/code/compose-variants';
+import { composeDefaults } from '@/demos/code/compose-defaults';
+import { slotsExtend } from '@/demos/code/slots-extend';
+import { composeResult } from '@/demos/code/compose-result';
 
 **Tailwind Variants** allows you to easily compose components using the `extend` prop or the resultant function.
 
-### Using the extend prop
+## Using the extend prop
 
 The `extend` prop allows you to extend the component including its `variants`, `slots`, `defaultVariants` and `compoundVariants`. It automatically merges the values of same keys and offers Typescript autocomplete.
 
-#### Basic example
+### Basic example
 
-<br />
-
-<div className="flex gap-3">
-  <button className="rounded-full bg-zinc-100 px-3 py-1 font-semibold hover:bg-zinc-200 active:opacity-80 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-800">
-    Button
-  </button>
-  <button className="rounded-lg bg-blue-500 px-3 py-1 text-sm font-semibold tracking-wider text-white uppercase shadow-lg shadow-blue-500/50 hover:bg-blue-600 active:opacity-80 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-600">
-    Buy button
-  </button>
-</div>
-
-```js copy /extend: baseButton/
-import { tv } from 'tailwind-variants';
-
-const baseButton = tv({
-  base: [
-    'font-semibold',
-    'dark:text-white',
-    'py-1',
-    'px-3',
-    'rounded-full',
-    'active:opacity-80',
-    'bg-zinc-100',
-    'hover:bg-zinc-200',
-    'dark:bg-zinc-800',
-    'dark:hover:bg-zinc-800'
-  ]
-});
-
-const buyButton = tv({
-  extend: baseButton,
-  base: [
-    'text-sm',
-    'text-white',
-    'rounded-lg',
-    'shadow-lg',
-    'uppercase',
-    'tracking-wider',
-    'bg-blue-500',
-    'hover:bg-blue-600',
-    'shadow-blue-500/50',
-    'dark:bg-blue-500',
-    'dark:hover:bg-blue-600'
-  ]
-});
-
-return (
+<DemoPreview code={composeExtend} lang="js">
   <div className="flex gap-3">
-    <button className={baseButton()}>Button</button>
-    <button className={buyButton()}>Buy button</button>
+    <button className="rounded-full bg-zinc-100 px-3 py-1 font-semibold hover:bg-zinc-200 active:opacity-80 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-800">
+      Button
+    </button>
+    <button className="rounded-lg bg-blue-500 px-3 py-1 text-sm font-semibold tracking-wider text-white uppercase shadow-lg shadow-blue-500/50 hover:bg-blue-600 active:opacity-80 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-600">
+      Buy button
+    </button>
   </div>
-);
+</DemoPreview>
 
-/**
- * buyButton();
- *
- * Result:
- * font-semibold dark:text-white py-1 px-3 active:opacity-80 text-sm text-white rounded-lg
- * shadow-lg shadow-blue-500/50 uppercase tracking-wider bg-blue-500 hover:bg-blue-600
- * dark:bg-blue-500 dark:hover:bg-blue-600
- */
-```
-
-#### Extending components with variants
+### Extending components with variants
 
 Components with `variants` will inherit their variants when composed.
 
-<br />
-
-<button className="rounded-sm bg-purple-500 px-3 py-1 text-sm font-semibold text-white hover:bg-purple-700 active:opacity-80">
-  Button
-</button>
-
-```js copy /variants/ /success/ /extend: baseButton/
-import { tv } from 'tailwind-variants';
-
-const baseButton = tv({
-  base: 'font-semibold text-white rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 hover:bg-blue-700',
-      secondary: 'bg-purple-500 hover:bg-purple-700',
-      success: 'bg-green-500 hover:bg-green-700'
-    },
-    size: {
-      small: 'py-0 px-2 text-xs',
-      medium: 'py-1 px-3 text-sm',
-      large: 'py-1.5 px-3 text-md'
-    }
-  }
-});
-
-const myButton = tv({
-  extend: baseButton,
-  variants: {
-    isSquared: {
-      true: 'rounded-sm'
-    }
-  }
-  // custom button styles
-});
-
-myButton({ color: 'success', size: 'medium', isSquared: true });
-
-/**
- * Result:
- * font-semibold text-white active:opacity-80 rounded-sm bg-purple-500 hover:bg-purple-700 py-1 px-3 text-sm
- */
-```
+<DemoPreview code={composeVariants} lang="js">
+  <button className="rounded-sm bg-purple-500 px-3 py-1 text-sm font-semibold text-white hover:bg-purple-700 active:opacity-80">
+    Button
+  </button>
+</DemoPreview>
 
 You can also extend components with `defaultVariants` and `compoundVariants`.
 
-<br />
-
-<button className="rounded-sm bg-blue-500 px-3 py-1 text-sm font-semibold text-white hover:bg-blue-700 active:opacity-80">
-  Button
-</button>
-
-```js copy /variants/ /success/ /defaultVariants/ /compoundVariants/ /extend: baseButton/
-import { tv } from 'tailwind-variants';
-
-const baseButton = tv({
-  base: 'font-semibold text-white rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 hover:bg-blue-700',
-      secondary: 'bg-purple-500 hover:bg-purple-700',
-      success: 'bg-green-500 hover:bg-green-700'
-    },
-    size: {
-      small: 'py-0 px-2 text-xs',
-      medium: 'py-1 px-3 text-sm',
-      large: 'py-1.5 px-3 text-md'
-    }
-  },
-  defaultVariants: {
-    color: 'primary',
-    size: 'medium'
-  },
-  compoundVariants: [
-    {
-      color: 'primary',
-      size: 'medium',
-      className: 'rounded-sm'
-    }
-  ]
-});
-
-const myButton = tv({
-  extend: baseButton
-  // custom button styles
-});
-
-myButton();
-
-/**
- * Result:
- * font-semibold text-white active:opacity-80 bg-blue-500 hover:bg-blue-700 py-1 px-3 text-sm rounded-sm
- */
-```
+<DemoPreview code={composeDefaults} lang="js">
+  <button className="rounded-sm bg-blue-500 px-3 py-1 text-sm font-semibold text-white hover:bg-blue-700 active:opacity-80">
+    Button
+  </button>
+</DemoPreview>
 
 <Callout type="info">
   <div className="text-sm">
@@ -179,63 +56,13 @@ myButton();
   </div>
 </Callout>
 
-#### Extending components with slots
+### Extending components with slots
 
 Components with `slots` will inherit their slots when composed.
 
-<br />
-
-<SlotsExample />
-
-```js copy /slots/ /myCard/ /extend: cardBase/
-import { tv } from 'tailwind-variants';
-
-const cardBase = tv({
-  slots: {
-    base: 'md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-gray-900',
-    avatar:
-      'w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto drop-shadow-lg',
-    wrapper: 'flex-1 pt-6 md:p-8 text-center md:text-left space-y-4',
-    description: 'text-md font-medium',
-    infoWrapper: 'font-medium',
-    name: 'text-sm text-sky-500 dark:text-sky-400',
-    role: 'text-sm text-slate-700 dark:text-slate-500'
-  }
-});
-
-const myCard = tv({
-  extend: cardBase
-  // custom card styles
-});
-
-const { base, avatar, wrapper, description, infoWrapper, name, role } =
-  myCard();
-
-return (
-  <figure className={base()}>
-    <img
-      className={avatar()}
-      src="/intro-avatar.png"
-      alt=""
-      width="384"
-      height="512"
-    />
-    <div className={wrapper()}>
-      <blockquote>
-        <p className={description()}>
-          “Tailwind variants allows you to reduce repeated code in your project
-          and make it more readable. They fixed the headache of building a
-          design system with TailwindCSS.”
-        </p>
-      </blockquote>
-      <figcaption className={infoWrapper()}>
-        <div className={name()}>Zoey Lang</div>
-        <div className={role()}>Full-stack developer, HeroUI</div>
-      </figcaption>
-    </div>
-  </figure>
-);
-```
+<DemoPreview code={slotsExtend} lang="js">
+  <SlotsExample />
+</DemoPreview>
 
 <Callout type="info">
   <div className="text-sm">
@@ -244,36 +71,17 @@ return (
   </div>
 </Callout>
 
-### Using the result
+## Using the result
 
 You can use the result of the `tv()` function to compose your components. However this method is not type-safe and you will have to use the `class` / `className` prop to pass the result to the new component.
 
 You can utilize either the `base` key, `slots`, or `variants` when composing components using the result string. The key you use should be in the form of a string array.
 
-<br />
-
-<button className="rounded-xs bg-red-500 px-3 py-1 text-sm font-medium text-white active:opacity-80">
-  Action Button
-</button>
-
-```js /baseButton()/ /base:/
-import { tv } from 'tailwind-variants';
-
-const baseButton = tv({
-  base: 'font-medium text-sm px-3 py-1 bg-blue-500 text-white rounded-full active:opacity-80'
-});
-
-const actionButton = tv({
-  base: [baseButton(), 'bg-red-500', 'rounded-xs']
-});
-
-actionButton();
-
-/**
- * Result:
- * font-medium text-sm px-3 py-1 text-white active:opacity-80 bg-red-500 rounded-xs
- */
-```
+<DemoPreview code={composeResult} lang="js">
+  <button className="rounded-xs bg-red-500 px-3 py-1 text-sm font-medium text-white active:opacity-80">
+    Action Button
+  </button>
+</DemoPreview>
 
 <Callout type="info">
   <div className="text-sm">

@@ -1,78 +1,36 @@
-import { Callout, Tabs } from 'nextra/components';
+---
+title: "Slots"
+description: "Style multi-part components with slots."
+---
+
 import {
   WindowResizer,
+  SlotsExample,
   SlotsVariantsExample,
   CompoundSlotsExample,
   SlotsCompoundVariantsExample
-} from '@components';
-
-# Slots
+} from '@/components';
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { DemoPreview } from '@/components/demo-preview';
+import { slotsBasic } from '@/demos/code/slots-basic';
+import { compoundSlots } from '@/demos/code/compound-slots';
 
 Slots allows you to separate a component into multiple parts.
 
-### Basic Usage
+## Basic Usage
 
 You can add slots by using the `slots` key. There's no limit to how many slots you can add.
 
-<br />
+<DemoPreview code={slotsBasic} lang="js" iframe={false}>
+  <WindowResizer initialWidth={380} minWidth={280}>
+    <SlotsExample />
+  </WindowResizer>
+</DemoPreview>
 
-<WindowResizer
-  iframeSrc="/docs/intro-slots"
-  iframeTitle="Intro slots"
-  iframeInitialWidth={380}
-  height="400px"
-  minWidth={400}
-/>
-
-```js copy /base/1 /avatar/1 /wrapper/1 /description/1 /infoWrapper/1 /name/1 /role/1 /base()/ /avatar()/ /wrapper()/ /description()/ /infoWrapper()/ /name()/ /role()/
-import { tv } from 'tailwind-variants';
-
-const card = tv({
-  slots: {
-    base: 'md:flex bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-gray-900',
-    avatar:
-      'w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full mx-auto drop-shadow-lg',
-    wrapper: 'flex-1 pt-6 md:p-8 text-center md:text-left space-y-4',
-    description: 'text-md font-medium',
-    infoWrapper: 'font-medium',
-    name: 'text-sm text-sky-500 dark:text-sky-400',
-    role: 'text-sm text-slate-700 dark:text-slate-500'
-  }
-});
-
-const { base, avatar, wrapper, description, infoWrapper, name, role } = card();
-
-return (
-  <figure className={base()}>
-    <img
-      className={avatar()}
-      src="/intro-avatar.png"
-      alt=""
-      width="384"
-      height="512"
-    />
-    <div className={wrapper()}>
-      <blockquote>
-        <p className={description()}>
-          “Tailwind variants allows you to reduce repeated code in your project
-          and make it more readable. They fixed the headache of building a
-          design system with TailwindCSS.”
-        </p>
-      </blockquote>
-      <figcaption className={infoWrapper()}>
-        <div className={name()}>Zoey Lang</div>
-        <div className={role()}>Full-stack developer, HeroUI</div>
-      </figcaption>
-    </div>
-  </figure>
-);
-```
-
-### Slots with variants
+## Slots with variants
 
 You can also change the entire component and its slots by using the `variants`. See more about variants [here](/docs/variants).
-
-<br />
 
 <SlotsVariantsExample />
 
@@ -86,31 +44,30 @@ You can also change the entire component and its slots by using the `variants`. 
 **React Example:**
 
 <Tabs items={['JS', 'TS']}>
-  <Tabs.Tab>
+  <Tab value="JS">
 
-```js filename="App.jsx" copy /buyButton/ /sizeButton/ /addToBagButton/
+```js title="App.jsx"
 import { useState } from 'react';
-import { tv } from 'tailwind-variants';
 // Import your components
-import { RadioGroup, Radio } from '@components';
+import { RadioGroup, Radio } from '@/components';
 
 const item = tv({
   slots: {
-    base: 'flex flex-col mb-4 sm:flex-row p-6 bg-white dark:bg-stone-900 drop-shadow-xl rounded-xl',
+    base: 'flex flex-col mb-4 p-6 bg-white drop-shadow-xl rounded-xl sm:flex-row dark:bg-stone-900',
     imageWrapper:
-      'flex-none w-full sm:w-48 h-48 mb-6 sm:mb-0 sm:h-auto relative z-10 before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded-xl before:bg-[#18000E] before:bg-gradient-to-r before:from-[#010187]',
-    img: 'sm:scale-125 absolute z-10 top-2 sm:left-2 inset-0 w-full h-full object-cover rounded-lg',
+      'flex-none w-full h-48 mb-6 relative z-10 sm:w-48 sm:mb-0 sm:h-auto before:absolute before:inset-0 before:rounded-xl before:bg-[#18000E] before:bg-linear-to-r before:from-[#010187]',
+    img: 'sm:scale-125 sm:left-2 absolute z-10 top-2 inset-0 object-cover rounded-lg size-full',
     title:
       'relative w-full flex-none mb-2 text-2xl font-semibold text-stone-900 dark:text-white',
     price: 'relative font-semibold text-xl dark:text-white',
     previousPrice: 'relative line-through font-bold text-neutral-500 ml-3',
     percentOff: 'relative font-bold text-green-500 ml-3',
     sizeButton:
-      'cursor-pointer select-none relative font-semibold rounded-full w-10 h-10 flex items-center justify-center active:opacity-80 dark:text-white peer-checked:text-white',
+      'cursor-pointer select-none relative font-semibold rounded-full flex items-center justify-center size-10 active:opacity-80 dark:text-white peer-checked:text-white',
     buyButton:
-      'text-xs sm:text-sm px-4 h-10 rounded-lg shadow-lg uppercase font-semibold tracking-wider text-white active:opacity-80',
+      'text-xs px-4 h-10 rounded-lg shadow-lg uppercase font-semibold tracking-wider text-white sm:text-sm active:opacity-80',
     addToBagButton:
-      'text-xs sm:text-sm px-4 h-10 rounded-lg uppercase font-semibold tracking-wider border-2 active:opacity-80'
+      'text-xs px-4 h-10 rounded-lg uppercase font-semibold tracking-wider border-2 sm:text-sm active:opacity-80'
   },
   variants: {
     color: {
@@ -200,34 +157,34 @@ const App = () => {
 export default App;
 ```
 
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="TS">
 
-```js filename="App.tsx" copy /buyButton/ /sizeButton/ /addToBagButton/
+```js title="App.tsx"
 import type { VariantProps } from "tailwind-variants";
 
 import { useState } from "react";
 import { tv } from "tailwind-variants";
 // Import your components
-import { RadioGroup, Radio } from "@components";
+import { RadioGroup, Radio } from '@/components';
 
 const item = tv({
   slots: {
-    base: "flex flex-col mb-4 sm:flex-row p-6 bg-white dark:bg-stone-900 drop-shadow-xl rounded-xl",
+    base: "flex flex-col mb-4 p-6 bg-white drop-shadow-xl rounded-xl sm:flex-row dark:bg-stone-900",
     imageWrapper:
-      "flex-none w-full sm:w-48 h-48 mb-6 sm:mb-0 sm:h-auto relative z-10 before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded-xl before:bg-[#18000E] before:bg-gradient-to-r before:from-[#010187]",
-    img: "sm:scale-125 absolute z-10 top-2 sm:left-2 inset-0 w-full h-full object-cover rounded-lg",
+      "flex-none w-full h-48 mb-6 relative z-10 sm:w-48 sm:mb-0 sm:h-auto before:absolute before:inset-0 before:rounded-xl before:bg-[#18000E] before:bg-linear-to-r before:from-[#010187]",
+    img: "sm:scale-125 sm:left-2 absolute z-10 top-2 inset-0 object-cover rounded-lg size-full",
     title:
       "relative w-full flex-none mb-2 text-2xl font-semibold text-stone-900 dark:text-white",
     price: "relative font-semibold text-xl dark:text-white",
     previousPrice: "relative line-through font-bold text-neutral-500 ml-3",
     percentOff: "relative font-bold text-green-500 ml-3",
     sizeButton:
-      "cursor-pointer select-none relative font-semibold rounded-full w-10 h-10 flex items-center justify-center active:opacity-80 dark:text-white peer-checked:text-white",
+      "cursor-pointer select-none relative font-semibold rounded-full flex items-center justify-center size-10 active:opacity-80 dark:text-white peer-checked:text-white",
     buyButton:
-      "text-xs sm:text-sm px-4 h-10 rounded-lg shadow-lg uppercase font-semibold tracking-wider text-white active:opacity-80",
+      "text-xs px-4 h-10 rounded-lg shadow-lg uppercase font-semibold tracking-wider text-white sm:text-sm active:opacity-80",
     addToBagButton:
-      "text-xs sm:text-sm px-4 h-10 rounded-lg uppercase font-semibold tracking-wider border-2 active:opacity-80",
+      "text-xs px-4 h-10 rounded-lg uppercase font-semibold tracking-wider border-2 sm:text-sm active:opacity-80",
   },
   variants: {
     color: {
@@ -320,22 +277,19 @@ const App = () => {
 export default App;
 ```
 
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
-### Slots with compound variants
+## Slots with compound variants
 
 Like variants, you can also define the styles for each slot when using compound
 variants. The slots can be passed to `class` or `className` as an object.
-
-<br />
 
 <SlotsCompoundVariantsExample />
 
 **React Example:**
 
-```js filename="Alert.jsx" copy
-import { tv } from 'tailwind-variants';
+```js title="Alert.jsx"
 
 const alert = tv({
   slots: {
@@ -413,121 +367,13 @@ return (
 );
 ```
 
-### Compound slots
+## Compound slots
 
 Compound slots allow apply classes to multiple slots at once. This avoids having to repeat the same classes in multiple slots.
 
-<br />
-
-<CompoundSlotsExample />
-
-```js copy {23} /compoundSlots/ /"base"/ /"item"/ /"prev"/ /"next"/ /base()/ /item()/ /prev()/ /next()/
-import { tv } from 'tailwind-variants';
-
-const pagination = tv({
-  slots: {
-    base: 'flex flex-wrap relative gap-1 max-w-fit',
-    item: 'data-[active="true"]:bg-blue-500 data-[active="true"]:text-white',
-    prev: '',
-    next: ''
-  },
-  variants: {
-    size: {
-      xs: {},
-      sm: {},
-      md: {}
-    }
-  },
-  defaultVariants: {
-    size: 'md'
-  },
-  compoundSlots: [
-    // if you dont specify any variant, it will always be applied
-    {
-      slots: ['item', 'prev', 'next'],
-      class: [
-        'flex',
-        'flex-wrap',
-        'truncate',
-        'box-border',
-        'outline-none',
-        'items-center',
-        'justify-center',
-        'bg-neutral-100',
-        'hover:bg-neutral-200',
-        'active:bg-neutral-300',
-        'text-neutral-500'
-      ] // --> these classes will be applied to all slots
-    },
-    // if you specify a variant, it will only be applied if the variant is active
-    {
-      slots: ['item', 'prev', 'next'],
-      size: 'xs',
-      class: 'w-7 h-7 text-xs' // --> these classes will be applied to all slots if size is xs
-    },
-    {
-      slots: ['item', 'prev', 'next'],
-      size: 'sm',
-      class: 'w-8 h-8 text-sm' // --> these classes will be applied to all slots if size is sm
-    },
-    {
-      slots: ['item', 'prev', 'next'],
-      size: 'md',
-      class: 'w-9 h-9 text-base' // --> these classes will be applied to all slots if size is md
-    }
-  ]
-});
-
-// React implementation
-
-const App = () => {
-  const { base, item, prev, next } = pagination();
-
-  return (
-    <ul aria-label="pagination navigation" className={base()}>
-      <li
-        aria-label="Go to previous page"
-        className={prev()}
-        data-disabled="true"
-        role="button"
-      >
-        {'<'}
-      </li>
-      <li aria-label="page 1" className={item()} role="button">
-        1
-      </li>
-      <li aria-label="page 2" className={item()} role="button">
-        2
-      </li>
-      <li
-        aria-label="page 3"
-        className={item()}
-        data-active="true"
-        role="button"
-      >
-        3
-      </li>
-      <li aria-label="page 4" className={item()} role="button">
-        4
-      </li>
-      <li aria-label="page 5" className={item()} role="button">
-        5
-      </li>
-      <li aria-hidden="true" className={item()} role="button">
-        ...
-      </li>
-      <li aria-label="page 10" className={item()} role="button">
-        10
-      </li>
-      <li aria-label="Go to next page" className={next()} role="button">
-        {'>'}
-      </li>
-    </ul>
-  );
-};
-
-export default App;
-```
+<DemoPreview code={compoundSlots} lang="js">
+  <CompoundSlotsExample />
+</DemoPreview>
 
 <details>
   <summary>Can I do the same with variants?</summary>
@@ -541,8 +387,7 @@ export default App;
   <div className="pl-3 py-2">
     For example, let's write the same component using variants:
 
-```js copy
-import { tv } from "tailwind-variants";
+```js
 
 cosnt baseItem = [
   "flex",
@@ -568,19 +413,19 @@ const pagination = tv({
   variants: {
     size: {
       xs: {
-        item: "w-7 h-7 text-xs",
-        prev: "w-7 h-7 text-xs",
-        next: "w-7 h-7 text-xs",
+        item: "text-xs size-7",
+        prev: "text-xs size-7",
+        next: "text-xs size-7",
       },
       sm: {
-        item: "w-8 h-8 text-sm",
-        prev: "w-8 h-8 text-sm",
-        next: "w-8 h-8 text-sm",
+        item: "text-sm size-8",
+        prev: "text-sm size-8",
+        next: "text-sm size-8",
       },
       md: {
-        item: "w-9 h-9 text-base",
-        prev: "w-9 h-9 text-base",
-        next: "w-9 h-9 text-base",
+        item: "text-base size-9",
+        prev: "text-base size-9",
+        next: "text-base size-9",
       },
     },
   },
@@ -593,15 +438,14 @@ const pagination = tv({
   </div>
 </details>
 
-### Slot variant overrides
+## Slot variant overrides
 
 Some component libraries use class render props to allow customizing the class
 name of a component based on internal state. Tailwind Variants supports slot
 level variant overrides to make it simple to override the selected variant(s)
 per slot as necessary.
 
-```js copy {30} /isSelected/
-import { tv } from 'tailwind-variants';
+```js
 
 const card = tv({
   slots: {

@@ -1,4 +1,7 @@
-# Config
+---
+title: "Config"
+description: "Configure Tailwind Variants globally."
+---
 
 Tailwind Variants has several ways to specify config options:
 
@@ -10,7 +13,7 @@ Tailwind Variants has several ways to specify config options:
 
 Starting from v3, Tailwind Variants offers two build options:
 
-### Default Build
+## Default Build
 
 - Import from `tailwind-variants`
 - Includes conflict resolution
@@ -20,7 +23,7 @@ Starting from v3, Tailwind Variants offers two build options:
 import { tv, createTV, cn, cnMerge, cx } from 'tailwind-variants';
 ```
 
-### Lite Build
+## Lite Build
 
 - Import from `tailwind-variants/lite`
 - No conflict resolution for a smaller bundle (~80% smaller)
@@ -39,7 +42,7 @@ Choose the lite build if:
 
 For more on conflict resolution, see the [Conflict Resolution](/docs/conflict-resolution) page.
 
-### Local Config
+## Local Config
 
 The easiest way to configure Tailwind Variants is using the second argument of
 the `tv` function. This will set the configuration for this specific `tv` call
@@ -55,7 +58,7 @@ tv(
 );
 ```
 
-### Global config
+## Global config
 
 If you want your config to apply to all usages of `tv`, you can modify the
 `defaultConfig` variable to set global configuration for all calls of `tv`.
@@ -70,7 +73,7 @@ defaultConfig.twMerge = false;
 
 > **Note**: In v3.2.0+, `defaultConfig` is exported as an actual value, making it easier to modify global configuration. This works in both the default and lite builds (lite ignores merge-related options).
 
-### Custom `tv` instance
+## Custom `tv` instance
 
 If you have different configs for different use cases, the default config might
 not work for you. Instead, you can use the `createTV` function to create an
@@ -87,7 +90,7 @@ const tv = createTV({
 tv({ base: '' });
 ```
 
-### Advanced: Custom `tv` wrapper
+## Advanced: Custom `tv` wrapper
 
 For more advanced use cases, you can create a custom `tv` wrapper that extends the default configuration with your own custom merge config. Prefer `{ extend, override }` — legacy flat `theme` / `classGroups` fields are still accepted and normalized into `extend`:
 
@@ -160,7 +163,7 @@ type TWMConfig = {
 };
 ```
 
-### `twMerge`
+## `twMerge`
 
 **description:** Whether to merge conflicting Tailwind classes.
 It avoids having duplicate Tailwind classes. (Recommended) See more in [Conflict Resolution](/docs/conflict-resolution).
@@ -176,7 +179,7 @@ It avoids having duplicate Tailwind classes. (Recommended) See more in [Conflict
 
 **availability**: Default build only (`tailwind-variants`)
 
-### `twMergeConfig`
+## `twMergeConfig`
 
 **description:** Config object for conflict resolution. Prefer `{ extend, override }`. Compatible with common `tailwind-merge` v3 config shapes so existing configs can be reused. See [Conflict Resolution](/docs/conflict-resolution).
 

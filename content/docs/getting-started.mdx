@@ -1,7 +1,12 @@
-import { Tabs } from 'nextra/components';
-import { TVComponent, WindowResizer, NXLink } from '@components';
+---
+title: "Getting Started"
+description: "Install and set up Tailwind Variants in your project."
+---
 
-# Getting started
+import { TVComponent } from '@/components';
+import { DemoPreview } from '@/components/demo-preview';
+import { buttonBasic } from '@/demos/code/button-basic';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 
 **Tailwind Variants** combines the power of TailwindCSS with a first-class variant API.
 
@@ -17,27 +22,27 @@ TailwindCSS yet, you can follow the [TailwindCSS installation guide](https://tai
 To use **Tailwind Variants** in your project, you can install it as a dependency:
 
 <Tabs items={['npm', 'yarn', 'pnpm']}>
-  <Tabs.Tab>
+  <Tab value="npm">
 
-    ```bash copy
+    ```bash
     npm install tailwind-variants
     ```
 
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="yarn">
 
-    ```bash copy
+    ```bash
     yarn add tailwind-variants
     ```
 
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="pnpm">
 
-    ```bash copy
+    ```bash
     pnpm add tailwind-variants
     ```
 
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 ### Choose Your Build (v3+)
@@ -64,94 +69,59 @@ import { tv, createTV, cn, cx } from 'tailwind-variants/lite';
 
 ## Usage
 
-<br />
-
-<TVComponent
-  as="button"
-  size="sm"
-  color="secondary"
-  tv={{
-    base: 'font-medium bg-blue-500 text-white rounded-full active:opacity-80',
-    variants: {
-      color: {
-        primary: 'bg-blue-500 text-white',
-        secondary: 'bg-purple-500 text-white'
+<DemoPreview code={buttonBasic} lang="js">
+  <TVComponent
+    as="button"
+    size="sm"
+    color="secondary"
+    tv={{
+      base: 'font-medium bg-blue-500 text-white rounded-full active:opacity-80',
+      variants: {
+        color: {
+          primary: 'bg-blue-500 text-white',
+          secondary: 'bg-purple-500 text-white'
+        },
+        size: {
+          sm: 'text-sm',
+          md: 'text-base',
+          lg: 'px-4 py-3 text-lg'
+        }
       },
-      size: {
-        sm: 'text-sm',
-        md: 'text-base',
-        lg: 'px-4 py-3 text-lg'
-      }
-    },
-    defaultVariants: {
-      size: 'md',
-      color: 'primary'
-    },
-    compoundVariants: [
-      {
-        size: ['sm', 'md'],
-        class: 'px-3 py-1'
-      }
-    ]
-  }}
->
-  Click me
-</TVComponent>
-
-```js copy
-import { tv } from 'tailwind-variants';
-
-const button = tv({
-  base: 'font-medium bg-blue-500 text-white rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 text-white',
-      secondary: 'bg-purple-500 text-white'
-    },
-    size: {
-      sm: 'text-sm',
-      md: 'text-base',
-      lg: 'px-4 py-3 text-lg'
-    }
-  },
-  compoundVariants: [
-    {
-      size: ['sm', 'md'],
-      class: 'px-3 py-1'
-    }
-  ],
-  defaultVariants: {
-    size: 'md',
-    color: 'primary'
-  }
-});
-
-return (
-  <button className={button({ size: 'sm', color: 'secondary' })}>
+      defaultVariants: {
+        size: 'md',
+        color: 'primary'
+      },
+      compoundVariants: [
+        {
+          size: ['sm', 'md'],
+          class: 'px-3 py-1'
+        }
+      ]
+    }}
+  >
     Click me
-  </button>
-);
-```
+  </TVComponent>
+</DemoPreview>
 
 ## IntelliSense setup (optional)
 
 To enable autocompletion for **Tailwind Variants** you can follow the instructions below.
 
 <Tabs items={['VSCode', 'Neovim', 'IntelliJ']}>
-  <Tabs.Tab>
+  <Tab value="VSCode">
     If you are using **VSCode** and the [**TailwindCSS IntelliSense Extension**](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), add the following to your `settings.json` file:
 
-    ```json copy
+    ```json
     {
       "tailwindCSS.classFunctions": ["tv"]
     }
     ```
 
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="Neovim">
     If you are using **Neovim**, install [**Tailwind CSS Language Server**](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tailwindcss) and add the following to your configuration:
 
-    ```lua copy
+    ```lua
     require('lspconfig').tailwindcss.setup({
       settings = {
         tailwindCSS = {
@@ -161,17 +131,17 @@ To enable autocompletion for **Tailwind Variants** you can follow the instructio
     })
     ```
 
-  </Tabs.Tab>
-  <Tabs.Tab>
+  </Tab>
+  <Tab value="IntelliJ">
     If you are using **IntelliJ** and the [**Tailwind CSS Plugin**](https://plugins.jetbrains.com/plugin/15321-tailwind-css), go to **Settings** → **Languages & Frameworks** → **Style Sheets** → **Tailwind CSS** and add the following to the configuration:
 
-    ```json copy
+    ```json
     {
       "classFunctions": ["tv"]
     }
     ```
 
-  </Tabs.Tab>
+  </Tab>
 </Tabs>
 
 ## Prettier plugin setup (optional)
@@ -187,6 +157,13 @@ module.exports = {
 };
 ```
 
+## Next steps
+
+- [Variants](/docs/variants) — define color, size, and state variants
+- [Slots](/docs/slots) — style multi-part components
+- [Config](/docs/config) — global defaults and createTV
+- [API Reference](/docs/api-reference) — full `tv` / `cn` / `cx` surface
+
 ## Contributing
 
-PR's on **Tailwind Variants** are always welcome, please see our <NXLink href="https://github.com/heroui-inc/tailwind-variants/blob/main/CONTRIBUTING.md">contribution guidelines</NXLink> to learn how you can contribute to this project.
+PR's on **Tailwind Variants** are always welcome, please see our [contribution guidelines](https://github.com/heroui-inc/tailwind-variants/blob/main/CONTRIBUTING.md) to learn how you can contribute to this project.

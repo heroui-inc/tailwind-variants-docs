@@ -1,14 +1,17 @@
-import { Callout } from 'nextra/components';
+---
+title: "TypeScript"
+description: "Type-safe variants with TypeScript."
+---
 
-# Typescript
+import { Callout } from 'fumadocs-ui/components/callout';
 
 **Tailwind Variants** provides typing out of the box, but this page contains some further utilities and tips.
 
-### Extract variants from a component
+## Extract variants from a component
 
 You can use the `VariantProps` utility to extract variants from a component.
 
-```tsx copy /VariantProps/
+```tsx
 import { tv, type VariantProps } from 'tailwind-variants';
 
 export const button = tv({
@@ -56,11 +59,11 @@ export const Button = (props: ButtonProps) => {
 };
 ```
 
-### Required variants
+## Required variants
 
 **Tailwind Variants** doesn't offer a way to make variants required yet, but you can use TypeScript's [Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) to achieve this.
 
-```tsx copy /VariantProps/
+```tsx
 import { tv, type VariantProps } from 'tailwind-variants'
 
 const buttonStyles = tv({

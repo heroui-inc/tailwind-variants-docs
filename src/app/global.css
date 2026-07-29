@@ -1,0 +1,274 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+@source "../components/**/*.{js,jsx,ts,tsx}";
+@source "../demos/**/*.{js,jsx,ts,tsx}";
+@source "../../content/**/*.{md,mdx}";
+@source "./**/*.{js,jsx,ts,tsx}";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-fd-primary: #0072f5;
+  --color-fd-primary-foreground: var(--accent-foreground, #ffffff);
+}
+
+.dark {
+  --color-fd-primary: #338ef7;
+  --color-fd-primary-foreground: var(--accent-foreground, #ffffff);
+}
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  --container-landing: 1400px;
+  --text-code: 0.8125rem;
+  --shadow-code-window: 0 24px 80px -24px rgb(0 0 0 / 0.65);
+  --shadow-code-window-light: 0 20px 60px -28px rgb(0 0 0 / 0.18);
+  --color-landing-island: #0a0a0a;
+
+  --color-fd-primary: #0072f5;
+
+  --radius-none: 0;
+  --radius-xs: 7px;
+  --radius-sm: 9px;
+  --radius-md: 12px;
+  --radius: 14px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 9999px;
+
+  --animate-appear: appear 0.5s ease forwards;
+  @keyframes appear {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  --color-background-light: #ffffff;
+  --color-background: #ffffff;
+  --color-background-dark: #000000;
+
+  --color-foreground-light: #11181c;
+  --color-foreground: #11181c;
+  --color-foreground-dark: #ecedee;
+
+  --color-border-light: #00000026;
+  --color-border: #00000026;
+  --color-border-dark: #ffffff26;
+
+  --color-neutral-50: #f8f9fa;
+  --color-neutral-100: #f1f3f5;
+  --color-neutral-200: #e2e6ea;
+  --color-neutral-300: #d3d9df;
+  --color-neutral-400: #c4ccd4;
+  --color-neutral-500: #889096;
+  --color-neutral-600: #697177;
+  --color-neutral-700: #4b5358;
+  --color-neutral-800: #2d353b;
+  --color-neutral-900: #0f1b20;
+  --color-neutral: #889096;
+
+  --color-blue-50: #e6f1fe;
+  --color-blue-100: #cce3fd;
+  --color-blue-200: #99c7fb;
+  --color-blue-300: #66aaf9;
+  --color-blue-400: #338ef7;
+  --color-blue-500: #0072f5;
+  --color-blue-600: #005bc4;
+  --color-blue-700: #004493;
+  --color-blue-800: #002e62;
+  --color-blue-900: #001731;
+  --color-blue: #0072f5;
+
+  --color-green-50: #e8faf0;
+  --color-green-100: #d1f4e0;
+  --color-green-200: #a2e9c1;
+  --color-green-300: #74dfa2;
+  --color-green-400: #45d483;
+  --color-green-500: #17c964;
+  --color-green-600: #12a150;
+  --color-green-700: #0e793c;
+  --color-green-800: #095028;
+  --color-green-900: #052814;
+  --color-green: #17c964;
+
+  --color-pink-50: #ffedfa;
+  --color-pink-100: #ffdcf5;
+  --color-pink-200: #ffb8eb;
+  --color-pink-300: #ff95e1;
+  --color-pink-400: #ff71d7;
+  --color-pink-500: #ff4ecd;
+  --color-pink-600: #cc3ea4;
+  --color-pink-700: #992f7b;
+  --color-pink-800: #661f52;
+  --color-pink-900: #331029;
+  --color-pink: #ff4ecd;
+
+  --color-purple-50: #f2eafa;
+  --color-purple-100: #e4d4f4;
+  --color-purple-200: #c9a9e9;
+  --color-purple-300: #ae7ede;
+  --color-purple-400: #9353d3;
+  --color-purple-500: #7828c8;
+  --color-purple-600: #6020a0;
+  --color-purple-700: #481878;
+  --color-purple-800: #301050;
+  --color-purple-900: #180828;
+  --color-purple: #7828c8;
+
+  --color-red-50: #fee7ef;
+  --color-red-100: #fdd0df;
+  --color-red-200: #faa0bf;
+  --color-red-300: #f871a0;
+  --color-red-400: #f54180;
+  --color-red-500: #f31260;
+  --color-red-600: #c20e4d;
+  --color-red-700: #920b3a;
+  --color-red-800: #610726;
+  --color-red-900: #310413;
+  --color-red: #f31260;
+
+  --color-yellow-50: #fef6e9;
+  --color-yellow-100: #fdedd3;
+  --color-yellow-200: #fbdba7;
+  --color-yellow-300: #f9c97c;
+  --color-yellow-400: #f7b750;
+  --color-yellow-500: #f5a524;
+  --color-yellow-600: #c4841d;
+  --color-yellow-700: #936316;
+  --color-yellow-800: #62420e;
+  --color-yellow-900: #312107;
+  --color-yellow: #f5a524;
+
+  --color-primary-light: #99c7fb;
+  --color-primary: #0072f5;
+  --color-primary-dark: #0072f5;
+
+  --color-secondary-light: #c9a9e9;
+  --color-secondary: #7828c8;
+  --color-secondary-dark: #9353d3;
+
+  --color-success-light: #a2e9c1;
+  --color-success: #17c964;
+  --color-success-dark: #17c964;
+
+  --color-warning-light: #f7b750;
+  --color-warning: #f5a524;
+  --color-warning-dark: #936316;
+
+  --color-error-light: #faa0bf;
+  --color-error: #f31260;
+  --color-error-dark: #f31260;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+.dragging-ew,
+.dragging-ew * {
+  user-select: none !important;
+  cursor: ew-resize !important;
+}
+
+#toc-title {
+  display: none;
+}
+
+.demo-stage::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.55;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(0, 0, 0, 0.09) 1px,
+    transparent 0
+  );
+  background-size: 12px 12px;
+}
+
+:is(.dark .demo-stage)::before {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.07) 1px,
+    transparent 0
+  );
+}
+
+.demo-preview-code .demo-preview-codeblock,
+.demo-preview-code figure.shiki {
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.landing-code-window .shiki-magic-move-container {
+  overflow-x: auto;
+  overflow-y: visible;
+  background: transparent;
+  padding: 1.25rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-code);
+  line-height: 1.5rem;
+  color: #383a42;
+}
+
+.dark .landing-code-window .shiki-magic-move-container {
+  color: #fff;
+}
+
+.landing-code-window .shiki-magic-move-line-number {
+  opacity: 0.45;
+}
+
+.dark .landing-code-window .shiki-magic-move-line-number {
+  opacity: 0.3;
+}
+
+@media (width >= 768px) {
+  .landing-code-window .shiki-magic-move-container {
+    font-size: var(--text-sm);
+  }
+}
+
+.landing-hero-grain {
+  -webkit-mask-image: radial-gradient(
+    ellipse at 50% 48%,
+    rgb(0 0 0 / 0.32) 0%,
+    rgb(0 0 0 / 0.45) 55%,
+    rgb(0 0 0 / 0.62) 100%
+  );
+  mask-image: radial-gradient(
+    ellipse at 50% 48%,
+    rgb(0 0 0 / 0.32) 0%,
+    rgb(0 0 0 / 0.45) 55%,
+    rgb(0 0 0 / 0.62) 100%
+  );
+}
+
+.landing-hero-glow {
+  background: radial-gradient(
+    ellipse at 50% 42%,
+    color-mix(in oklab, var(--accent) 10%, transparent),
+    transparent 58%
+  );
+}

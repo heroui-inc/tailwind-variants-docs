@@ -1,3 +1,8 @@
+---
+title: "API Reference"
+description: "Exported types and functions for Tailwind Variants."
+---
+
 # API Reference
 
 Here's the API reference for the `tailwind-variants` exported types and functions.
@@ -54,7 +59,7 @@ A utility function for concatenating and merging class names with automatic conf
 ```ts
 import { cn } from 'tailwind-variants';
 
-// Usage - with conflict resolution (default build)
+// Usage - with conflict resolution (original build)
 cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflicts resolved)
 cn('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
 cn(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
@@ -64,14 +69,14 @@ cn('text-blue-500', { 'font-bold': true, italic: false }); // => "text-blue-500 
 > **Note**:
 >
 > - **v3.2.2+**: `cn` returns a string directly (no per-call config). For custom merge config, use `cnMerge`.
-> - In the default build, `cn` resolves conflicting Tailwind classes. Use `cx` if you need a lightweight utility without conflict resolution.
+> - In the default build, `cn` uses the built-in conflict resolver. Use `cx` if you need a lightweight utility without conflict resolution.
 > - In the lite build, `cn` is a **curried** no-merge adapter: `cn(...)(config?)` → string (config ignored). Prefer `cx` for simple concatenation in lite.
 
 ### `cnMerge`
 
 A utility function for concatenating and merging class names with support for custom merge configuration. Use `cnMerge` when you need to customize the merge behavior.
 
-**Added in v3.2.2** — Available on the **default build only** (`tailwind-variants`). Not exported from `/lite`.
+**Added in v3.2.2** — Available on the **default entry only** (`tailwind-variants`). Not exported from `/lite`.
 
 ```ts
 import { cnMerge } from 'tailwind-variants';
@@ -88,7 +93,7 @@ cnMerge(
 )({
   twMerge: true,
   twMergeConfig: {
-    // custom config
+    // custom tailwind-merge config
   }
 });
 ```
@@ -239,7 +244,7 @@ type TWMConfig = {
 
 #### `twMerge`
 
-**description:** Whether to merge conflicting Tailwind classes.
+**description:** Whether to merge conflicting Tailwind classes with the built-in conflict resolver.
 It's avoid to have duplicate Tailwind classes. (Recommended) See more in [Conflict Resolution](/docs/conflict-resolution).
 
 **type:** `boolean`
@@ -248,7 +253,7 @@ It's avoid to have duplicate Tailwind classes. (Recommended) See more in [Confli
 
 #### `twMergeConfig`
 
-**description:** Config object for conflict resolution. Prefer `{ extend, override }`. Compatible with common `tailwind-merge` config shapes. See [Conflict Resolution](/docs/conflict-resolution).
+**description:** Config object for the conflict resolver. Prefer `{ extend, override }`. Compatible with common `tailwind-merge` config shapes. See [Conflict Resolution](/docs/conflict-resolution).
 
 **type:** `TWMergeConfig`
 

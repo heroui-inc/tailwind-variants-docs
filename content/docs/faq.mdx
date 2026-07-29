@@ -1,6 +1,11 @@
+---
+title: "FAQ"
+description: "Frequently asked questions about Tailwind Variants."
+---
+
 # Frequently Asked Questions (FAQ)
 
-import { Callout } from 'nextra/components';
+import { Callout } from 'fumadocs-ui/components/callout';
 
 ## v3.3.0 Migration
 
@@ -25,7 +30,7 @@ See the [Release Notes](/docs/release-notes) for full details.
 v3 introduces several major improvements:
 
 1. **Two build options**: Default (with conflict resolution) and Lite (without merge)
-2. **Significant performance improvements** when using conflict resolution
+2. **Massive performance improvements**: Up to 500x faster when using conflict resolution
 3. **Enhanced `cn` utility**: Now supports functionality similar to `classnames`/`clsx`
 4. **New `cx` function** (v3.2.0+): Lightweight utility without conflict resolution
 5. **`cn` defaults to conflict resolution** (v3.2.0+): `cn` now merges by default in the default build
@@ -34,8 +39,8 @@ v3 introduces several major improvements:
 
 **Use the default build if:**
 
-- You need automatic Tailwind CSS conflict resolution
-- Performance with conflict resolution matters (v3 is much faster here)
+- You need automatic Tailwind CSS conflict resolution (no extra package required)
+- Performance with conflict resolution is important (v3 is 400-500x faster)
 
 **Use the lite build if:**
 
