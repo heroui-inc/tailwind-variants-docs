@@ -456,10 +456,16 @@ html > body[data-scroll-locked] {
   --fd-layout-width: 1440px;
 }
 
-/* fumadocs empty gutters squeeze main below md */
+/* Mobile: drop side gutters so main isn't zero-width / clipped */
 @media (max-width: 767px) {
+  #nd-notebook-layout {
+    --fd-layout-width: 100%;
+    grid-template-columns: 0 0 minmax(0, 1fr) 0 0 !important;
+  }
+
   #nd-notebook-layout #nd-page {
-    grid-column: 1 / -1;
+    min-width: 0;
+    max-width: 100%;
   }
 }
 
