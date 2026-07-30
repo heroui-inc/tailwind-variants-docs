@@ -12,3 +12,4 @@ yarn-error.log*
 .vercel
 .idea
 tsconfig.tsbuildinfo
+_pagefind/
