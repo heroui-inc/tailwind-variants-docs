@@ -10,24 +10,24 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 
 import { DemoPreview } from '@/components/demo-preview';
 
-export function getMDXComponents(components?: MDXComponents) {
+export const getMDXComponents = (components?: MDXComponents) => {
   return {
     ...defaultMdxComponents,
     ...TabsComponents,
     Callout,
+    DemoPreview,
     File,
     Files,
     Folder,
     TypeTable,
-    DemoPreview,
     pre: ({ ref: _ref, ...props }: ComponentProps<'pre'>) => (
-      <CodeBlock {...props}>
+      <CodeBlock {...props} viewportProps={{ className: 'text-sm py-3.5' }}>
         <Pre>{props.children}</Pre>
       </CodeBlock>
     ),
     ...components
   } satisfies MDXComponents;
-}
+};
 
 export const useMDXComponents = getMDXComponents;
 

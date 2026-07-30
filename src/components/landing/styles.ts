@@ -1,12 +1,9 @@
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import { cn } from 'tailwind-variants';
 
-export const easeOut = 'duration-150 ease-out-quint';
+import { interactive } from '@/lib/styles';
 
-export const interactive = 'cursor-pointer select-none';
-
-export const focusRing =
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background';
+export { easeOut, focusRing, interactive } from '@/lib/styles';
 
 export const landingMax = 'mx-auto w-full max-w-landing';
 
@@ -18,11 +15,11 @@ type LandingButtonOptions = {
   className?: string;
 };
 
-export function landingButtonClass({
+export const landingButtonClass = ({
   variant = 'primary',
   rounded = 'full',
   className
-}: LandingButtonOptions = {}) {
+}: LandingButtonOptions = {}) => {
   return cn(
     buttonVariants({
       variant,
@@ -33,4 +30,4 @@ export function landingButtonClass({
     interactive,
     className
   );
-}
+};

@@ -1,0 +1,67 @@
+---
+title: "Extending"
+description: "Compose component recipes with extend — inherit base styles, variants, slots, and defaults without copying definitions."
+---
+
+import { ExtendingDemo } from '@/components/examples';
+import { extendingButton } from '@/demos/code';
+
+`extend` merges one recipe into another. Start from a base button, then add icon-only sizing or new variant tokens without copying the whole definition.
+
+## Basic extend
+
+Pass a parent recipe via the `extend` option:
+
+<DemoPreview code={extendingButton} lang="ts">
+  <ExtendingDemo />
+</DemoPreview>
+
+## Merge behavior
+
+`extend` deep-merges:
+
+- **base** — concatenated
+- **slots** — merged by key
+- **variants** — merged by axis; new keys add axes, existing keys add values
+- **defaultVariants** — child overrides parent for matching keys
+- **compoundVariants** — arrays concatenated
+- **compoundSlots** — arrays concatenated
+
+The returned object exposes merged metadata: `variants`, `variantKeys`, `defaultVariants`, and slot keys reflect the full composed recipe.
+
+## Extending slotted recipes
+
+Slots merge by key. Child recipes can add slots or override styles on inherited ones:
+
+```ts
+import { tv } from 'tailwind-variants';
+
+const card = tv({
+  slots: {
+    base: 'rounded-xl border p-4',
+    title: 'text-sm font-medium',
+    description: 'text-sm text-zinc-500'
+  }
+});
+
+const mediaCard = tv({
+  extend: card,
+  slots: {
+    media: 'mb-3 aspect-video rounded-lg bg-zinc-100',
+    title: 'text-base font-semibold'
+  }
+});
+
+const { base, media, title, description } = mediaCard();
+```
+
+`mediaCard` keeps `base` / `description` from `card`, adds `media`, and tightens `title`.
+
+## One parent at a time
+
+You can only `extend` one recipe per definition. To combine multiple bases, call them manually or chain extends:
+
+```ts
+const extended = tv({ extend: baseButton });
+const final = tv({ extend: extended /* ... */ });
+```

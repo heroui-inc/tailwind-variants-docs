@@ -1,1 +1,1 @@
-export { default as TVComponent } from './tv-component';
+export { default as TVComponent, default } from './tv-component';

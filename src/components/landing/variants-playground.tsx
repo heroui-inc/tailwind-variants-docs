@@ -13,7 +13,7 @@ const features = [
   {
     id: 'variants',
     name: 'Variants',
-    description: 'Declare color, size, and state once as a first-class API.'
+    description: 'Declare variant, size, and state once as a first-class API.'
   },
   {
     id: 'slots',
@@ -46,21 +46,25 @@ const slotsBlock = `  slots: {
   },`;
 
 const defaultsBlock = `  defaultVariants: {
-    color: 'primary',
+    variant: 'primary',
     size: 'md',
   },`;
 
-function variantsBlock(hasSlots: boolean) {
+const variantsBlock = (hasSlots: boolean) => {
   if (hasSlots) {
     return `  variants: {
-    color: {
+    variant: {
       primary: {
-        base: 'bg-blue-500 text-white',
+        base: 'bg-zinc-900 text-white',
         icon: 'text-white',
       },
       secondary: {
-        base: 'bg-zinc-800 text-white',
-        icon: 'text-white',
+        base: 'bg-zinc-100 text-zinc-900',
+        icon: 'text-zinc-900',
+      },
+      tertiary: {
+        base: 'text-zinc-600',
+        icon: 'text-zinc-600',
       },
     },
     size: {
@@ -77,22 +81,23 @@ function variantsBlock(hasSlots: boolean) {
   }
 
   return `  variants: {
-    color: {
-      primary: 'bg-blue-500 text-white',
-      secondary: 'bg-zinc-800 text-white',
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900',
+      tertiary: 'text-zinc-600',
     },
     size: {
       sm: 'text-sm px-3 py-1',
       md: 'text-base px-4 py-2',
     },
   },`;
-}
+};
 
-function compoundBlock(hasSlots: boolean) {
+const compoundBlock = (hasSlots: boolean) => {
   if (hasSlots) {
     return `  compoundVariants: [
     {
-      color: 'primary',
+      variant: 'primary',
       size: 'sm',
       class: {
         base: 'uppercase tracking-wide',
@@ -104,14 +109,14 @@ function compoundBlock(hasSlots: boolean) {
 
   return `  compoundVariants: [
     {
-      color: 'primary',
+      variant: 'primary',
       size: 'sm',
       class: 'uppercase tracking-wide',
     },
   ],`;
-}
+};
 
-function createTvCode(selected: readonly FeatureId[]) {
+const createTvCode = (selected: readonly FeatureId[]) => {
   const hasSlots = selected.includes('slots');
   const parts: Array<string | null> = [
     `import { tv } from 'tailwind-variants';`,
@@ -127,9 +132,9 @@ function createTvCode(selected: readonly FeatureId[]) {
   ];
 
   return parts.filter((line) => line !== null).join('\n');
-}
+};
 
-function toggleFeature(current: FeatureId[], id: FeatureId): FeatureId[] {
+const toggleFeature = (current: FeatureId[], id: FeatureId): FeatureId[] => {
   const isSelected = current.includes(id);
 
   if (isSelected) {
@@ -151,9 +156,9 @@ function toggleFeature(current: FeatureId[], id: FeatureId): FeatureId[] {
   }
 
   return features.map((feature) => feature.id).filter((item) => next.has(item));
-}
+};
 
-export function VariantsPlayground() {
+export const VariantsPlayground = () => {
   const [selected, setSelected] = useState<FeatureId[]>(() => [
     ...initialSelected
   ]);
@@ -253,4 +258,4 @@ export function VariantsPlayground() {
       </CodeWindow>
     </LandingSection>
   );
-}
+};

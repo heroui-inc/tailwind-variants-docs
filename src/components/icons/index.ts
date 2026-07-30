@@ -1,7 +1,9 @@
 import {
   ArrowRight,
+  ArrowUpRightFromSquare,
   Book,
   Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   CircleCheck,
@@ -16,6 +18,7 @@ import {
   MagicWand,
   Magnifier,
   Moon,
+  Picture,
   Plus,
   Server,
   Shapes4,
@@ -32,8 +35,10 @@ export type { IconProps } from './icon';
 export { withIconSize } from './icon';
 
 export const ArrowRightIcon = withIconSize(ArrowRight);
+export const ArrowUpRightFromSquareIcon = withIconSize(ArrowUpRightFromSquare);
 export const BookIcon = withIconSize(Book);
 export const CheckIcon = withIconSize(Check);
+export const ChevronDownIcon = withIconSize(ChevronDown);
 export const ChevronLeftIcon = withIconSize(ChevronLeft);
 export const ChevronRightIcon = withIconSize(ChevronRight);
 export const CircleCheckIcon = withIconSize(CircleCheck);
@@ -48,6 +53,7 @@ export const LogoGithubIcon = withIconSize(LogoGithub);
 export const MagnifierIcon = withIconSize(Magnifier);
 export const MagicWandIcon = withIconSize(MagicWand);
 export const MoonIcon = withIconSize(Moon);
+export const PictureIcon = withIconSize(Picture);
 export const PlusIcon = withIconSize(Plus);
 export const ServerIcon = withIconSize(Server);
 export const ShapesIcon = withIconSize(Shapes4);

@@ -1,0 +1,70 @@
+---
+title: "Releases"
+description: "Notable Tailwind Variants releases and changes, including performance, merge, and API updates."
+---
+
+## v3.3.0
+
+Stronger TypeScript inference, built-in conflict resolution, and less setup than earlier v3 releases.
+
+### Highlights
+
+- **Fully rewritten in TypeScript** — stronger inference for variants, slots, and `extend`
+- **Conflict resolution included** — no `tailwind-merge` install required for TV
+- **Performance improvements** — faster recipe resolution and class merging
+- **Optional `tailwindcss` peer** — use TV outside Tailwind-only setups more easily
+
+### Conflict resolution
+
+The default `tailwind-variants` entry includes merge logic inspired by [tailwind-merge](https://github.com/dcastil/tailwind-merge). Install one package:
+
+```bash
+npm install tailwind-variants
+```
+
+- Existing `twMergeConfig` objects generally keep working — prefer `{ extend, override }`
+- Lite (`tailwind-variants/lite`) still has no merge
+- Utilities: `tv`, `createTV`, `cn`, `cnMerge`, `cx`
+
+### Behavior changes
+
+- **`slots: {}`** — explicit empty object enables slot mode with implicit `base`; omit `slots` for string return
+- **Extended metadata types** — describe merged variants, slots, and keys at runtime
+- **`cn(...)(config)`** — use `cnMerge` instead (see [Migration](/docs/migration))
+
+### Upgrade steps
+
+1. Remove `tailwind-merge` if it was only installed for TV
+2. Keep `twMergeConfig` as-is; use `extend` / `override` for custom tokens
+3. Switch to `/lite` only when you intentionally skip merge
+
+```diff
+- npm i tailwind-variants tailwind-merge
++ npm i tailwind-variants
+```
+
+### Acknowledgements
+
+Conflict resolution draws on MIT-licensed work from [tailwind-merge](https://github.com/dcastil/tailwind-merge), [clsx](https://github.com/lukeed/clsx), and [cnfast](https://github.com/aidenybai/cnfast). See [Acknowledgements](/docs/acknowledgements).
+
+---
+
+## Earlier v3 releases
+
+### v3.2.2
+
+- `cn` returns a string directly; `cnMerge` added for custom config
+- Better TypeScript support without Proxy types
+
+### v3.2.0
+
+- `cx` replaces `cnBase` for lightweight concat
+- `cn` defaults to conflict resolution on the default build
+
+### v3.0.0
+
+- Default vs lite build split
+- Major performance improvements
+- Framework-agnostic API retained
+
+See [Migration](/docs/migration) for step-by-step upgrade paths.

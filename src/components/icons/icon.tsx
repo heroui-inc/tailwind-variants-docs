@@ -4,23 +4,23 @@ export type IconProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
-export function withIconSize(
+export const withIconSize = (
   Icon: ComponentType<SVGProps<SVGSVGElement>>,
   defaultSize = 16
-) {
-  function SizedIcon({
+) => {
+  const SizedIcon = ({
     size = defaultSize,
     width,
     height,
     ...props
-  }: IconProps) {
+  }: IconProps) => {
     const w = width ?? size;
     const h = height ?? size;
 
     return <Icon width={w} height={h} aria-hidden {...props} />;
-  }
+  };
 
   SizedIcon.displayName = `Sized(${Icon.displayName ?? Icon.name ?? 'Icon'})`;
 
   return SizedIcon;
-}
+};

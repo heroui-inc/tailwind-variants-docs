@@ -5,7 +5,7 @@ import { InstallCommand } from '@/components/landing/install-command';
 import { LandingSection, SectionIntro } from '@/components/landing/section';
 import { landingButtonClass } from '@/components/landing/styles';
 
-export function LandingCta() {
+export const LandingCta = () => {
   return (
     <LandingSection className="py-14 md:py-20">
       <SectionIntro
@@ -34,4 +34,4 @@ export function LandingCta() {
       <InstallCommand fullWidth className="mx-auto mt-10 max-w-md" />
     </LandingSection>
   );
-}
+};

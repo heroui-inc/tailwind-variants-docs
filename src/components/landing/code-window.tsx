@@ -10,7 +10,11 @@ type CodeWindowProps = {
   className?: string;
 };
 
-export function CodeWindow({ filename, children, className }: CodeWindowProps) {
+export const CodeWindow = ({
+  filename,
+  children,
+  className
+}: CodeWindowProps) => {
   return (
     <div
       className={cn(
@@ -34,4 +38,4 @@ export function CodeWindow({ filename, children, className }: CodeWindowProps) {
       {children}
     </div>
   );
-}
+};

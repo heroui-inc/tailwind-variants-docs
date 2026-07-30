@@ -1,320 +1,105 @@
 ---
 title: "Migration"
-description: "Upgrade guides between Tailwind Variants versions."
+description: "Upgrade guides for moving between Tailwind Variants major versions, including v2 to v3 and the lite build split."
 ---
 
-# Migration Guide
+## To v3.3.0
 
-## to v3.3.0
+### Drop `tailwind-merge` for TV
 
-### Dependency
-
-Conflict resolution is included in the default `tailwind-variants` build. You no longer need to install `tailwind-merge` for Tailwind Variants:
+Conflict resolution ships in the default build. Install only Tailwind Variants unless your app calls `tailwind-merge` directly:
 
 ```diff
 - npm i tailwind-variants tailwind-merge
 + npm i tailwind-variants
 ```
 
-Keep `tailwind-merge` only if the app still calls it directly (`twMerge`, `extendTailwindMerge`, etc.).
+Keep `tailwind-merge` if you still use `twMerge`, `extendTailwindMerge`, or similar elsewhere.
 
-### What to know
+### Slots empty object
 
-- Conflict resolution works on the default build. Prefer `{ extend, override }` for `twMergeConfig`.
-- Existing `twMergeConfig` objects generally keep working.
-- `/lite` still has no merge.
-- Passing an explicit empty `slots: {}` enables slot mode and returns the implicit `base` slot. Omit `slots` when the component should keep returning a class string.
-- Extended component metadata types now describe the merged variants / slots / keys exposed at runtime.
-
-### `cn` / `cnMerge`
-
-The v3.2.2 split still applies — use `cnMerge` for per-call config:
+Passing `slots: {}` enables slot mode with an implicit `base` slot. Omit `slots` when you want a plain string return.
 
 ```ts
-// before (Proxy / curried config on cn)
+// Slot mode — returns { base: () => string }
+const x = tv({ slots: {}, base: 'p-4' });
+
+// String mode — omit slots
+const y = tv({ base: 'p-4' });
+```
+
+### `cn` → `cnMerge` for config
+
+The v3.2.2 split still applies:
+
+```ts
+// Before
 cn('px-2', 'px-4')({ twMerge: false });
 
-// after
+// After
 cnMerge('px-2', 'px-4')({ twMerge: false });
 cn('px-2', 'px-4'); // string, default merge
 ```
 
-See the [Release Notes](/docs/release-notes) and [Conflict Resolution](/docs/conflict-resolution) pages for full details.
+### Extended types
+
+Extended component metadata now reflects merged variants, slots, and keys at runtime. Slotted components include the implicit `base` slot in types.
 
 ---
 
-## v3.2.0 to v3.2.2
+## v3.2.0 → v3.2.2
 
-### Breaking Changes
+### `cn` returns a string
 
-#### `cn` split into `cn` and `cnMerge`
-
-In v3.2.2, the `cn` function has been simplified. The function now returns a string directly with default merge config. For custom merge configuration, use the new `cnMerge` function.
-
-**Before (v3.2.0 - v3.2.1):**
-
-```ts
-import { cn } from 'tailwind-variants';
-
-// cn could be called with config (using Proxy)
-cn('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4"
-cn('px-2', 'px-4')(); // => "px-4" (with default config)
-```
-
-**After (v3.2.2+):**
+`cn` no longer accepts a config callback. Use `cnMerge` for custom merge behavior.
 
 ```ts
 import { cn, cnMerge } from 'tailwind-variants';
 
-// cn now returns a string directly (no config support)
-cn('px-2', 'px-4'); // => "px-4" (conflicts resolved with default config)
-
-// cnMerge supports custom config via second function call
+cn('px-2', 'px-4'); // => "px-4"
 cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4"
-cnMerge('px-2', 'px-4')(); // => "px-4" (with default config)
 ```
-
-**Migration:**
-
-- If you were using `cn(...)` directly (most common case), no changes needed — it now works more intuitively by returning a string directly.
-- If you were using `cn(...)(config)` or `cn(...)()`, migrate to `cnMerge`:
-
-  ```ts
-  // Before
-  cn('px-2', 'px-4')({ twMerge: false });
-
-  // After
-  cnMerge('px-2', 'px-4')({ twMerge: false });
-  ```
-
-**Benefits:**
-
-- Better TypeScript support (no Proxy types)
-- Clearer API intent
-- Better performance (no Proxy overhead)
-- Easier maintenance
 
 ---
 
-## v3.1.1 to v3.2.0
+## v3.1.1 → v3.2.0
 
-### New Features
+### Replace `cnBase` with `cx`
 
-#### Introduction of `cx` function
+```diff
+- import { cnBase } from 'tailwind-variants';
++ import { cx } from 'tailwind-variants';
 
-A new lightweight utility function `cx` has been added for concatenating class names without conflict resolution. This is useful when you don't need automatic conflict resolution and want a smaller bundle size.
-
-```ts
-// v3.2.0+
-import { cx, cn } from 'tailwind-variants';
-
-// cx - no conflict resolution
-cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500"
-
-// cn - with conflict resolution (default build)
-cn('text-blue-500', 'text-red-500'); // => "text-red-500"
+- cnBase('flex gap-2', className);
++ cx('flex gap-2', className);
 ```
 
-### Breaking Changes
+### `cn` defaults to merge
 
-#### `cnBase` should be replaced with `cx`
-
-In v3.2.0+, `cnBase` should be replaced with the new `cx` function. The `cx` function provides the same functionality as `cnBase` (simple concatenation without conflict resolution) with a clearer name.
-
-**Before (v3.1.1 and earlier):**
-
-```ts
-import { cnBase } from 'tailwind-variants';
-
-// ...
-{
-  cnBase('flex items-center justify-center gap-2', className);
-}
-```
-
-**After (v3.2.0+):**
-
-```ts
-import { cx } from 'tailwind-variants';
-
-// ...
-{
-  cx('flex items-center justify-center gap-2', className);
-}
-```
-
-**Migration:** Replace all instances of `cnBase` with `cx`. The API is identical - both functions combine class names without conflict resolution.
-
-#### `cn` now defaults `twMerge` to `true`
-
-In v3.2.0+, the `cn` function in the default build now defaults `twMerge` to `true` and uses conflict resolution. This means conflicting Tailwind classes will be automatically resolved.
-
-**Before (v3.1.1 and earlier):**
-
-```ts
-cn('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both classes)
-```
-
-**After (v3.2.0+):**
-
-```ts
-cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflict resolved)
-```
-
-**Migration:** If you relied on `cn` not merging conflicts, you can:
-
-1. Use the new `cx` function instead: `import { cx } from 'tailwind-variants'`
-2. Or continue using `cn` if conflict resolution is desired (recommended)
-
-#### `defaultConfig` exported as value
-
-Starting in v3.2.0, `defaultConfig` is now exported as an actual value (not just a type), allowing direct import and modification:
-
-```ts
-// v3.2.0+
-import { defaultConfig } from 'tailwind-variants';
-
-defaultConfig.twMerge = false;
-```
-
-This enables easier global configuration management.
-
-#### `responsiveVariants` removed
-
-The `responsiveVariants` option has been removed. For more details, see the [Tailwind v4 documentation](/docs/tailwind-v4).
-
-### Bug Fixes
-
-- Code is no longer minified in the build output (improves debugging experience)
+On the default build, `cn` resolves conflicting Tailwind classes automatically.
 
 ---
 
-## v2 to v3
+## v2 → v3
 
-### Breaking Changes
-
-#### Introduction of `/lite` entry point (no conflict resolution)
-
-In v3, `tailwind-variants` is now offered in two builds:
-
-- **Default build** – includes conflict resolution (same as before)
-- **Lite build** – excludes conflict resolution for a smaller bundle and faster runtime
-
-##### What changed?
-
-- Conflict resolution is included in the default build only
-- Lite build has no merge or merge config
-- `createTV`, `tv`, and `cn` in the lite build **no longer accept merge config**
-- The `cn` utility (previously `cnBase`) is now exported from both builds with enhanced functionality
-
-##### Migration Steps
-
-> **Superseded in v3.3.0:** Conflict resolution is included in the default build — you no longer need to install `tailwind-merge` for Tailwind Variants. The install steps below applied to earlier v3 releases.
-
-If you use the default configuration with `twMerge: true` (conflict resolution enabled) on **pre-v3.3.0** releases, make sure to install `tailwind-merge` in your project:
-
-```bash
-# npm
-npm install tailwind-merge
-
-# yarn
-yarn add tailwind-merge
-
-# pnpm
-pnpm add tailwind-merge
-```
-
-If you do not need conflict resolution, switch to the lite build by importing from `tailwind-variants/lite`:
+### Two builds
 
 ```ts
-import { createTV, tv, cn, cx } from 'tailwind-variants/lite';
+// Default — conflict resolution included (v3.3+)
+import { tv, cn, cx } from 'tailwind-variants';
+
+// Lite — no merge, ~80% smaller
+import { tv, cx } from 'tailwind-variants/lite';
 ```
 
-#### Enhanced `cn` utility (formerly `cnBase`)
+### Removed APIs
 
-The `cn` utility has been significantly enhanced to support functionality similar to `classnames` / `clsx`. It now properly filters and handles various input types and formats the final result.
+- `responsiveVariants` — use Tailwind responsive prefixes in class strings ([Responsive](/docs/responsive))
+- `withTv` — use `tv` directly
+- Lazy merge loading — replaced by explicit default vs lite builds
 
-```ts
-// v2
-import { cnBase } from 'tailwind-variants';
+### Performance
 
-// v3 - Default build (with conflict resolution)
-import { cn, cnBase } from 'tailwind-variants';
+v3 is significantly faster for merge operations. The default build includes merge; lite skips it entirely.
 
-// v3 - Lite build (without conflict resolution)
-import { cn, cnBase } from 'tailwind-variants/lite';
-```
-
-Both `cn` and `cnBase` are exported for backwards compatibility, but `cn` is the recommended import. Prefer `cx` over `cnBase` in v3.2.0+.
-
-### Performance Improvements
-
-v3 includes significant performance improvements for projects using conflict resolution — especially for `tv` calls with and without slots, and when using a custom merge config.
-
-### Bundle Size Comparison
-
-- **Default build** (`tailwind-variants`): Includes conflict resolution
-- **Lite build** (`tailwind-variants/lite`): ~80% smaller without merge
-
----
-
-## v1 to v2
-
-### Breaking Changes
-
-#### tailwind-merge is now an optional peer dependency
-
-In v2, we've made `tailwind-merge` an optional peer dependency to reduce bundle size for users who don't need Tailwind CSS conflict resolution.
-
-> **Superseded in v3.3.0:** Conflict resolution is included in the default build — you no longer need to install `tailwind-merge` for Tailwind Variants. The install steps below applied to v2 / earlier v3 releases.
-
-##### What changed?
-
-- `tailwind-merge` is no longer bundled with tailwind-variants (v2)
-- Users who want conflict resolution must install it separately (v2 / early v3)
-- Users who don't need conflict resolution can save ~3KB in bundle size
-
-##### Migration Steps
-
-If you use the default configuration with `twMerge: true` (conflict resolution enabled) on **pre-v3.3.0** releases:
-
-```bash
-# npm
-npm install tailwind-merge
-
-# yarn
-yarn add tailwind-merge
-
-# pnpm
-pnpm add tailwind-merge
-```
-
-If you don't need conflict resolution, disable it in your config:
-
-```js
-const button = tv(
-  {
-    base: 'px-4 py-2 rounded',
-    variants: {
-      color: {
-        primary: 'bg-blue-500 text-white',
-        secondary: 'bg-gray-500 text-white'
-      }
-    }
-  },
-  {
-    twMerge: false // Disable conflict resolution
-  }
-);
-```
-
-### Performance Improvements
-
-v2 also includes significant performance optimizations:
-
-- **37-62% faster** for most operations
-- Optimized object creation and array operations
-- Reduced function call overhead
-- Better memory usage
-
-All existing APIs remain the same, so no code changes are required beyond the historical tailwind-merge installation note above (superseded in v3.3.0).
+See [Class Resolution](/docs/class-resolution) and [Releases](/docs/releases) for v3.3.0 details.

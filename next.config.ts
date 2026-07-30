@@ -6,19 +6,63 @@ const withMDX = createMDX();
 
 const config: NextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@heroui/react', '@heroui/styles'],
+  reactCompiler: true,
+  serverExternalPackages: ['@takumi-rs/core'],
   images: {
     qualities: [75, 90]
   },
   experimental: {
     useTypeScriptCli: true,
-    optimizePackageImports: ['@heroui/react', '@gravity-ui/icons']
+    optimizePackageImports: ['@gravity-ui/icons']
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/docs/:path*.md',
+        destination: '/llms.mdx/docs/:path*'
+      }
+    ];
   },
   redirects: async () => [
     {
       source: '/docs',
       destination: '/docs/introduction',
-      permanent: false
+      permanent: true
+    },
+    {
+      source: '/docs/getting-started',
+      destination: '/docs/quick-start',
+      permanent: true
+    },
+    {
+      source: '/docs/conflict-resolution',
+      destination: '/docs/class-resolution',
+      permanent: true
+    },
+    {
+      source: '/docs/examples',
+      destination: '/docs/recipes',
+      permanent: true
+    },
+    {
+      source: '/docs/release-notes',
+      destination: '/docs/releases',
+      permanent: true
+    },
+    {
+      source: '/docs/config',
+      destination: '/docs/configuration',
+      permanent: true
+    },
+    {
+      source: '/docs/overriding-styles',
+      destination: '/docs/overrides',
+      permanent: true
+    },
+    {
+      source: '/docs/composing-components',
+      destination: '/docs/extending',
+      permanent: true
     }
   ]
 };

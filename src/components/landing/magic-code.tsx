@@ -12,7 +12,7 @@ type MagicCodeProps = {
   lang?: string;
 };
 
-export function MagicCode({ code, lang = 'typescript' }: MagicCodeProps) {
+export const MagicCode = ({ code, lang = 'typescript' }: MagicCodeProps) => {
   const theme = useCodeTheme();
 
   // ShikiMagicMove closes over the initial theme in a ref — remount on change.
@@ -30,4 +30,4 @@ export function MagicCode({ code, lang = 'typescript' }: MagicCodeProps) {
       options={magicMoveOptions}
     />
   );
-}
+};

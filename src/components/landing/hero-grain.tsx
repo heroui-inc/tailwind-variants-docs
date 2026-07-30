@@ -1,43 +1,44 @@
 'use client';
 
 import { MeshGradient } from '@paper-design/shaders-react';
-import { useReducedMotion } from 'motion/react';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { cn } from 'tailwind-variants';
 
-/**
- * Neutral mesh: cool ink + a warm graphite accent.
- * Enough value range for depth, without loud chroma.
- */
 const themes = {
   dark: {
-    colors: [
-      '#08080a', // void
-      '#12131a', // cool ink
-      '#1c1d26', // slate depth
-      '#2e2c34', // lifted charcoal
-      '#3f3a35' // warm graphite
-    ] as string[]
+    colors: ['#08080a', '#12131a', '#1c1d26', '#2e2c34', '#3f3a35'] as string[]
   },
   light: {
-    colors: [
-      '#faf9f7', // paper
-      '#f1efec', // warm mist
-      '#e6e4e8', // cool stone
-      '#d2cfc9', // soft taupe
-      '#a9a49c' // muted bronze
-    ] as string[]
+    colors: ['#faf9f7', '#f1efec', '#e6e4e8', '#d2cfc9', '#a9a49c'] as string[]
   }
 } as const;
+
+const subscribeReducedMotion = (onStoreChange: () => void) => {
+  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+  media.addEventListener('change', onStoreChange);
+  return () => media.removeEventListener('change', onStoreChange);
+};
+
+const getReducedMotionSnapshot = () => {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
+const getReducedMotionServerSnapshot = () => {
+  return false;
+};
 
 type HeroGrainProps = {
   className?: string;
 };
 
-export function HeroGrain({ className }: HeroGrainProps) {
+export const HeroGrain = ({ className }: HeroGrainProps) => {
   const { resolvedTheme } = useTheme();
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot
+  );
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -62,4 +63,4 @@ export function HeroGrain({ className }: HeroGrainProps) {
       />
     </div>
   );
-}
+};

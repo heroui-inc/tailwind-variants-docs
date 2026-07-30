@@ -14,18 +14,19 @@ type LandingSectionProps = {
 };
 
 const borderClass: Record<Border, string | null> = {
-  'x-b': 'border-border border-x border-b',
-  'x-y': 'border-border border-x border-y',
-  full: 'border-border border',
+  // No left/right borders on mobile; hero `full` also skips top on mobile.
+  'x-b': 'border-border border-b md:border-x',
+  'x-y': 'border-border border-y md:border-x',
+  full: 'border-border border-b md:border',
   none: null
 };
 
-export function LandingSection({
+export const LandingSection = ({
   children,
   className,
   border = 'x-b',
   padded = true
-}: LandingSectionProps) {
+}: LandingSectionProps) => {
   return (
     <section
       className={cn(
@@ -38,7 +39,7 @@ export function LandingSection({
       {children}
     </section>
   );
-}
+};
 
 type SectionIntroProps = {
   eyebrow: string;
@@ -48,13 +49,13 @@ type SectionIntroProps = {
   align?: 'start' | 'center';
 };
 
-export function SectionIntro({
+export const SectionIntro = ({
   eyebrow,
   title,
   description,
   className,
   align = 'start'
-}: SectionIntroProps) {
+}: SectionIntroProps) => {
   return (
     <div
       className={cn(
@@ -81,4 +82,4 @@ export function SectionIntro({
       </p>
     </div>
   );
-}
+};

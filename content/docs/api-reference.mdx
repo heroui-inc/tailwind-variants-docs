@@ -1,309 +1,157 @@
 ---
 title: "API Reference"
-description: "Exported types and functions for Tailwind Variants."
+description: "Reference for tv, createTV, VariantProps, cn/cx/cnMerge, and configuration types exported by Tailwind Variants."
 ---
 
-# API Reference
-
-Here's the API reference for the `tailwind-variants` exported types and functions.
-
-## Main Functions
-
-### `tv`
-
-```js
-import { tv } from 'tailwind-variants'
-
-const element = tv(options, config)
-
-// call the element function to get the class names
-
-element({'...'}) // => string
-
-// call the element function with slots to get the class names
-
-const { slot1, slot2 } = element({...}) // => Record<Function, Function>
-
-slot1({}) // => string
-
-// access to the returned object
-
-element.base // => string
-element.slots // => Record<string, string>
-element.variants // => Record<string, string>
-element.variantKeys // => string[]
-element.defaultVariants // => Record<string, string>
-element.compoundVariants // => Array<Record<string, string>>
-element.compoundSlots // => Array<Record<string, string>>
-```
-
-### `createTV`
-
-Creates a custom `tv` instance with the specified default configuration.
+Condensed reference for `tailwind-variants` v3.3.
 
 ```ts
-import { createTV } from 'tailwind-variants';
-
-const tv = createTV({
-  twMerge: true,
-  twMergeConfig: {
-    // custom config
-  }
-});
+import {
+  tv,
+  createTV,
+  cn,
+  cnMerge,
+  cx,
+  type VariantProps
+} from 'tailwind-variants';
 ```
 
-### `cn`
-
-A utility function for concatenating and merging class names with automatic conflict resolution. In v3.2.2+, `cn` returns a string directly with the default merge config — no function call needed.
+Lite build:
 
 ```ts
-import { cn } from 'tailwind-variants';
-
-// Usage - with conflict resolution (original build)
-cn('text-blue-500', 'text-red-500'); // => "text-red-500" (conflicts resolved)
-cn('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
-cn(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
-cn('text-blue-500', { 'font-bold': true, italic: false }); // => "text-blue-500 font-bold"
+import { tv, cx } from 'tailwind-variants/lite';
 ```
 
-> **Note**:
->
-> - **v3.2.2+**: `cn` returns a string directly (no per-call config). For custom merge config, use `cnMerge`.
-> - In the default build, `cn` uses the built-in conflict resolver. Use `cx` if you need a lightweight utility without conflict resolution.
-> - In the lite build, `cn` is a **curried** no-merge adapter: `cn(...)(config?)` → string (config ignored). Prefer `cx` for simple concatenation in lite.
+## `tv`
 
-### `cnMerge`
-
-A utility function for concatenating and merging class names with support for custom merge configuration. Use `cnMerge` when you need to customize the merge behavior.
-
-**Added in v3.2.2** — Available on the **default entry only** (`tailwind-variants`). Not exported from `/lite`.
+Creates a variant recipe. Returns a callable function plus metadata.
 
 ```ts
-import { cnMerge } from 'tailwind-variants';
+const button = tv(options, config?);
 
-// Usage with custom config
-cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4" (no conflict resolution)
-cnMerge('px-2', 'px-4')(); // => "px-4" (with default config, conflicts resolved)
-cnMerge('text-blue-500', 'text-red-500')({ twMerge: true }); // => "text-red-500" (conflicts resolved)
+button({ variant: 'primary' }); // => string (no slots)
+button({ variant: 'primary' }).base(); // => string (with slots)
 
-// With custom twMergeConfig
-cnMerge(
-  'px-2',
-  'px-4'
-)({
-  twMerge: true,
-  twMergeConfig: {
-    // custom tailwind-merge config
-  }
-});
+button.base;              // resolved base string
+button.slots;             // slot class map
+button.variants;          // variant definitions
+button.variantKeys;       // ['variant', 'size', ...]
+button.defaultVariants;   // { variant: 'primary', ... }
+button.compoundVariants;  // array
+button.compoundSlots;     // array
 ```
-
-> **When to use `cnMerge` vs `cn`?**
->
-> - Use `cn` for the common case — it returns a string directly with default config
-> - Use `cnMerge` when you need to customize merge behavior (disable it, or provide custom config)
-
-### `cnBase`
-
-> **Deprecated**: `cnBase` is exported for backwards compatibility but should be replaced with `cx` (v3.2.0+). The `cx` function provides the same functionality with a clearer name.
-
-### `cx`
-
-A lightweight utility function for concatenating class names without conflict resolution. Similar to `clsx` — simple concatenation without merging conflicting classes. Use `cx` when you don't need automatic conflict resolution and want a smaller bundle size.
-
-**Added in v3.2.0** — This function replaces `cnBase` and provides the same functionality with a clearer name.
-
-```ts
-// Default build
-import { cx } from 'tailwind-variants';
-
-// Lite build
-import { cx } from 'tailwind-variants/lite';
-
-// Usage - no conflict resolution
-// Simple concatenation
-cx('text-xl', 'font-bold'); // => 'text-xl font-bold'
-
-// Handles arrays and objects
-cx(['px-4', 'py-2'], { 'bg-blue-500': true, 'text-white': false }); // => 'px-4 py-2 bg-blue-500'
-
-// Ignores falsy values (except 0)
-cx('text-xl', false && 'font-bold', null, undefined); // => 'text-xl'
-
-// Multiple classes
-cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500" (both classes included)
-cx('text-blue-500', 'hover:text-blue-700'); // => "text-blue-500 hover:text-blue-700"
-cx(['text-blue-500', null, undefined, 'hover:text-blue-700']); // => "text-blue-500 hover:text-blue-700"
-cx('text-blue-500', { 'font-bold': true, italic: false }); // => "text-blue-500 font-bold"
-```
-
-> **When to use `cx` vs `cn`?**
->
-> - Use `cx` when you don't need conflict resolution and want a smaller bundle
-> - Use `cn` when you need automatic Tailwind CSS conflict resolution (default build only)
->
-> **Migration from `cnBase`**: In v3.2.0+, replace `cnBase` with `cx`. The API is identical.
 
 ### Options
 
-The `options` argument is an object with the following properties:
-
 ```ts
 type TVOptions = {
-  extend?: TVReturnType | undefined;
+  extend?: TVReturnType;
   base?: ClassValue;
   slots?: Record<string, ClassValue>;
   variants?: Record<string, Record<string, ClassValue>>;
   defaultVariants?: Record<string, ClassValue>;
-  compoundVariants?: Array<Record<string, string> & ClassProp>;
-  compoundSlots?: Array<Record<string, string> & ClassProp>;
+  compoundVariants?: Array<Record<string, unknown> & ClassProp>;
+  compoundSlots?: Array<Record<string, unknown> & ClassProp>;
 };
 ```
 
-#### `extend`
+| Option | Description |
+| --- | --- |
+| `extend` | Merge another recipe's base, slots, variants, defaults, compounds |
+| `base` | Shared classes for every call |
+| `slots` | Named parts; `{}` enables implicit `base` slot only |
+| `variants` | Variant axes; per-slot objects when using slots |
+| `defaultVariants` | Values applied when keys are omitted |
+| `compoundVariants` | Extra classes when multiple conditions match |
+| `compoundSlots` | Extra classes on specific slots when conditions match |
 
-**description:** This property allows you to extend the `base` styles, `slots`, `variants`,
-`defaultVariants` and `compoundVariants` from another component.
-
-**type:** [TVReturnType](/docs/api-reference#tvreturntype) | `undefined`
-
-**default**: `undefined`
-
-To learn more about Components composition, check out this [page](/docs/composing-components).
-
-#### `base`
-
-**description:** This property allows you to define the base styles for the component.
-
-**type:** [ClassValue](/docs/api-reference#classvalue)
-
-**default**: `undefined`
-
-#### `slots`
-
-**description:** This property allows you to define the slots for the component.
-
-**type:** `Record<string, ClassValue>` | `undefined`
-
-**default**: `{}`
-
-> **Note:** Passing an explicit empty `slots: {}` enables slot mode and returns the implicit `base` slot. Omit `slots` when the component should keep returning a class string.
-
-To learn more about slots and how to use them, check out the [Slots](/docs/slots) page.
-
-#### `variants`
-
-**description:** This property allows you to define the variants for the component.
-
-**type:** `Record<string, Record<string, ClassValue>>` | `undefined`
-
-**default**: `{}`
-
-To learn more about variants and how to use them, check out the [Variants](/docs/variants) page.
-
-#### `defaultVariants`
-
-**description:** This property allows you to define the default variants for the component.
-
-**type:** `Record<string, ClassValue>` | `undefined`
-
-**default**: `{}`
-
-To learn more about default variants and how to use them, check out the [Default Variants](/docs/variants#default-variants) page.
-
-#### `compoundVariants`
-
-**description:** This property allows you to define the compound variants for the component.
-
-**type:** `Array<Record<string, string> & ClassProp>` | `undefined`
-
-**default**: `[]`
-
-To learn more about compound variants and how to use them, check out the [Compound Variants](/docs/variants#compound-variants) page.
-
-#### `compoundSlots`
-
-**description:** This property allows you to define the compound slots for the component.
-
-**type:** `Array<Record<string, string> & ClassProp>` | `undefined`
-
-**default**: `[]`
-
-To learn more about compound slots and how to use them, check out the [Compound Slots](/docs/slots#compound-slots) page.
-
-### Config (optional)
-
-The `config` argument is an object with the following properties:
+### Config (2nd argument)
 
 ```ts
-type TWMConfig = {
+type TVConfig = {
   twMerge?: boolean;
-  twMergeConfig?: TWMergeConfig;
+  twMergeConfig?: TwMergeConfig;
 };
 ```
 
-#### `twMerge`
-
-**description:** Whether to merge conflicting Tailwind classes with the built-in conflict resolver.
-It's avoid to have duplicate Tailwind classes. (Recommended) See more in [Conflict Resolution](/docs/conflict-resolution).
-
-**type:** `boolean`
-
-**default**: `true`
-
-#### `twMergeConfig`
-
-**description:** Config object for the conflict resolver. Prefer `{ extend, override }`. Compatible with common `tailwind-merge` config shapes. See [Conflict Resolution](/docs/conflict-resolution).
-
-**type:** `TWMergeConfig`
-
-**default**: `{}`
-
-<br />
-
-### Types
-
-#### ClassValue
+### Call-site props
 
 ```ts
-type ClassValue = string | string[] | null | undefined | ClassValue[];
-```
-
-#### ClassProp
-
-```ts
-type ClassProp<V extends unknown = ClassValue> =
-  | {
-      class: V;
-      className?: never;
-    }
-  | { class?: never; className: V }
-  | { class?: never; className?: never };
-```
-
-#### TWMergeConfig / TWMConfig / TVConfig
-
-```ts
-type TWMConfig = {
-  twMerge?: boolean;
-  twMergeConfig?: TWMergeConfig;
-};
-
-type TVConfig = TWMConfig;
-```
-
-`TWMergeConfig` accepts `{ extend?, override? }` with keys such as `theme`, `classGroups`, `conflictingClassGroups`, `conflictingClassGroupModifiers`, `postfixLookupClassGroups`, and `orderSensitiveModifiers`. Legacy flat fields are still accepted and normalized into `extend`.
-
-#### TVReturnType
-
-```ts
-type TVReturnType = {
-  base?: string;
-  extend?: TVReturnType;
-  slots?: Record<string, string>;
-  variants?: Record<string, string>;
-  variantKeys?: string[];
-  defaultVariants?: Record<string, string>;
-  compoundVariants?: Array<Record<string, string>>;
+type ClassProp = {
+  class?: ClassValue;
+  className?: ClassValue;
 };
 ```
+
+Pass variant keys plus optional `class` / `className` overrides.
+
+## `createTV`
+
+Returns a `tv` with default config:
+
+```ts
+const tv = createTV({
+  twMerge: true,
+  twMergeConfig: { extend: { /* ... */ } }
+});
+```
+
+## `cn`
+
+Concatenate and merge with default config. Returns a **string** (v3.2.2+).
+
+```ts
+cn('px-2', 'px-4'); // => "px-4"
+cn('text-sm', { 'font-bold': true }); // => "text-sm font-bold"
+```
+
+Default build only.
+
+## `cnMerge`
+
+Concatenate with optional per-call config:
+
+```ts
+cnMerge('px-2', 'px-4')(); // => "px-4"
+cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4"
+```
+
+Default build only. Not exported from `/lite`.
+
+## `cx`
+
+Lightweight concat without conflict resolution:
+
+```ts
+cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500"
+```
+
+Available in default and lite builds. Replaces deprecated `cnBase`.
+
+## `VariantProps`
+
+Extract variant prop types from a recipe:
+
+```ts
+type Props = VariantProps<typeof button>;
+// { variant?: 'primary' | 'secondary' | 'tertiary'; size?: 'sm' | 'md' }
+```
+
+## Types
+
+| Type | Description |
+| --- | --- |
+| `ClassValue` | `string \| string[] \| Record<string, boolean> \| null \| undefined` |
+| `VariantProps<T>` | Inferred variant keys from recipe `T` |
+| `TVReturnType` | Return type of `tv()` — callable + metadata |
+
+## Slotted return type
+
+When `slots` is defined, calling the recipe returns an object of functions:
+
+```ts
+const { base, title } = alert({ color: 'danger' });
+base({ class: 'mt-2' }); // => string
+```
+
+Each slot function accepts `class` / `className` and variant overrides scoped to that slot.

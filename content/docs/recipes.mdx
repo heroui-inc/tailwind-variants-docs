@@ -1,0 +1,29 @@
+---
+title: "Recipes"
+description: "Copy-paste Tailwind Variants recipes for common UI patterns like buttons, alerts, and badges."
+---
+
+import {
+  RecipesAlertDemo,
+  RecipesBadgeDemo,
+  RecipesButtonDemo
+} from '@/components/examples';
+import { recipesAlert, recipesBadge, recipesButton } from '@/demos/code';
+
+## Button
+
+<DemoPreview code={recipesButton} lang="ts">
+  <RecipesButtonDemo />
+</DemoPreview>
+
+## Alert (with slots)
+
+<DemoPreview code={recipesAlert} lang="ts">
+  <RecipesAlertDemo />
+</DemoPreview>
+
+## Badge
+
+<DemoPreview code={recipesBadge} lang="ts">
+  <RecipesBadgeDemo />
+</DemoPreview>

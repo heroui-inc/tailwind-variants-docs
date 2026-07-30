@@ -24,17 +24,92 @@ export type DemoIframeProps = {
   minHeight?: number;
 };
 
+function findParentSheet(href: string | null) {
+  if (!href) return null;
+  return [...document.styleSheets].find((sheet) => sheet.href === href) ?? null;
+}
+
+/** Prefer inlining CSS text so styles apply synchronously (avoids FOUC). */
+function injectStyleNode(from: Element, to: Document, after: ChildNode) {
+  if (from instanceof HTMLStyleElement) {
+    const style = to.createElement('style');
+    style.textContent = from.textContent ?? '';
+    for (const attr of from.attributes) {
+      if (attr.name === 'id') continue;
+      style.setAttribute(attr.name, attr.value);
+    }
+    after.after(style);
+    return style;
+  }
+
+  if (from instanceof HTMLLinkElement && from.rel === 'stylesheet') {
+    const parentSheet = findParentSheet(from.href);
+    if (parentSheet) {
+      try {
+        const cssText = [...parentSheet.cssRules]
+          .map((rule) => rule.cssText)
+          .join('\n');
+        const style = to.createElement('style');
+        style.dataset.href = from.href;
+        style.textContent = cssText;
+        after.after(style);
+        return style;
+      } catch {
+        // Cross-origin sheet — fall through to cloned <link>.
+      }
+    }
+
+    const link = from.cloneNode(true) as HTMLLinkElement;
+    after.after(link);
+    return link;
+  }
+
+  after.after(from.cloneNode(true));
+  return null;
+}
+
 function syncStyleSheets(from: Document, to: Document) {
   const marker = to.getElementById(STYLE_MARKER_ID);
-  if (!marker) return;
+  if (!marker) return [] as HTMLLinkElement[];
 
   while (marker.nextSibling) {
     marker.nextSibling.remove();
   }
 
+  const pendingLinks: HTMLLinkElement[] = [];
+  let insertAfter: ChildNode = marker;
+
   from.querySelectorAll('link[rel="stylesheet"], style').forEach((node) => {
-    marker.after(node.cloneNode(true));
+    const injected = injectStyleNode(node, to, insertAfter);
+    if (injected) {
+      insertAfter = injected;
+      if (injected instanceof HTMLLinkElement) {
+        pendingLinks.push(injected);
+      }
+    }
   });
+
+  return pendingLinks;
+}
+
+function waitForLinks(links: HTMLLinkElement[]) {
+  if (links.length === 0) return Promise.resolve();
+
+  return Promise.all(
+    links.map(
+      (link) =>
+        new Promise<void>((resolve) => {
+          if (link.sheet) {
+            resolve();
+            return;
+          }
+
+          const done = () => resolve();
+          link.addEventListener('load', done, { once: true });
+          link.addEventListener('error', done, { once: true });
+        })
+    )
+  ).then(() => undefined);
 }
 
 function applyTheme(doc: Document, theme: string | undefined) {
@@ -63,11 +138,13 @@ export function DemoIframe({
   children,
   className,
   title = 'Demo preview',
-  minHeight = 148
+  minHeight = 240
 }: DemoIframeProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const setupTokenRef = useRef(0);
   const [mounted, setMounted] = useState(false);
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
+  const [ready, setReady] = useState(false);
   const [height, setHeight] = useState(minHeight);
   const { resolvedTheme } = useTheme();
   const resolvedThemeRef = useRef(resolvedTheme);
@@ -77,12 +154,16 @@ export function DemoIframe({
     setMounted(true);
   }, []);
 
-  const setupDocument = useCallback(() => {
+  const setupDocument = useCallback(async () => {
     const iframe = iframeRef.current;
     const doc = iframe?.contentDocument;
     if (!iframe || !doc) return;
 
+    const token = ++setupTokenRef.current;
+
     doc.documentElement.lang = document.documentElement.lang || 'en';
+    // Hide until styles apply — prevents FOUC on fast refresh.
+    doc.documentElement.style.visibility = 'hidden';
 
     if (!doc.getElementById(STYLE_MARKER_ID)) {
       const marker = doc.createElement('meta');
@@ -90,7 +171,7 @@ export function DemoIframe({
       doc.head.appendChild(marker);
     }
 
-    syncStyleSheets(document, doc);
+    const pendingLinks = syncStyleSheets(document, doc);
     applyTheme(doc, resolvedThemeRef.current);
 
     doc.body.style.margin = '0';
@@ -107,7 +188,17 @@ export function DemoIframe({
       doc.body.appendChild(root);
     }
 
+    await waitForLinks(pendingLinks);
+    // Two frames: ensure layout + paint use the new CSSOM.
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+    });
+
+    if (token !== setupTokenRef.current) return;
+
+    doc.documentElement.style.visibility = '';
     setMountNode((prev) => (prev === root ? prev : root));
+    setReady(true);
     iframe.contentWindow?.parent.postMessage(
       { type: MESSAGE_READY },
       window.location.origin
@@ -120,7 +211,7 @@ export function DemoIframe({
     if (!iframe) return;
 
     if (iframe.contentDocument?.readyState === 'complete') {
-      setupDocument();
+      void setupDocument();
     }
   }, [mounted, setupDocument]);
 
@@ -156,37 +247,55 @@ export function DemoIframe({
   useEffect(() => {
     if (!mountNode) return;
 
+    let timer = 0;
     const observer = new MutationObserver(() => {
-      const doc = iframeRef.current?.contentDocument;
-      if (!doc) return;
-      syncStyleSheets(document, doc);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        const doc = iframeRef.current?.contentDocument;
+        if (!doc) return;
+        const pending = syncStyleSheets(document, doc);
+        void waitForLinks(pending);
+      }, 50);
     });
 
     observer.observe(document.head, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    return () => {
+      window.clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [mountNode]);
 
-  if (!mounted) {
-    return (
-      <div
-        aria-hidden
-        className={cn('w-full', className)}
-        style={{ height: minHeight }}
-      />
-    );
-  }
-
   return (
-    <>
-      <iframe
-        ref={iframeRef}
-        title={title}
-        src="about:blank"
-        className={cn('block w-full border-0 bg-transparent', className)}
-        style={{ height }}
-        onLoad={setupDocument}
-      />
-      {mountNode ? createPortal(children, mountNode) : null}
-    </>
+    <div
+      className={cn('relative w-full', className)}
+      style={{ minHeight: height }}
+    >
+      {!ready ? (
+        <div
+          aria-hidden
+          className="demo-iframe-placeholder absolute inset-0 z-10"
+          style={{ minHeight }}
+        />
+      ) : null}
+
+      {mounted ? (
+        <iframe
+          ref={iframeRef}
+          title={title}
+          src="about:blank"
+          className={cn(
+            'block w-full border-0 bg-transparent',
+            ready ? 'opacity-100' : 'pointer-events-none opacity-0'
+          )}
+          style={{ height, minHeight }}
+          onLoad={() => {
+            void setupDocument();
+          }}
+        />
+      ) : null}
+
+      {/* Portal only after styles are ready — avoids painting unstyled demos. */}
+      {ready && mountNode ? createPortal(children, mountNode) : null}
+    </div>
   );
 }

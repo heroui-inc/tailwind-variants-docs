@@ -1,156 +1,62 @@
 ---
 title: "Introduction"
-description: "Learn what Tailwind Variants is and its key features."
+description: "Learn what Tailwind Variants is, why it exists, and the core features for building typed Tailwind component recipes."
 ---
 
-import { WindowResizer, TVComponent, SlotsExample } from '@/components';
-import Image from 'next/image';
-import { DemoPreview } from '@/components/demo-preview';
-import { buttonBasic } from '@/demos/code/button-basic';
-import { slotsBasic } from '@/demos/code/slots-basic';
-import { buttonOverride } from '@/demos/code/button-override';
-import { composeExtend } from '@/demos/code/compose-extend';
+import { IntroButtonDemo } from '@/components/examples';
+import { introButton } from '@/demos/code';
 
-<Image
-  alt="tailwind-variants banner"
-  priority
-  quality={90}
-  className="mt-1 rounded-lg"
-  height="730"
-  src="/banner.png"
-  width="1460"
-/>
+**Tailwind Variants** is a first-class variant API for [Tailwind CSS](https://tailwindcss.com/). You define a component recipe once — base styles, variants, defaults, and compound rules — and call it anywhere with typed props.
 
-**Tailwind Variants** is a first-class variant API library for [TailwindCSS](https://tailwindcss.com/).
+Design systems need consistency without copy-pasting class strings. Tailwind Variants gives you Stitches-style variants on top of Tailwind: composable, predictable, and framework-agnostic.
+
+## Why Tailwind Variants
+
+- **One recipe, many call sites** — Change `color` or `size` at the call site instead of editing long class strings.
+- **Conflict resolution built in** — The default build merges conflicting Tailwind classes. No extra `tailwind-merge` install for TV.
+- **Slots for multi-part UI** — Buttons with icons, alerts with titles, cards with headers — each part gets its own styles and variants.
+- **TypeScript-first** — Infer variant props with `VariantProps`. Slotted components get typed slot functions.
+- **Two builds** — Default (with merge) or `tailwind-variants/lite` when bundle size matters more.
 
 ## Key features
 
 ### Variants
 
-Since [Stitches](https://stitches.dev) introduced variants, we became big fans of them, they are a great way to create a consistent design system, so we created **Tailwind Variants** to bring them to TailwindCSS.
+Define variant keys like `color`, `size`, or boolean flags like `disabled`. Each key maps to Tailwind classes. Think of each key as an independent **axis** when you combine several (for example `color` × `size`).
 
-<DemoPreview code={buttonBasic} lang="js">
-  <TVComponent
-    as="button"
-    size="sm"
-    color="secondary"
-    tv={{
-      base: 'font-medium bg-blue-500 text-white rounded-full active:opacity-80',
-      variants: {
-        color: {
-          primary: 'bg-blue-500 text-white',
-          secondary: 'bg-purple-500 text-white'
-        },
-        size: {
-          sm: 'text-sm',
-          md: 'text-base',
-          lg: 'px-4 py-3 text-lg'
-        }
-      },
-      defaultVariants: {
-        size: 'md',
-        color: 'primary'
-      },
-      compoundVariants: [
-        {
-          size: ['sm', 'md'],
-          class: 'px-3 py-1'
-        }
-      ]
-    }}
-  >
-    Click me
-  </TVComponent>
+<DemoPreview code={introButton} lang="ts">
+  <IntroButtonDemo />
 </DemoPreview>
 
-To learn more about variants, check the [variants](/docs/variants) page.
+### Slots
 
-### Split components into multiple slots
+Split a component into named parts — `base`, `icon`, `label` — and style each independently.
 
-You can style multiple components at once using the `slots` property.
+### Compound variants
 
-<DemoPreview code={slotsBasic} lang="js" iframe={false}>
-  <WindowResizer initialWidth={380} minWidth={280}>
-    <SlotsExample />
-  </WindowResizer>
-</DemoPreview>
+Apply extra classes when specific variant combinations match — for example, `color: primary` + `size: lg`.
 
-To learn more about slots and how to use them, check out the [Slots](/docs/slots) page.
+### Extend
 
-### Overrides
+Build on existing recipes. Extend a base button to add an `iconOnly` variant without duplicating styles.
 
-**Tailwind Variants** provides a `class` / `className` prop for overriding classes on any component.
+### Responsive
 
-<DemoPreview code={buttonOverride} lang="js">
-  <button className="rounded-full bg-pink-500 px-3 py-1 font-semibold text-white hover:bg-pink-500 active:opacity-80">
-    Button
-  </button>
-</DemoPreview>
-
-To learn more the overrides, check out this [page](/docs/overriding-styles).
-
-### Components composition
-
-**Tailwind Variants** allows you to compose components using the `extend` parameter. It automatically merges the `classes`, `slots`, `variants`, `defaultVariants` and `compoundVariants` of the extended component.
-
-<DemoPreview code={composeExtend} lang="js">
-  <div className="flex gap-3">
-    <button className="rounded-full bg-zinc-100 px-3 py-1 font-semibold hover:bg-zinc-200 active:opacity-80 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-800">
-      Button
-    </button>
-    <button className="rounded-lg bg-blue-500 px-3 py-1 text-sm font-semibold tracking-wider text-white uppercase shadow-lg shadow-blue-500/50 hover:bg-blue-600 active:opacity-80 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-600">
-      Buy button
-    </button>
-  </div>
-</DemoPreview>
-
-To learn more about **Components composition**, check out this [page](/docs/composing-components).
-
-### Developer experience
-
-**Tailwind Variants** is built with developer experience in mind, it provides a great autocomplete experience thanks to the fully-typed API, so when using TypeScript, `slots`, `values`, and `breakpoints` will be auto-completed for you.
-
-### Automatic conflict resolution
-
-**Tailwind Variants** resolves conflicting Tailwind classes on the default build. When enabled (the default), it efficiently merges your classes so you don't have to worry about TailwindCSS class conflicts. Use `/lite` if you don't need merge. See [Conflict Resolution](/docs/conflict-resolution).
-
-### Framework agnostic
-
-**Tailwind Variants** is a utility library that works with any framework. It's not tied to React.
-
-### Tailwindcss v4 Support
-
-**Tailwind Variants** supports `Tailwindcss v4`. You can check more details in the [Tailwind v4](/docs/tailwind-v4) guide.
-
-## Performance Improvements
-
-**Tailwind Variants** v2 brings significant performance enhancements:
-
-- **37-62% faster** for most operations
-- Optimized object creation and array operations
-- Reduced function call overhead
-- Better memory usage
-- Smaller bundle size with optional `tailwind-merge`
-
-These improvements make Tailwind Variants even more efficient for large-scale applications.
+Put Tailwind breakpoint prefixes (`sm:`, `md:`, `lg:`) in your recipe class strings. See [Responsive](/docs/responsive).
 
 ## Community
 
-We're excited to see the community adopt HeroUI, raise issues, and provide feedback. Whether it's a feature request, bug report, or a project to showcase, please get involved!
+Issues, feature requests, showcases, and questions are welcome. Pick the channel that fits:
 
-- [Discord](https://discord.gg/9b6yyZKmH4)
-- [Twitter](https://x.com/hero_ui)
-- [GitHub Discussions](https://github.com/heroui-inc/tailwind-variants/discussions)
-- [GitHub](https://github.com/heroui-inc/tailwind-variants)
+- [Discord](https://discord.gg/9b6yyZKmH4) — chat and quick help
+- [GitHub Discussions](https://github.com/heroui-inc/tailwind-variants/discussions) — longer-form questions
+- [GitHub Issues](https://github.com/heroui-inc/tailwind-variants/issues) — bugs and proposals
+- [Twitter](https://x.com/hero_ui) — announcements and updates
 
 ## Credits
 
-**Tailwind Variants** is heavily inspired by [Stitches](https://stitches.dev) and [CVA](https://github.com/joe-bell/cva).
+Tailwind Variants is heavily inspired by [Stitches](https://stitches.dev/) and [CVA](https://cva.style/).
 
-Special thanks to [Tianen Pang](https://github.com/tianenpang) for helping with the API design and library creation.
+Thanks to [Tianen Pang](https://github.com/tianenpang) for API design and early library work, [Junior Garcia](https://github.com/jrgarciadev) for building the library and docs, [Mark Skelton](https://github.com/mskelton) for ongoing maintenance, and [Joe Bell](https://github.com/joe-bell) for CVA.
 
-Special thanks to [Junior Garcia](https://github.com/jrgarciadev) for building the library and the documentation.
-
-Special thanks to [Mark Skelton](https://github.com/mskelton) for mantaining the library and the documentation.
-
-Special thanks to [Joe Bell](https://twitter.com/joe_bell) for creating [CVA](https://github.com/joe-bell/cva) it served as a great inspiration for this library.
+See [Acknowledgements](/docs/acknowledgements) for the full list of inspirations and dependencies.

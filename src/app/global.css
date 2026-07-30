@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "@heroui/styles";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 
@@ -7,48 +6,111 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Primary = HeroUI Default neutrals; bridge Fumadocs fd-* tokens */
+/*
+ * Neutral design tokens — cool gray, monochrome primary.
+ * Hierarchy: foreground > muted > subtle for text; surface / default / border for chrome.
+ */
 :root {
   color-scheme: light;
 
-  --primary: var(--default-foreground);
+  --white: oklch(100% 0 0);
+  --black: oklch(0% 0 0);
+  --snow: oklch(0.985 0.002 286);
+  --eclipse: oklch(0.205 0.008 286);
+
+  --background: oklch(0.978 0.003 286);
+  --foreground: var(--eclipse);
+  --surface: oklch(0.995 0.001 286);
+  --surface-foreground: var(--foreground);
+  --muted: oklch(0.48 0.012 286);
+  --subtle: oklch(0.62 0.01 286);
+  --default: oklch(0.945 0.004 286);
+  --default-foreground: var(--eclipse);
+  --border: oklch(0.895 0.006 286);
+  --separator: oklch(0.91 0.005 286);
+
+  --success: oklch(0.68 0.14 155);
+  --success-foreground: var(--eclipse);
+  --danger: oklch(0.62 0.19 25);
+  --danger-foreground: var(--snow);
+
+  --primary: var(--foreground);
   --primary-foreground: var(--white);
-  --accent: var(--primary);
-  --accent-foreground: var(--primary-foreground);
-  --focus: var(--primary);
+  --accent: var(--default);
+  --accent-foreground: var(--foreground);
+  --focus: var(--foreground);
 
   --color-fd-primary: var(--primary);
   --color-fd-primary-foreground: var(--primary-foreground);
   --color-fd-background: var(--background);
   --color-fd-foreground: var(--foreground);
+  --color-fd-muted: var(--default);
+  --color-fd-muted-foreground: var(--muted);
+  --color-fd-secondary: var(--default);
+  --color-fd-secondary-foreground: var(--default-foreground);
+  --color-fd-accent: var(--default);
+  --color-fd-accent-foreground: var(--foreground);
+  --color-fd-border: var(--border);
+  --color-fd-card: var(--surface);
+  --color-fd-popover: var(--surface);
+  --color-fd-popover-foreground: var(--foreground);
+  --color-fd-ring: var(--focus);
 
-  --landing-island: oklch(5% 0 0);
-  --code-window: oklch(97% 0 0);
-  --code-fg: oklch(35% 0.02 95);
-  --code-traffic-red: oklch(67% 0.18 24);
-  --code-traffic-yellow: oklch(76% 0.15 82);
-  --code-traffic-green: oklch(70% 0.17 150);
+  --landing-island: oklch(0.08 0.005 286);
+  --code-window: oklch(0.97 0.003 95);
+  --code-fg: oklch(0.38 0.02 95);
+  --code-traffic-red: oklch(0.67 0.18 24);
+  --code-traffic-yellow: oklch(0.76 0.15 82);
+  --code-traffic-green: oklch(0.7 0.17 150);
 
   --code-window-shadow: 0 24px 80px -24px
-    color-mix(in oklab, var(--black) 65%, transparent);
+    color-mix(in oklab, var(--black) 55%, transparent);
   --code-window-shadow-light: 0 20px 60px -28px
-    color-mix(in oklab, var(--black) 18%, transparent);
+    color-mix(in oklab, var(--black) 14%, transparent);
+
+  /* @see https://fumadocs.dev/docs/ui/theme#layout-width */
+  --fd-layout-width: 1440px;
 }
 
 .dark {
   color-scheme: dark;
 
+  --background: oklch(0.145 0.006 286);
+  --foreground: var(--snow);
+  --surface: oklch(0.175 0.007 286);
+  --surface-foreground: var(--foreground);
+  --muted: oklch(0.68 0.012 286);
+  --subtle: oklch(0.55 0.01 286);
+  --default: oklch(0.22 0.007 286);
+  --default-foreground: var(--snow);
+  --border: oklch(0.255 0.008 286);
+  --separator: oklch(0.235 0.007 286);
+
+  --danger: oklch(0.62 0.17 25);
+
+  --primary: var(--foreground);
   --primary-foreground: var(--eclipse);
-  --accent: var(--primary);
-  --accent-foreground: var(--primary-foreground);
-  --focus: var(--primary);
+  --accent: var(--default);
+  --accent-foreground: var(--foreground);
+  --focus: var(--foreground);
 
   --color-fd-primary: var(--primary);
   --color-fd-primary-foreground: var(--primary-foreground);
   --color-fd-background: var(--background);
   --color-fd-foreground: var(--foreground);
+  --color-fd-muted: var(--default);
+  --color-fd-muted-foreground: var(--muted);
+  --color-fd-secondary: var(--default);
+  --color-fd-secondary-foreground: var(--default-foreground);
+  --color-fd-accent: var(--default);
+  --color-fd-accent-foreground: var(--foreground);
+  --color-fd-border: var(--border);
+  --color-fd-card: var(--surface);
+  --color-fd-popover: var(--surface);
+  --color-fd-popover-foreground: var(--foreground);
+  --color-fd-ring: var(--focus);
 
-  --code-window: oklch(14% 0.005 286);
+  --code-window: oklch(0.16 0.006 286);
   --code-fg: var(--snow);
 }
 
@@ -56,33 +118,35 @@
   :root {
     --white: lab(100% 0 0);
     --black: lab(0% 0 0);
-    --snow: lab(98.97% 0 0);
-    --eclipse: lab(8.36% 0.8114 -2.1163);
+    --snow: lab(98.5% 0.2 -0.4);
+    --eclipse: lab(8.2% 0.7 -1.8);
 
-    --background: lab(96.54% 0 0);
-    --muted: lab(47.92% 1.8908 -4.9549);
-    --default: lab(93.03% 0.1332 -0.3621);
-    --border: lab(88.38% 0.5351 -1.4465);
-    --separator: lab(90.7% 0.5351 -1.4466);
+    --background: lab(97.4% 0.15 -0.35);
+    --muted: lab(48% 1.2 -3.2);
+    --subtle: lab(60% 0.9 -2.4);
+    --default: lab(93.8% 0.2 -0.5);
+    --border: lab(88.5% 0.4 -1.1);
+    --separator: lab(90.2% 0.35 -1);
 
-    --landing-island: lab(0.11% 0 0);
-    --code-window: lab(96.54% 0 0);
-    --code-fg: lab(32% 1.5 8);
+    --landing-island: lab(1.2% 0.2 -0.5);
+    --code-window: lab(96.8% 0.2 0.4);
+    --code-fg: lab(35% 1.2 6);
     --code-traffic-red: lab(55% 65 40);
     --code-traffic-yellow: lab(78% 15 80);
     --code-traffic-green: lab(70% -45 40);
   }
 
   .dark {
-    --background: lab(1.55% 0.2384 -0.6433);
-    --muted: lab(65.69% 2.0509 -5.3909);
-    --default: lab(15.75% 0.8202 -2.1562);
-    --border: lab(9.48% 0.8285 -2.1514);
-    --separator: lab(9.48% 0.8285 -2.1514);
-    --surface: lab(8.36% 0.8114 -2.1163);
+    --background: lab(4.8% 0.4 -1);
+    --muted: lab(66% 1.4 -3.5);
+    --subtle: lab(52% 1.1 -2.8);
+    --default: lab(14% 0.7 -1.8);
+    --border: lab(18% 0.8 -2);
+    --separator: lab(16% 0.7 -1.8);
+    --surface: lab(8.5% 0.7 -1.8);
 
-    --code-window: lab(2.8% 0.3 -0.8);
-    --code-fg: lab(98.97% 0 0);
+    --code-window: lab(6.5% 0.5 -1.2);
+    --code-fg: lab(98.5% 0.2 -0.4);
   }
 }
 
@@ -90,18 +154,49 @@
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
 
-  --container-landing: 1400px;
-  --text-code: 0.8125rem;
+  --container-landing: 1440px;
+  --text-code: 0.875rem;
 
   --shadow-code-window: var(--code-window-shadow);
   --shadow-code-window-light: var(--code-window-shadow-light);
 
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-default: var(--default);
+  --color-default-foreground: var(--default-foreground);
+  --color-border: var(--border);
+  --color-separator: var(--separator);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-focus: var(--focus);
+  --color-white: var(--white);
+  --color-black: var(--black);
+
   --color-fd-primary: var(--primary);
   --color-fd-primary-foreground: var(--primary-foreground);
   --color-fd-background: var(--background);
   --color-fd-foreground: var(--foreground);
+  --color-fd-muted: var(--default);
+  --color-fd-muted-foreground: var(--muted);
+  --color-fd-secondary: var(--default);
+  --color-fd-secondary-foreground: var(--default-foreground);
+  --color-fd-accent: var(--default);
+  --color-fd-accent-foreground: var(--foreground);
+  --color-fd-border: var(--border);
+  --color-fd-card: var(--surface);
+  --color-fd-popover: var(--surface);
+  --color-fd-popover-foreground: var(--foreground);
+  --color-fd-ring: var(--focus);
 
   --color-landing-island: var(--landing-island);
   --color-code-window: var(--code-window);
@@ -136,6 +231,99 @@ html > body[data-scroll-locked] {
   cursor: ew-resize !important;
 }
 
+/* Resizable demo preview — quiet neutral canvas + unclipped edge handle */
+.demo-preview-resizable .demo-resizer {
+  /* Sit between page background and surface chrome */
+  background-color: color-mix(in oklab, var(--default) 42%, var(--background));
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in oklab, var(--border) 48%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 12px 12px;
+  /* Right pad: entire grip sits outside the frame */
+  padding: 0.625rem 1.375rem 0.625rem 0.625rem;
+}
+
+.demo-resizer-shell {
+  position: relative;
+}
+
+.demo-resizer-frame {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  /* Match demo stage so the viewport reads as one surface */
+  background: var(--background);
+  border: 1px solid var(--separator);
+  box-shadow: none;
+}
+
+.demo-resizer-handle {
+  position: absolute;
+  top: 0;
+  /* Entirely in the canvas pad — no overlap with the frame */
+  right: -1.25rem;
+  z-index: 20;
+  display: flex;
+  width: 1.25rem;
+  height: 100%;
+  cursor: ew-resize;
+  touch-action: none;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.demo-resizer-handle-grip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 0.875rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  background: var(--default);
+  border: 1px solid var(--border);
+  box-shadow: none;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    height 160ms ease;
+}
+
+.demo-resizer-handle-grip > span {
+  display: block;
+  width: 0.5rem;
+  height: 1px;
+  border-radius: 1px;
+  background: var(--subtle);
+  transition: background 160ms ease;
+}
+
+.demo-resizer-handle:hover .demo-resizer-handle-grip,
+.demo-resizer-handle:focus-visible .demo-resizer-handle-grip,
+.demo-resizer-shell.is-dragging .demo-resizer-handle-grip {
+  height: 2.5rem;
+  background: color-mix(in oklab, var(--default) 70%, var(--border));
+  border-color: color-mix(in oklab, var(--border) 70%, var(--subtle));
+}
+
+.demo-resizer-handle:hover .demo-resizer-handle-grip > span,
+.demo-resizer-handle:focus-visible .demo-resizer-handle-grip > span,
+.demo-resizer-shell.is-dragging .demo-resizer-handle-grip > span {
+  background: var(--muted);
+}
+
+.demo-resizer-handle:focus-visible {
+  outline: none;
+}
+
+.demo-resizer-handle:focus-visible .demo-resizer-handle-grip {
+  outline: 2px solid color-mix(in oklab, var(--border) 55%, var(--subtle));
+  outline-offset: 2px;
+}
+
 #toc-title {
   display: none;
 }
@@ -155,6 +343,56 @@ html > body[data-scroll-locked] {
   background-size: 12px 12px;
 }
 
+/* Quiet loading surface — same grid as the stage, no pulsing bars */
+.demo-iframe-placeholder {
+  background: var(--background);
+}
+
+.demo-iframe-placeholder::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in oklab, var(--foreground) 9%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 12px 12px;
+}
+
+/* Press feedback — Emil: scale(0.97), ~150ms strong ease-out */
+.demo-stage button:not(:disabled),
+.demo-stage [data-demo-press] {
+  transition-property: transform;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.demo-stage button:not(:disabled):active,
+.demo-stage [data-demo-press]:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .demo-stage button:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-stage button:not(:disabled),
+  .demo-stage [data-demo-press] {
+    transition: none !important;
+  }
+
+  .demo-stage button:not(:disabled):active,
+  .demo-stage [data-demo-press]:active {
+    transform: none;
+  }
+}
+
 .demo-preview-code .demo-preview-codeblock,
 .demo-preview-code figure.shiki {
   margin: 0 !important;
@@ -168,19 +406,26 @@ html > body[data-scroll-locked] {
   overflow-x: auto;
   overflow-y: visible;
   background: transparent;
-  padding: 1.25rem;
+  padding: 0.875rem 1rem;
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: var(--text-code);
-  line-height: 1.5rem;
+  line-height: 1.75;
+  letter-spacing: normal;
+  font-variant-ligatures: none;
+  font-feature-settings:
+    "liga" 0,
+    "calt" 0;
   color: var(--code-fg);
 }
 
 .landing-code-window .shiki-magic-move-line-number {
-  opacity: 0.45;
+  opacity: 1;
+  color: #6b7280;
 }
 
 .dark .landing-code-window .shiki-magic-move-line-number {
-  opacity: 0.3;
+  opacity: 1;
+  color: #9ca3af;
 }
 
 @media (width >= 768px) {
@@ -210,4 +455,235 @@ html > body[data-scroll-locked] {
     color-mix(in oklab, var(--primary) 6%, transparent),
     transparent 62%
   );
+}
+
+/* Docs notebook layout: neutral chrome + denser page rhythm */
+#nd-notebook-layout {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Home layout hardcodes 1400px — keep the shared token. */
+#nd-home-layout {
+  --fd-layout-width: 1440px;
+}
+
+/*
+ * Below md, fumadocs keeps empty 1fr gutters that squeeze `main`.
+ * Span the page across the grid instead of touching sidebar/toc widths.
+ */
+@media (max-width: 767px) {
+  #nd-notebook-layout #nd-page {
+    grid-column: 1 / -1;
+  }
+}
+
+#nd-notebook-layout #nd-subnav {
+  border-color: var(--border);
+}
+
+#nd-notebook-layout #nd-sidebar {
+  background: var(--background);
+  border-inline-end: 1px solid var(--border);
+}
+
+/* Collapse empty notebook sidebar chrome when logo lives in the top header */
+#nd-notebook-layout
+  #nd-sidebar
+  > div:first-child:not(:has(a, button, [data-state])) {
+  display: none;
+}
+
+#nd-notebook-layout
+  #nd-sidebar
+  > div:last-child:not(:has(a, button, [data-theme-toggle])) {
+  display: none;
+}
+
+#nd-notebook-layout #nd-sidebar [data-sidebar-viewport],
+#nd-notebook-layout #nd-sidebar [data-radix-scroll-area-viewport] {
+  padding-block: 0.75rem;
+}
+
+#nd-notebook-layout #nd-page {
+  background: var(--background);
+}
+
+#nd-notebook-layout .prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-links: var(--foreground);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+#nd-notebook-layout
+  .prose
+  :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  scroll-margin-top: 5.5rem;
+}
+
+#nd-notebook-layout
+  .prose
+  :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  scroll-margin-top: 5.5rem;
+}
+
+#nd-notebook-layout
+  .prose
+  :where(p, ul, ol):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+#nd-notebook-layout
+  .prose
+  :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/*
+ * Docs tables — Linear-inspired: no outer box, no vertical rules,
+ * hairline header + row separators, airy padding, muted body copy.
+ * @see https://linear.app/docs
+ */
+#nd-notebook-layout .prose div.relative.overflow-auto:has(> table) {
+  margin-block: 1.35rem;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+#nd-notebook-layout
+  .prose
+  :where(table):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  border: 0;
+  border-radius: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background: transparent;
+}
+
+#nd-notebook-layout
+  .prose
+  :where(thead th):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 1.5rem 0.5rem 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  text-align: start;
+  white-space: nowrap;
+}
+
+#nd-notebook-layout
+  .prose
+  :where(tbody td):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 75%, transparent);
+  padding: 0.75rem 1.5rem 0.75rem 0;
+  vertical-align: top;
+  color: var(--muted);
+}
+
+#nd-notebook-layout
+  .prose
+  :where(tbody tr:last-child td):not(
+    :where([class~="not-prose"], [class~="not-prose"] *)
+  ) {
+  border-bottom: 0;
+}
+
+#nd-notebook-layout
+  .prose
+  :where(tbody td:first-child):not(
+    :where([class~="not-prose"], [class~="not-prose"] *)
+  ) {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+#nd-notebook-layout
+  .prose
+  :where(thead th:last-child, tbody td:last-child):not(
+    :where([class~="not-prose"], [class~="not-prose"] *)
+  ) {
+  padding-right: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #nd-notebook-layout
+    .prose
+    :where(tbody tr:hover td):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    background: color-mix(in oklab, var(--default) 60%, transparent);
+  }
+}
+
+/*
+ * Docs code blocks — structure aligned with shadcn/ui docs
+ * (text-sm, 1.75 leading, py-3.5 / px-4, soft radius, no shadow).
+ * Syntax colors stay on our theme.
+ */
+#nd-notebook-layout figure.shiki {
+  --padding-left: 1rem;
+  --padding-right: 1rem;
+  margin-block: 1.5rem;
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: none;
+  font-size: 0.875rem;
+}
+
+#nd-notebook-layout figure.shiki [role="region"] {
+  padding-block: 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  letter-spacing: normal;
+}
+
+#nd-notebook-layout figure.shiki pre,
+#nd-notebook-layout figure.shiki code,
+#nd-notebook-layout figure.shiki code span {
+  font-size: inherit;
+  line-height: inherit;
+  font-variant-ligatures: none;
+  font-feature-settings:
+    "liga" 0,
+    "calt" 0;
+}
+
+#nd-notebook-layout figure.shiki .line {
+  padding-block: 0.0625rem;
+  min-height: 1.75em;
+}
+
+#nd-notebook-layout figure.shiki .line:empty {
+  height: 1.75em;
+}
+
+#nd-notebook-layout figure.shiki button {
+  user-select: none;
 }

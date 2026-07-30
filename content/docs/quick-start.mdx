@@ -1,0 +1,63 @@
+---
+title: "Quick Start"
+description: "Install Tailwind Variants, choose default or lite, create your first tv recipe, and set up editor IntelliSense."
+---
+
+import { QuickStartButtonDemo } from '@/components/examples';
+import { quickStartButton } from '@/demos/code';
+
+## Install
+
+```bash
+npm install tailwind-variants
+```
+
+Conflict resolution is included in the default build. You do not need `tailwind-merge` unless your app calls it directly elsewhere.
+
+For the lite build (no merge, smaller bundle):
+
+```ts
+import { tv } from 'tailwind-variants/lite';
+```
+
+## Your first component
+
+Define a recipe with `tv`, then call it like a function. Defaults keep call sites short; pass props only when you need to diverge.
+
+<DemoPreview code={quickStartButton} lang="tsx">
+  <QuickStartButtonDemo />
+</DemoPreview>
+
+## Editor setup
+
+### VS Code IntelliSense
+
+So Tailwind CSS IntelliSense can complete classes inside `tv` strings, add this to your VS Code settings:
+
+```json
+{
+  "tailwindCSS.experimental.classRegex": [
+    ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ]
+}
+```
+
+### Prettier
+
+If you use [`prettier-plugin-tailwindcss`](https://github.com/tailwindlabs/prettier-plugin-tailwindcss), include `tv` in the function list so class order stays consistent:
+
+```js
+// prettier.config.js
+module.exports = {
+  plugins: ['prettier-plugin-tailwindcss'],
+  tailwindFunctions: ['tv', 'cn', 'cx']
+};
+```
+
+## Framework agnostic
+
+Tailwind Variants is framework-agnostic. Use the returned string with React, Vue, Svelte, or plain DOM:
+
+```ts
+element.className = button({ variant: 'primary' });
+```

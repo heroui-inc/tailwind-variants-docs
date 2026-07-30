@@ -1,0 +1,46 @@
+---
+title: "Compound Variants"
+description: "Apply extra classes when multiple variant keys match — for example a specific color and size combination."
+---
+
+import { CompoundVariantsDemo } from '@/components/examples';
+import { compoundVariants } from '@/demos/code';
+
+Sometimes a single axis is not enough. Compound variants add classes when **multiple** variant conditions are true at once — like `variant: primary` and `size: lg` together.
+
+## Basic compound variant
+
+Each entry lists the conditions and the classes to apply. Use `class` or `className` — they are equivalent:
+
+<DemoPreview code={compoundVariants} lang="ts">
+  <CompoundVariantsDemo />
+</DemoPreview>
+
+Large primary and secondary buttons pick up a soft shadow from the compound rules. The small primary and tertiary buttons do not.
+
+## Boolean conditions
+
+Compound variants work with boolean axes:
+
+```ts
+const button = tv({
+  variants: {
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900'
+    },
+    flat: { true: 'bg-transparent shadow-none', false: '' }
+  },
+  compoundVariants: [
+    {
+      variant: 'primary',
+      flat: true,
+      class: 'bg-zinc-900/10 text-zinc-900'
+    }
+  ]
+});
+```
+
+## When to use them
+
+Use compound variants for styles that depend on more than one axis at once — for example primary + large, or flat + primary. Keep styles that belong to a single axis on that axis.

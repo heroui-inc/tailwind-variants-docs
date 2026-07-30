@@ -1,20 +1,20 @@
 import { useSyncExternalStore } from 'react';
 
-function subscribe(width: number, onStoreChange: () => void) {
+const subscribe = (width: number, onStoreChange: () => void) => {
   const media = window.matchMedia(`(max-width: ${width}px)`);
 
   media.addEventListener('change', onStoreChange);
 
   return () => media.removeEventListener('change', onStoreChange);
-}
+};
 
-function getSnapshot(width: number) {
+const getSnapshot = (width: number) => {
   return window.matchMedia(`(max-width: ${width}px)`).matches;
-}
+};
 
-function getServerSnapshot() {
+const getServerSnapshot = () => {
   return false;
-}
+};
 
 export const useMediaQuery = (width: number): boolean => {
   return useSyncExternalStore(

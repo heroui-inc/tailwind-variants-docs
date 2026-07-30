@@ -1,175 +1,53 @@
 ---
 title: "Variants"
-description: "Define and compose style variants with a first-class API."
+description: "Define base styles and variant keys like color, size, and disabled on a tv recipe for typed call-site props."
 ---
 
-import { MultiVariantButton, TVComponent } from '@/components';
-import { Callout } from 'fumadocs-ui/components/callout';
-import { DemoPreview } from '@/components/demo-preview';
-import { buttonColor } from '@/demos/code/button-color';
-import { buttonMulti } from '@/demos/code/button-multi';
-import { buttonBoolean } from '@/demos/code/button-boolean';
-import { buttonCompound } from '@/demos/code/button-compound';
-import { buttonCompoundMulti } from '@/demos/code/button-compound-multi';
-import { buttonDefault } from '@/demos/code/button-default';
+import {
+  VariantsBadgeDemo,
+  VariantsBooleanDemo,
+  VariantsColorDemo,
+  VariantsMultiDemo
+} from '@/components/examples';
+import {
+  variantsBadge,
+  variantsBoolean,
+  variantsColor,
+  variantsMulti
+} from '@/demos/code';
 
-Variants allows you to create multiple versions of the same component.
+Variants turn one component definition into many visual states. You set a **base** — shared classes every call site gets — then add keys like `variant`, `size`, or `disabled`.
 
-## Adding variants
+## Base + variants
 
-You can add variants by using the `variants` key. There's no limit to how many variants you can add.
-
-<DemoPreview code={buttonColor} lang="js">
-  <TVComponent
-    as="button"
-    color="secondary"
-    tv={{
-      base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-      variants: {
-        color: {
-          primary: 'bg-blue-500 hover:bg-blue-700',
-          secondary: 'bg-purple-500 hover:bg-purple-700',
-          success: 'bg-green-500 hover:bg-green-700'
-        }
-      }
-    }}
-  >
-    Button
-  </TVComponent>
+<DemoPreview code={variantsColor} lang="ts">
+  <VariantsColorDemo />
 </DemoPreview>
 
-<Callout type="info">
-  <div className="text-sm">
-    You can also use the values as an array. e.g.&nbsp;
-    <code>base: ['font-semibold', 'text-white', ...]</code>
-  </div>
-</Callout>
+Base classes apply first. Variant classes layer on top. Conflicting utilities resolve automatically in the default build.
 
 ## Multiple variants
 
-You can add multiple variants to a single component.
+Combine as many variant keys as you need. Each key is an independent axis (`color` × `size` × `disabled`):
 
-<DemoPreview code={buttonMulti} lang="js">
-  <div className="flex-start flex items-center gap-3">
-    <MultiVariantButton color="primary" size="sm">
-      Primary
-    </MultiVariantButton>
-    <MultiVariantButton color="secondary" size="md">
-      Secondary
-    </MultiVariantButton>
-    <MultiVariantButton color="success" size="lg">
-      Success
-    </MultiVariantButton>
-  </div>
+<DemoPreview code={variantsMulti} lang="ts">
+  <VariantsMultiDemo />
 </DemoPreview>
 
 ## Boolean variants
 
-You can also add boolean variants to a component. This is useful when you want to add a state variant e.g. `disabled`.
+Use `true` / `false` keys for state flags:
 
-<DemoPreview code={buttonBoolean} lang="js">
-  <TVComponent
-    as="button"
-    color="secondary"
-    disabled={true}
-    tv={{
-      base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-      variants: {
-        color: {
-          primary: 'bg-blue-500 hover:bg-blue-700',
-          secondary: 'bg-purple-500 hover:bg-purple-700',
-          success: 'bg-green-500 hover:bg-green-700'
-        },
-        disabled: {
-          true: 'opacity-50 bg-gray-500 pointer-events-none'
-        }
-      }
-    }}
-  >
-    Disabled
-  </TVComponent>
+<DemoPreview code={variantsBoolean} lang="ts">
+  <VariantsBooleanDemo />
 </DemoPreview>
 
-## Compound variants
+Boolean variants work well for `disabled`, `active`, `loading`, or feature toggles.
 
-Sometimes you might want to add a variant that depends on another variant. For example, you might want to add a `color` variant that depends on the `disabled` variant. This is possible by using the `compoundVariants` key.
+## Array values
 
-<DemoPreview code={buttonCompound} lang="js">
-  <TVComponent
-    as="button"
-    color="success"
-    disabled={true}
-    tv={{
-      base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-      variants: {
-        color: {
-          primary: 'bg-blue-500 hover:bg-blue-700',
-          secondary: 'bg-purple-500 hover:bg-purple-700',
-          success: 'bg-green-500 hover:bg-green-700'
-        },
-        disabled: {
-          true: 'opacity-50 bg-gray-500 pointer-events-none'
-        }
-      },
-      compoundVariants: [
-        {
-          color: 'success',
-          disabled: true,
-          class: 'bg-green-100 text-green-700 dark:text-green-800'
-        }
-      ]
-    }}
-  >
-    Disabled
-  </TVComponent>
-</DemoPreview>
+Variant values accept arrays. TV flattens them like `clsx`:
 
-<Callout type="warning">
-  <div className="text-sm">
-    Notes that the <code>compoundVariants</code> key is an array.
-  </div>
-</Callout>
-
-You can also target **multiple** variants at once.
-
-<DemoPreview code={buttonCompoundMulti} lang="js">
-  <div className="flex gap-2">
-    <button className="text-md pointer-events-none rounded-full bg-slate-200 px-4 py-1.5 font-semibold text-slate-400 opacity-100 hover:bg-blue-700 active:opacity-80 dark:bg-slate-800">
-      Primary
-    </button>
-    <button className="text-md pointer-events-none rounded-full bg-slate-200 px-4 py-1.5 font-semibold text-slate-400 opacity-100 hover:bg-purple-700 active:opacity-80 dark:bg-slate-800">
-      Secondary
-    </button>
-  </div>
-</DemoPreview>
-
-## Default variants
-
-You can also add a default variant to a component. This is useful when you want to add a predefined variants values to a component.
-
-<DemoPreview code={buttonDefault} lang="js">
-  <TVComponent
-    as="button"
-    tv={{
-      base: 'font-semibold text-white py-1 px-3 rounded-full active:opacity-80',
-      variants: {
-        color: {
-          primary: 'bg-blue-500 hover:bg-blue-700',
-          secondary: 'bg-purple-500 hover:bg-purple-700',
-          success: 'bg-green-500 hover:bg-green-700'
-        },
-        size: {
-          sm: 'py-1 px-3 text-sm',
-          md: 'py-1.5 px-4 text-md',
-          lg: 'py-2 px-6 text-lg'
-        }
-      },
-      defaultVariants: {
-        color: 'primary',
-        size: 'md'
-      }
-    }}
-  >
-    Default
-  </TVComponent>
+<DemoPreview code={variantsBadge} lang="ts">
+  <VariantsBadgeDemo />
 </DemoPreview>

@@ -1,29 +1,37 @@
 import type { ReactNode } from 'react';
 
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
+import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 
-import { DocsSidebarFooter } from '@/components/docs-sidebar-footer';
-import { baseOptions } from '@/lib/layout-shared';
+import {
+  DocsSidebarItem,
+  DocsSidebarSeparator
+} from '@/components/docs-sidebar';
+import { docsOptions } from '@/lib/layout-shared';
 import { source } from '@/lib/source';
 
-export default function Layout({ children }: { children: ReactNode }) {
-  const options = baseOptions();
+const Layout = ({ children }: { children: ReactNode }) => {
+  const { nav, ...base } = docsOptions();
 
   return (
     <DocsLayout
       tree={source.getPageTree()}
-      {...options}
-      links={[]}
-      themeSwitch={{ enabled: false }}
-      slots={{
-        ...options.slots,
-        themeSwitch: false
+      {...base}
+      nav={{
+        ...nav,
+        mode: 'top'
       }}
       sidebar={{
-        footer: <DocsSidebarFooter key="docs-sidebar-footer" />
+        collapsible: false,
+        defaultOpenLevel: 1,
+        components: {
+          Item: DocsSidebarItem,
+          Separator: DocsSidebarSeparator
+        }
       }}
     >
       {children}
     </DocsLayout>
   );
-}
+};
+
+export default Layout;

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { codeThemeDark, codeThemeLight } from '@/lib/code-themes';
 
-export function useCodeTheme() {
+export const useCodeTheme = () => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -18,4 +18,4 @@ export function useCodeTheme() {
   }
 
   return resolvedTheme === 'light' ? codeThemeLight : codeThemeDark;
-}
+};

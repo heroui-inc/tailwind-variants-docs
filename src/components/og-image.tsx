@@ -1,0 +1,193 @@
+import type { ReactNode } from 'react';
+
+type DocsOgImageProps = {
+  title: ReactNode;
+  description?: ReactNode;
+};
+
+type SiteOgImageProps = {
+  title?: ReactNode;
+  description?: ReactNode;
+};
+
+/** Minimal mark for dark OG canvases (white plate + dark glyph). */
+const OgLogo = ({ size = 40 }: { size?: number }) => {
+  const height = Math.round((size * 220) / 230);
+
+  return (
+    <svg
+      width={size}
+      height={height}
+      viewBox="0 0 230 220"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M166.765 4.99988H63.2353C31.0728 4.99988 5 29.8876 5 60.5881V159.412C5 190.112 31.0728 215 63.2353 215H166.765C198.927 215 225 190.112 225 159.412V60.5881C225 29.8876 198.927 4.99988 166.765 4.99988Z"
+        fill="#FAFAFA"
+      />
+      <path
+        d="M113.75 48.2351L59.9999 79.2939L86.8752 93.7645L59.9999 139.294L113.75 171.765L166.028 140.706L140.258 125.529L166.765 79.2939L113.75 48.2351Z"
+        fill="#09090B"
+      />
+      <path
+        d="M166.765 79.2939L170.669 81.5321C171.896 79.3903 171.17 76.6592 169.039 75.4112L166.765 79.2939ZM113.75 108.235L111.617 112.197C112.957 112.919 114.571 112.914 115.907 112.185L113.75 108.235ZM59.9999 79.2939L57.7485 75.3976C56.3361 76.2138 55.476 77.7304 55.5005 79.3615C55.525 80.9926 56.4303 82.4827 57.8666 83.2561L59.9999 79.2939ZM113.75 48.2351L116.025 44.3524C114.629 43.5342 112.9 43.5291 111.499 44.3388L113.75 48.2351ZM113.75 171.765L111.424 175.616C112.844 176.474 114.622 176.481 116.049 175.633L113.75 171.765ZM59.9999 139.294L56.1247 137.006C54.8705 139.131 55.5612 141.87 57.6731 143.146L59.9999 139.294ZM86.8752 93.7645L89.0086 89.8024L89.0086 89.8024L86.8752 93.7645ZM166.028 140.706L168.327 144.574C169.694 143.762 170.531 142.288 170.528 140.697C170.525 139.106 169.683 137.635 168.312 136.828L166.028 140.706ZM63.2353 9.49988H166.765V0.499878H63.2353V9.49988ZM166.765 9.49988C196.641 9.49988 220.5 32.5678 220.5 60.5881H229.5C229.5 27.2073 201.213 0.499878 166.765 0.499878V9.49988ZM220.5 60.5881V159.412H229.5V60.5881H220.5ZM220.5 159.412C220.5 187.432 196.641 210.5 166.765 210.5V219.5C201.213 219.5 229.5 192.792 229.5 159.412H220.5ZM166.765 210.5H63.2353V219.5H166.765V210.5ZM63.2353 210.5C33.3585 210.5 9.5 187.432 9.5 159.412H0.5C0.5 192.792 28.7871 219.5 63.2353 219.5V210.5ZM9.5 159.412V60.5881H0.5V159.412H9.5ZM9.5 60.5881C9.5 32.5678 33.3585 9.49988 63.2353 9.49988V0.499878C28.7871 0.499878 0.5 27.2073 0.5 60.5881H9.5ZM164.608 75.3442L111.594 104.285L115.907 112.185L168.921 83.2437L164.608 75.3442ZM62.2514 83.1902L116.002 52.1314L111.499 44.3388L57.7485 75.3976L62.2514 83.1902ZM111.476 52.1179L164.49 83.1767L169.039 75.4112L116.025 44.3524L111.476 52.1179ZM116.077 167.913L62.3268 135.442L57.6731 143.146L111.424 175.616L116.077 167.913ZM115.884 104.273L89.0086 89.8024L84.7418 97.7267L111.617 112.197L115.884 104.273ZM89.0086 89.8024L62.1333 75.3318L57.8666 83.2561L84.7418 97.7267L89.0086 89.8024ZM63.8752 141.581L90.7504 96.052L83 91.477L56.1247 137.006L63.8752 141.581ZM116.049 175.633L168.327 144.574L163.73 136.837L111.452 167.896L116.049 175.633ZM162.861 77.0558L136.354 123.291L144.161 127.767L170.669 81.5321L162.861 77.0558ZM136.354 123.291L109.847 169.526L117.654 174.003L144.161 127.767L136.354 123.291ZM168.312 136.828L142.541 121.652L137.974 129.407L163.745 144.583L168.312 136.828Z"
+        fill="#FAFAFA"
+      />
+    </svg>
+  );
+};
+
+const OgShell = ({ children }: { children: ReactNode }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#09090B',
+        color: '#FAFAFA',
+        padding: '64px 72px',
+        fontFamily:
+          'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const OgBrand = () => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: '16px'
+      }}
+    >
+      <OgLogo />
+      <span
+        style={{
+          fontSize: '28px',
+          fontWeight: 500,
+          letterSpacing: '-0.02em',
+          color: 'rgba(250,250,250,0.88)',
+          margin: 0
+        }}
+      >
+        Tailwind Variants
+      </span>
+    </div>
+  );
+};
+
+/**
+ * Docs OG canvas — dark, sparse, left-weighted.
+ * Title + description top-left; brand bottom-left.
+ */
+export const DocsOgImage = ({ title, description }: DocsOgImageProps) => {
+  return (
+    <OgShell>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          maxWidth: '920px'
+        }}
+      >
+        <h1
+          style={{
+            margin: 0,
+            fontSize: '72px',
+            fontWeight: 600,
+            letterSpacing: '-0.04em',
+            lineHeight: 1.05,
+            color: '#FAFAFA'
+          }}
+        >
+          {title}
+        </h1>
+        {description ? (
+          <p
+            style={{
+              margin: 0,
+              fontSize: '28px',
+              fontWeight: 400,
+              letterSpacing: '-0.015em',
+              lineHeight: 1.35,
+              color: 'rgba(161,161,170,0.95)',
+              maxWidth: '820px'
+            }}
+          >
+            {description}
+          </p>
+        ) : null}
+      </div>
+
+      <div style={{ display: 'flex', flex: 1 }} />
+
+      <OgBrand />
+    </OgShell>
+  );
+};
+
+/**
+ * Home / site OG — logo, name, tagline. Nothing else.
+ */
+export const SiteOgImage = ({
+  title = 'Tailwind Variants',
+  description = 'A first-class variant API for Tailwind CSS.'
+}: SiteOgImageProps) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#09090B',
+        color: '#FAFAFA',
+        padding: '80px',
+        fontFamily: 'Geist, ui-sans-serif, system-ui, sans-serif'
+      }}
+    >
+      <div style={{ display: 'flex', marginBottom: '36px' }}>
+        <OgLogo size={56} />
+      </div>
+
+      <h1
+        style={{
+          margin: 0,
+          fontSize: '76px',
+          fontWeight: 500,
+          letterSpacing: '-0.045em',
+          lineHeight: 1.05,
+          color: '#FAFAFA'
+        }}
+      >
+        {title}
+      </h1>
+
+      {description ? (
+        <p
+          style={{
+            margin: '24px 0 0',
+            fontSize: '30px',
+            fontWeight: 400,
+            letterSpacing: '-0.015em',
+            lineHeight: 1.35,
+            color: 'rgba(161,161,170,0.95)',
+            maxWidth: '780px'
+          }}
+        >
+          {description}
+        </p>
+      ) : null}
+    </div>
+  );
+};

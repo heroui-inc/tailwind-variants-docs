@@ -9,7 +9,7 @@ const links = [
   { href: 'https://github.com/heroui-inc', label: 'GitHub' }
 ] as const;
 
-export function LandingFooter() {
+export const LandingFooter = () => {
   return (
     <footer className="px-6 py-10 md:py-12">
       <div
@@ -59,4 +59,4 @@ export function LandingFooter() {
       </div>
     </footer>
   );
-}
+};

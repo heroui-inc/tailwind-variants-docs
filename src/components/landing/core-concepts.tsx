@@ -16,7 +16,7 @@ const concepts = [
   {
     id: 'variants',
     name: 'Variants',
-    blurb: 'Color, size, and state as a first-class API.',
+    blurb: 'Variant, size, and state as a first-class API.',
     description:
       'Map variant axes once and reuse them across every instance of the component.',
     docsHref: '/docs/variants',
@@ -26,9 +26,10 @@ const concepts = [
 export const button = tv({
   base: 'rounded-full font-medium',
   variants: {
-    color: {
-      primary: 'bg-blue-500 text-white',
-      secondary: 'bg-zinc-800 text-white',
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900',
+      tertiary: 'text-zinc-600',
     },
     size: {
       sm: 'text-sm px-3 py-1',
@@ -37,7 +38,7 @@ export const button = tv({
   },
 });
 
-button({ color: 'primary', size: 'sm' });`
+button({ variant: 'primary', size: 'sm' });`
   },
   {
     id: 'defaults',
@@ -45,16 +46,17 @@ button({ color: 'primary', size: 'sm' });`
     blurb: 'Sensible defaults for every call site.',
     description:
       'Define the common case once, then override only what needs to change.',
-    docsHref: '/docs/variants#default-variants',
+    docsHref: '/docs/default-variants',
     fileName: 'button.styles.ts',
     usage: `import { tv } from 'tailwind-variants';
 
 export const button = tv({
   base: 'rounded-full font-medium',
   variants: {
-    color: {
-      primary: 'bg-blue-500 text-white',
-      secondary: 'bg-zinc-800 text-white',
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900',
+      tertiary: 'text-zinc-600',
     },
     size: {
       sm: 'text-sm px-3 py-1',
@@ -62,7 +64,7 @@ export const button = tv({
     },
   },
   defaultVariants: {
-    color: 'primary',
+    variant: 'primary',
     size: 'md',
   },
 });
@@ -102,16 +104,17 @@ const { base, icon, label } = button({ size: 'md' });`
     blurb: 'Styles for specific combinations.',
     description:
       'Express combination rules declaratively when a single axis is not enough.',
-    docsHref: '/docs/variants#compound-variants',
+    docsHref: '/docs/compound-variants',
     fileName: 'button.styles.ts',
     usage: `import { tv } from 'tailwind-variants';
 
 export const button = tv({
   base: 'rounded-full font-medium',
   variants: {
-    color: {
+    variant: {
       primary: 'text-white',
       secondary: 'text-zinc-900',
+      tertiary: 'text-zinc-600',
     },
     size: {
       sm: 'text-sm',
@@ -120,7 +123,7 @@ export const button = tv({
   },
   compoundVariants: [
     {
-      color: 'primary',
+      variant: 'primary',
       size: 'sm',
       class: 'uppercase tracking-wide',
     },
@@ -132,12 +135,12 @@ export const button = tv({
     name: 'Overrides',
     blurb: 'Local tweaks at the call site.',
     description: 'Adjust a single instance without forking the shared recipe.',
-    docsHref: '/docs/overriding-styles',
+    docsHref: '/docs/overrides',
     fileName: 'button.styles.ts',
     usage: `import { tv } from 'tailwind-variants';
 
 export const button = tv({
-  base: 'rounded-full bg-blue-500 px-3 py-1 font-medium text-white',
+  base: 'rounded-full bg-zinc-900 px-3 py-1 font-medium text-white',
 });
 
 button({ class: 'bg-pink-500' });
@@ -149,7 +152,7 @@ button({ class: 'bg-pink-500' });
     blurb: 'Extend shared recipes into new ones.',
     description:
       'Inherit base styles and variants, then override only what changes.',
-    docsHref: '/docs/composing-components',
+    docsHref: '/docs/extending',
     fileName: 'button.styles.ts',
     usage: `import { tv } from 'tailwind-variants';
 
@@ -160,9 +163,10 @@ const baseButton = tv({
 export const button = tv({
   extend: baseButton,
   variants: {
-    color: {
-      primary: 'bg-blue-500 text-white',
-      danger: 'bg-red-500 text-white',
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900',
+      tertiary: 'text-zinc-600',
     },
   },
 });`
@@ -173,7 +177,7 @@ export const button = tv({
     blurb: 'Predictable class resolution.',
     description:
       'Conflicting utilities resolve by intent — the last declaration wins.',
-    docsHref: '/docs/conflict-resolution',
+    docsHref: '/docs/class-resolution',
     fileName: 'button.styles.ts',
     usage: `import { tv, cn } from 'tailwind-variants';
 
@@ -198,7 +202,7 @@ button({ size: 'lg' });
     blurb: 'One factory for design system defaults.',
     description:
       'Share merge rules and custom class groups across every component recipe.',
-    docsHref: '/docs/config',
+    docsHref: '/docs/configuration',
     fileName: 'tv.ts',
     usage: `import { createTV } from 'tailwind-variants';
 
@@ -228,13 +232,14 @@ export const tv = createTV({
 export const button = tv({
   base: 'rounded-full font-medium',
   variants: {
-    color: {
-      primary: 'bg-blue-500 text-white',
-      secondary: 'bg-zinc-800 text-white',
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900',
+      tertiary: 'text-zinc-600',
     },
   },
   defaultVariants: {
-    color: 'primary',
+    variant: 'primary',
   },
 });
 
@@ -244,14 +249,14 @@ export type ButtonVariants = VariantProps<typeof button>;`
 
 type ConceptId = (typeof concepts)[number]['id'];
 
-export function CoreConcepts() {
+export const CoreConcepts = () => {
   const [activeId, setActiveId] = useState<ConceptId>(concepts[0].id);
   const listRef = useRef<HTMLUListElement>(null);
 
   const active =
     concepts.find((concept) => concept.id === activeId) ?? concepts[0];
 
-  function moveSelection(direction: 1 | -1) {
+  const moveSelection = (direction: 1 | -1) => {
     const currentIndex = concepts.findIndex(
       (concept) => concept.id === activeId
     );
@@ -265,9 +270,9 @@ export function CoreConcepts() {
         ?.querySelector<HTMLElement>(`[data-concept-id="${next.id}"]`)
         ?.focus();
     }
-  }
+  };
 
-  function handleListKeyDown(event: KeyboardEvent) {
+  const handleListKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       moveSelection(1);
@@ -275,7 +280,7 @@ export function CoreConcepts() {
       event.preventDefault();
       moveSelection(-1);
     }
-  }
+  };
 
   return (
     <LandingSection className="grid gap-8 py-10 md:py-14">
@@ -378,4 +383,4 @@ export function CoreConcepts() {
       </div>
     </LandingSection>
   );
-}
+};

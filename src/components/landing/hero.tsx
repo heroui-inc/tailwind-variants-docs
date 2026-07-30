@@ -6,7 +6,7 @@ import { InstallCommand } from '@/components/landing/install-command';
 import { LandingSection } from '@/components/landing/section';
 import { landingButtonClass } from '@/components/landing/styles';
 
-export function LandingHero() {
+export const LandingHero = () => {
   return (
     <LandingSection
       border="full"
@@ -51,4 +51,4 @@ export function LandingHero() {
       <HeroVisual />
     </LandingSection>
   );
-}
+};

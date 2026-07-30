@@ -1,0 +1,102 @@
+---
+title: "Configuration"
+description: "Share defaults across recipes with createTV, tweak defaultConfig globally, and customize conflict-resolution merge config."
+---
+
+Configure merge behavior once, then reuse it across every recipe in your design system.
+
+## Global `defaultConfig`
+
+To change settings for every `tv` call, mutate the exported `defaultConfig` value (v3.2+):
+
+```ts
+import { defaultConfig } from 'tailwind-variants';
+
+defaultConfig.twMerge = false;
+```
+
+Prefer `createTV` when only some recipes should share a config. Mutating `defaultConfig` affects the whole process — useful for app-wide defaults, easy to overreach in libraries.
+
+## `createTV`
+
+`createTV` returns a `tv` function with baked-in config:
+
+```ts
+import { createTV } from 'tailwind-variants';
+
+const tv = createTV({
+  twMerge: true,
+  twMergeConfig: {
+    extend: {
+      classGroups: {
+        'font-size': ['text-tiny', 'text-small']
+      }
+    }
+  }
+});
+
+const button = tv({
+  base: 'font-medium',
+  variants: {
+    size: {
+      tiny: 'text-tiny',
+      small: 'text-small'
+    }
+  }
+});
+```
+
+Every recipe created with this `tv` inherits the same merge settings.
+
+## `twMergeConfig`
+
+Extend or override the built-in merge groups when you use custom Tailwind tokens:
+
+```ts
+import { createTV } from 'tailwind-variants';
+
+const tv = createTV({
+  twMergeConfig: {
+    extend: {
+      theme: {
+        spacing: ['gap-grid']
+      },
+      classGroups: {
+        gap: [{ gap: ['grid'] }]
+      }
+    },
+    override: {
+      // replace default groups when needed
+    }
+  }
+});
+```
+
+Prefer `{ extend, override }` over replacing the entire config. Existing `twMergeConfig` objects from tailwind-merge generally keep working.
+
+## Per-recipe config
+
+Pass config as the second argument to `tv` for one-off overrides:
+
+```ts
+import { tv } from 'tailwind-variants';
+
+const badge = tv(
+  { base: 'rounded-full px-2', variants: { /* ... */ } },
+  { twMerge: false }
+);
+```
+
+Per-recipe config wins over `createTV` defaults for that instance.
+
+## Lite build
+
+`createTV` works with both entry points:
+
+```ts
+import { createTV } from 'tailwind-variants/lite';
+
+const tv = createTV({ twMerge: false });
+```
+
+The lite build ignores merge either way — use it when config is about API consistency, not merge.

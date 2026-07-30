@@ -1,0 +1,41 @@
+---
+title: "LLMs.txt"
+description: "Machine-readable Tailwind Variants docs for AI agents — llms.txt index, full corpus dump, per-page Markdown, and Accept-based content negotiation."
+---
+
+Docs are also available as Markdown so tools can read them without scraping HTML. Layout follows [llms.txt](https://llmstxt.org/).
+
+## Endpoints
+
+| URL | Format | Purpose |
+| --- | --- | --- |
+| `/llms.txt` | Markdown | Curated index: project summary plus links to every docs page’s `.md` URL |
+| `/llms-full.txt` | Markdown | Entire docs set in one file when you need the full corpus in context |
+| `/docs/{slug}.md` | Markdown | Single page as Markdown — stable URL for fetch, copy, and editor tools |
+| `/docs/{slug}` | HTML | Normal docs page; same Markdown as `.md` when `Accept` prefers it |
+
+## Content negotiation
+
+```http
+GET /docs/variants HTTP/1.1
+Accept: text/markdown
+```
+
+Browsers get HTML. Clients that prefer Markdown get the same body as `/docs/variants.md`.
+
+## Per-page Markdown
+
+```
+/docs/quick-start.md
+/docs/slots.md
+/docs/api-reference.md
+```
+
+Each response is the page title, URL, and Markdown body (demos expanded to code fences).
+
+## Usage
+
+1. Start with `/llms.txt`.
+2. Use `/llms-full.txt` when you need the whole corpus.
+3. Use `/docs/{slug}.md` for a single topic.
+4. Or call the [MCP server](/docs/mcp-server) from an editor agent.

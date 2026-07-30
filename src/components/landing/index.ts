@@ -1,8 +1,6 @@
 export { CodeWindow } from './code-window';
 export { CoreConcepts } from './core-concepts';
 export { LandingCta } from './cta';
-export { LandingDemo } from './demo';
-export { LandingFeatures } from './features';
 export { LandingFooter } from './footer';
 export { LandingHero } from './hero';
 export { InstallCommand } from './install-command';

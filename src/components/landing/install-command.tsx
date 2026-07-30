@@ -13,10 +13,10 @@ type InstallCommandProps = {
   fullWidth?: boolean;
 };
 
-export function InstallCommand({
+export const InstallCommand = ({
   className,
   fullWidth = false
-}: InstallCommandProps) {
+}: InstallCommandProps) => {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -44,8 +44,8 @@ export function InstallCommand({
         onClick={copy}
         aria-label={copied ? 'Copied' : `Copy ${command}`}
         className={cn(
-          'inline-flex size-9 shrink-0 items-center justify-center rounded-md text-muted hover:text-foreground',
-          'transition-[color,transform] active:scale-97',
+          'inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted hover:bg-default hover:text-foreground',
+          'transition-colors active:bg-default/80',
           easeOut,
           focusRing,
           interactive
@@ -59,4 +59,4 @@ export function InstallCommand({
       </button>
     </div>
   );
-}
+};

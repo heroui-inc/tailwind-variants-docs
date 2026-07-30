@@ -93,7 +93,7 @@ const toneIcons = {
   danger: TriangleExclamationIcon
 } as const;
 
-export function HeroVisual() {
+export const HeroVisual = () => {
   const [tone, setTone] = useState<Tone>('live');
   const slots = status({ tone });
   const Icon = toneIcons[tone];
@@ -157,4 +157,4 @@ export function HeroVisual() {
       </div>
     </div>
   );
-}
+};

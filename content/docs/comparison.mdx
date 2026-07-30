@@ -1,42 +1,32 @@
 ---
 title: "Comparison"
-description: "Compare Tailwind Variants with similar libraries."
+description: "Compare Tailwind Variants with Class Variance Authority (CVA) and hand-written class strings for component libraries."
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+## vs manual class strings
 
-Here's a comparison of Tailwind Variants with other libraries that provide similar functionality.
+| | Manual strings | Tailwind Variants |
+| --- | --- | --- |
+| Consistency | Easy to drift across files | Single recipe, many call sites |
+| Overrides | String concat, merge bugs | Built-in conflict resolution |
+| Multi-part UI | Separate strings per element | Slots with per-slot variants |
+| Types | None | `VariantProps` inference |
+| Bundle | Smallest | Default or lite build |
 
-<Callout type="info">
-  <div className="text-sm">
-    This comparison strives to be as accurate and unbiased as possible. If you
-    use any of these libraries and feel this information could be improved, feel
-    free to suggest changes using the "Edit this page" link at the right sidebar
-    of this page.
-  </div>
-</Callout>
+## vs CVA (Class Variance Authority)
 
-| Feature                         | Tailwind Variants | CVA | Windstitch | Classnames |
-| ------------------------------- | ----------------- | --- | ---------- | ---------- |
-| Variants API                    | ✅                | ✅  | ✅         | ❌         |
-| Framework agnostic              | ✅                | ✅  | ❌         | ✅         |
-| Split components (slots)        | ✅                | ❌  | ❌         | ❌         |
-| Compound slots                  | ✅                | ❌  | ❌         | ❌         |
-| Overrides components            | ✅                | ✅  | ✅         | ❌         |
-| Components composition (extend) | ✅                | ❌  | ✅         | ❌         |
-| Great DX (autocomplete types)   | ✅                | ✅  | ✅         | ❌         |
-| Needs TailwindCSS to work       | ✅                | ❌  | ✅         | ❌         |
-| Conflicts resolution            | ✅                | ❌  | ❌         | ❌         |
+[CVA](https://cva.style) is an excellent, lightweight variant generator. Tailwind Variants started as an extension of that idea.
 
-Note:
-✅ = supported, ❌ = not supported
+| Feature | CVA | Tailwind Variants |
+| --- | --- | --- |
+| Variants & defaults | Yes | Yes |
+| Compound variants | Yes | Yes |
+| Conflict resolution | Via `tailwind-merge` | Built into default build |
+| Slots | — | Yes |
+| Compound slots | — | Yes |
+| `extend` composition | Limited | First-class `extend` |
+| Lite build | — | `tailwind-variants/lite` |
 
-### Why Tailwind Variants?
+**Choose CVA** when you want the smallest possible variant helper and are fine wiring `tailwind-merge` yourself.
 
-A common question that we get is "Why you created **Tailwind Variants**? Why not use **CVA**?", and the
-fact is that we tried to use [CVA](https://github.com/joe-bell/cva) in [HeroUI](https://www.heroui.com) to migrate from Stitches to TailwindCSS, but we found it challenging
-to create a design system solely using CVA. Then we realized that some of the features we needed were not planned
-to be implemented in CVA as the creator has stated [here](https://cva.style/docs/faqs#how-can-i-create-responsive-variants-like-stitchesjs),
-so we decided to create Tailwind Variants to fill the gap. Our goal is not to compete with CVA, but to provide an alternative that meets our needs
-to migrate [HeroUI](https://www.heroui.com) to TailwindCSS as smoothly as possible. That being said, big shoutout to [Joe Bell](https://github.com/joe-bell)
-and [contributors](https://github.com/joe-bell/cva/graphs/contributors) you guys rock! 🤘 - we **recommend** to use CVA if don't need any of the **Tailwind Variants** features listed above.
+**Choose Tailwind Variants** when you want slots, built-in merge, compound slots, and a design-system-oriented API — especially for component libraries like [HeroUI](https://heroui.com).

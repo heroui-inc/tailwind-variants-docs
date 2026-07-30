@@ -1,0 +1,19 @@
+---
+title: "Default Variants"
+description: "Set sensible default variant values on a recipe so call sites stay short, then override them only when needed."
+---
+
+import { DefaultVariantsDemo } from '@/components/examples';
+import { defaultVariants } from '@/demos/code';
+
+Defaults apply when a variant key is omitted at the call site. Pass an explicit value to override any default.
+
+## Setting defaults
+
+Use `defaultVariants` to pick the variant value applied when a key is omitted:
+
+<DemoPreview code={defaultVariants} lang="tsx">
+  <DefaultVariantsDemo />
+</DemoPreview>
+
+Only `size` is overridden on the second button. `variant` stays `primary`. Explicit props win when you need a one-off.

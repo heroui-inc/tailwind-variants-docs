@@ -1,26 +1,22 @@
-import type { ElementType, FC, ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 
-import { tv as t } from 'tailwind-variants';
+import { tv as createTV } from 'tailwind-variants';
 
-interface TVComponentProps {
-  as: ElementType;
-  tv: object;
+type TVComponentProps = {
+  as?: ElementType;
+  tv: Parameters<typeof createTV>[0];
   children?: ReactNode;
-  [key: string]: unknown;
-}
+} & Record<string, unknown>;
 
-const TVComponent: FC<TVComponentProps> = ({
-  as = 'div',
-  tv = {},
+export default function TVComponent({
+  as: Component = 'div',
+  tv: config,
   children,
   ...otherProps
-}) => {
-  const Component = as;
-  const styles = t(tv);
+}: TVComponentProps) {
+  const styles = createTV(config);
 
   return (
-    <Component className={styles({ ...otherProps })}>{children}</Component>
+    <Component className={styles(otherProps as never)}>{children}</Component>
   );
-};
-
-export default TVComponent;
+}

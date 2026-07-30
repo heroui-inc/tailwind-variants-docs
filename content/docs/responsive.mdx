@@ -1,0 +1,62 @@
+---
+title: "Responsive"
+description: "Use Tailwind breakpoint prefixes like sm: and md: inside base, variant, and slot class strings — no TV-specific API."
+---
+
+import {
+  ResponsiveBaseDemo,
+  ResponsiveSlotsDemo,
+  ResponsiveVariantsDemo
+} from '@/components/examples';
+import {
+  responsiveBase,
+  responsiveSlots,
+  responsiveVariants
+} from '@/demos/code';
+
+Responsive styles are plain Tailwind. Put breakpoint prefixes like `sm:`, `md:`, and `lg:` directly in your `base`, variant, and slot class strings — there is no TV-specific responsive API.
+
+See [Tailwind responsive design](https://tailwindcss.com/docs/responsive-design) for breakpoint syntax.
+
+<Callout type="info">
+  The old `responsiveVariants` option was removed. It depended on Tailwind's `content.transform`, which [Tailwind CSS v4](/docs/tailwind-v4) no longer supports. Prefixes in class strings replace it.
+</Callout>
+
+## In `base`
+
+Scale shared styles across breakpoints. Drag the preview — media and type step up at `sm` / `md`, and from `sm` the title block and price sit on one row:
+
+<DemoPreview code={responsiveBase} lang="ts" resizable defaultWidth={320}>
+  <ResponsiveBaseDemo />
+</DemoPreview>
+
+## In variants
+
+Bake responsive utilities into a variant value. Here `size` is a **variant name**; the `sm:` prefixes inside those strings are the responsive part — the primary action stays full-width until `sm`:
+
+<DemoPreview code={responsiveVariants} lang="ts" resizable defaultWidth={320}>
+  <ResponsiveVariantsDemo />
+</DemoPreview>
+
+## With slots
+
+A calendar event: from `sm` title and place share one line; from `md` the card goes horizontal and those two stack again:
+
+<DemoPreview code={responsiveSlots} lang="ts" resizable defaultWidth={320}>
+  <ResponsiveSlotsDemo />
+</DemoPreview>
+
+## At the call site
+
+Overrides accept responsive classes too:
+
+```ts
+button({
+  variant: 'primary',
+  class: 'w-full sm:w-auto'
+});
+```
+
+## Conflict resolution
+
+Responsive utilities are distinct classes (`text-sm` vs `sm:text-base`). The default build merges conflicts **within the same breakpoint** — for example `sm:px-2` vs `sm:px-4` — the same way it merges unprefixed utilities. See [Class resolution](/docs/class-resolution).

@@ -6,41 +6,38 @@ import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { cn } from 'tailwind-variants';
 
 import { DemoIframe } from '@/components/demo-iframe';
+import { DemoResizer } from '@/components/demo-resizer';
 import { codeThemes } from '@/lib/code-themes';
 
-export interface DemoPreviewProps {
+export type DemoPreviewProps = {
   children: ReactNode;
   code: string;
   lang?: string;
   className?: string;
-  controls?: ReactNode;
   title?: string;
   description?: string;
   meta?: ReactNode;
-  /**
-   * Render the stage in an iframe for style isolation.
-   * Set to false for WindowResizer demos — Tailwind `sm:`/`md:` media queries
-   * must use the parent viewport.
-   */
+  /** Style isolation via iframe contentDocument. Default true. */
   iframe?: boolean;
-}
+  /**
+   * Enable a drag handle so the iframe viewport can be resized.
+   * Needed for demos that rely on `sm:` / `md:` / `lg:` media queries.
+   */
+  resizable?: boolean;
+  /** Initial resizable frame width in px. */
+  defaultWidth?: number;
+};
 
 function DemoStage({ children }: { children: ReactNode }) {
   return (
     <div
       data-demo-stage
       className={cn(
-        'demo-stage relative flex min-h-37 w-full items-center justify-center overflow-hidden px-5 py-10 sm:min-h-42 sm:px-6 sm:py-12',
-        'bg-background-secondary',
-        'has-data-window-resizer:items-stretch has-data-window-resizer:justify-stretch has-data-window-resizer:p-3 sm:has-data-window-resizer:p-4'
+        'demo-stage relative flex min-h-60 w-full items-center justify-center overflow-hidden px-5 py-10 sm:px-6 sm:py-12',
+        'bg-background'
       )}
     >
-      <div
-        className={cn(
-          'relative z-10 flex w-full min-w-0 items-center justify-center',
-          'has-data-window-resizer:block'
-        )}
-      >
+      <div className="relative z-10 flex w-full min-w-0 items-center justify-center">
         {children}
       </div>
     </div>
@@ -52,20 +49,32 @@ export function DemoPreview({
   code,
   lang = 'tsx',
   className,
-  controls,
   title,
   description,
   meta,
-  iframe = true
+  iframe = true,
+  resizable = false,
+  defaultWidth
 }: DemoPreviewProps) {
+  const stage = <DemoStage>{children}</DemoStage>;
+
+  const preview = iframe ? (
+    <DemoIframe title={title ? `${title} preview` : 'Demo preview'}>
+      {stage}
+    </DemoIframe>
+  ) : (
+    stage
+  );
+
   return (
     <div
       className={cn(
-        'demo-preview my-6 overflow-hidden rounded-xl border border-border bg-surface',
+        'demo-preview not-prose my-6 overflow-hidden rounded-xl border border-border bg-surface',
+        resizable && 'demo-preview-resizable',
         className
       )}
     >
-      {(title || description) && (
+      {title || description ? (
         <div className="border-b border-separator px-4 py-3 sm:px-5">
           {title ? (
             <p className="text-sm font-medium tracking-tight text-foreground">
@@ -78,29 +87,21 @@ export function DemoPreview({
             </p>
           ) : null}
         </div>
-      )}
+      ) : null}
 
-      <div className="flex flex-col gap-3 p-3 sm:p-3.5">
-        {controls ? (
-          <div className="flex flex-wrap items-end gap-3">{controls}</div>
-        ) : null}
-
-        <div className="overflow-hidden rounded-lg border border-border">
-          {iframe ? (
-            <DemoIframe title={title ? `${title} preview` : 'Demo preview'}>
-              <DemoStage>{children}</DemoStage>
-            </DemoIframe>
-          ) : (
-            <DemoStage>{children}</DemoStage>
-          )}
-        </div>
-
-        {meta ? (
-          <div className="px-0.5 font-mono break-all text-xs/relaxed text-muted">
-            {meta}
-          </div>
-        ) : null}
+      <div className="select-none overflow-hidden">
+        {resizable ? (
+          <DemoResizer defaultWidth={defaultWidth}>{preview}</DemoResizer>
+        ) : (
+          preview
+        )}
       </div>
+
+      {meta ? (
+        <div className="mt-3 px-0.5 font-mono break-all text-xs/relaxed text-muted">
+          {meta}
+        </div>
+      ) : null}
 
       <div className="demo-preview-code border-t border-separator">
         <DynamicCodeBlock
