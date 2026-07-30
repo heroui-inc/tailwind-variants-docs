@@ -36,13 +36,13 @@ const features = [
 
 export function LandingFeatures() {
   return (
-    <section className="border-fd-border border-t px-6 py-24">
+    <section className="border-t border-border px-6 py-24">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Built for design systems
           </h2>
-          <p className="text-fd-muted-foreground mt-3 text-pretty">
+          <p className="mt-3 text-pretty text-muted">
             Everything you need to express component variants with Tailwind —
             without fighting the cascade.
           </p>
@@ -52,7 +52,7 @@ export function LandingFeatures() {
             <li key={title}>
               <Card className="h-full">
                 <Card.Header className="gap-3">
-                  <div className="text-fd-muted-foreground flex size-8 shrink-0 items-center justify-center">
+                  <div className="flex size-8 shrink-0 items-center justify-center text-muted">
                     <Icon size={16} className="size-4" />
                   </div>
                   <Card.Title className="text-base">{title}</Card.Title>

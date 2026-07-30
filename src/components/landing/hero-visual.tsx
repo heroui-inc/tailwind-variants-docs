@@ -10,18 +10,14 @@ import {
   TriangleExclamationIcon
 } from '@/components/icons';
 import { HeroGrain } from '@/components/landing/hero-grain';
-import {
-  easeOut,
-  focusRingAccent,
-  interactive
-} from '@/components/landing/styles';
+import { easeOut, focusRing, interactive } from '@/components/landing/styles';
 
 const status = tv({
   slots: {
     root: [
       'inline-flex min-h-16 w-auto max-w-full items-center justify-between gap-4 overflow-hidden rounded-2xl',
       'border border-white/10 bg-landing-island ps-5 pe-3 py-3.5 text-white',
-      'shadow-[0_16px_48px_-16px_rgb(0_0_0/0.55)]',
+      'shadow-[0_16px_48px_-16px_color-mix(in_oklab,var(--black)_55%,transparent)]',
       'transition-[background-color,color,box-shadow] duration-200 ease-out'
     ],
     leading: 'flex min-w-0 items-center gap-3',
@@ -41,10 +37,10 @@ const status = tv({
         badge: 'bg-white/8 text-white/70'
       },
       live: {
-        root: 'bg-[color-mix(in_oklab,var(--color-landing-island)_88%,var(--accent)_12%)]',
-        icon: 'text-accent',
+        root: 'bg-[color-mix(in_oklab,var(--color-landing-island)_88%,var(--primary)_12%)]',
+        icon: 'text-white',
         label: 'text-white',
-        badge: 'bg-accent/15 text-accent'
+        badge: 'bg-white/15 text-white'
       },
       success: {
         root: 'bg-[color-mix(in_oklab,var(--color-landing-island)_88%,var(--success)_12%)]',
@@ -105,7 +101,7 @@ export function HeroVisual() {
   return (
     <div className="relative flex min-h-112 flex-col overflow-hidden md:min-h-full">
       <div aria-hidden className="landing-hero-glow absolute inset-0" />
-      <HeroGrain className="landing-hero-grain opacity-50" />
+      <HeroGrain className="landing-hero-grain opacity-75" />
 
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-8 px-8 py-16 pb-28 md:gap-10 md:px-12 md:py-20 md:pb-32">
         <div
@@ -140,17 +136,17 @@ export function HeroVisual() {
                   'relative px-2 py-1 text-code font-medium tracking-tight outline-none',
                   'transition-colors',
                   easeOut,
-                  focusRingAccent,
+                  focusRing,
                   interactive,
                   selected
-                    ? 'text-zinc-900 dark:text-white'
-                    : 'text-zinc-500 hover:text-zinc-900 dark:text-white/50 dark:hover:text-white'
+                    ? 'text-foreground'
+                    : 'text-muted hover:text-foreground'
                 )}
               >
                 {selected ? (
                   <span
                     aria-hidden
-                    className="absolute inset-0 rounded-lg bg-zinc-900/5 dark:bg-white/10"
+                    className="absolute inset-0 rounded-lg bg-default"
                   />
                 ) : null}
                 <span className="relative">{labels[value]}</span>

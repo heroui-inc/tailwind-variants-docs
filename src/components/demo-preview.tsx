@@ -6,6 +6,7 @@ import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
 import { cn } from 'tailwind-variants';
 
 import { DemoIframe } from '@/components/demo-iframe';
+import { codeThemes } from '@/lib/code-themes';
 
 export interface DemoPreviewProps {
   children: ReactNode;
@@ -30,7 +31,7 @@ function DemoStage({ children }: { children: ReactNode }) {
       data-demo-stage
       className={cn(
         'demo-stage relative flex min-h-37 w-full items-center justify-center overflow-hidden px-5 py-10 sm:min-h-42 sm:px-6 sm:py-12',
-        'bg-zinc-100 dark:bg-zinc-950',
+        'bg-background-secondary',
         'has-data-window-resizer:items-stretch has-data-window-resizer:justify-stretch has-data-window-resizer:p-3 sm:has-data-window-resizer:p-4'
       )}
     >
@@ -60,19 +61,19 @@ export function DemoPreview({
   return (
     <div
       className={cn(
-        'demo-preview my-6 overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950',
+        'demo-preview my-6 overflow-hidden rounded-xl border border-border bg-surface',
         className
       )}
     >
       {(title || description) && (
-        <div className="border-b border-zinc-200 px-4 py-3 sm:px-5 dark:border-zinc-800">
+        <div className="border-b border-separator px-4 py-3 sm:px-5">
           {title ? (
-            <p className="text-sm font-medium tracking-tight text-zinc-900 dark:text-zinc-100">
+            <p className="text-sm font-medium tracking-tight text-foreground">
               {title}
             </p>
           ) : null}
           {description ? (
-            <p className="text-fd-muted-foreground mt-0.5 text-pretty text-xs/relaxed sm:text-code">
+            <p className="mt-0.5 text-pretty text-xs/relaxed text-muted sm:text-code">
               {description}
             </p>
           ) : null}
@@ -84,7 +85,7 @@ export function DemoPreview({
           <div className="flex flex-wrap items-end gap-3">{controls}</div>
         ) : null}
 
-        <div className="overflow-hidden rounded-lg border border-zinc-200/80 dark:border-zinc-800">
+        <div className="overflow-hidden rounded-lg border border-border">
           {iframe ? (
             <DemoIframe title={title ? `${title} preview` : 'Demo preview'}>
               <DemoStage>{children}</DemoStage>
@@ -95,16 +96,20 @@ export function DemoPreview({
         </div>
 
         {meta ? (
-          <div className="text-fd-muted-foreground px-0.5 font-mono break-all text-xs/relaxed">
+          <div className="px-0.5 font-mono break-all text-xs/relaxed text-muted">
             {meta}
           </div>
         ) : null}
       </div>
 
-      <div className="demo-preview-code border-t border-zinc-200 dark:border-zinc-800">
+      <div className="demo-preview-code border-t border-separator">
         <DynamicCodeBlock
           lang={lang}
           code={code}
+          options={{
+            themes: codeThemes,
+            defaultColor: false
+          }}
           codeblock={{
             className:
               'demo-preview-codeblock my-0! rounded-none! border-0! bg-transparent! shadow-none!'

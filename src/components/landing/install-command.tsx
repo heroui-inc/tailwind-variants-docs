@@ -30,13 +30,13 @@ export function InstallCommand({
   return (
     <div
       className={cn(
-        'border-fd-border/70 flex min-h-11 items-center gap-3 rounded-xl border px-4 py-2.5 font-mono text-xs md:text-code',
+        'border-border/70 flex min-h-11 items-center gap-3 rounded-xl border px-4 py-2.5 font-mono text-xs md:text-code',
         fullWidth ? 'w-full' : 'mt-auto w-fit max-w-full',
         className
       )}
     >
       <span className="min-w-0 flex-1 truncate">
-        <span className="text-fd-muted-foreground">$ </span>
+        <span className="text-muted">$ </span>
         <span>{command}</span>
       </span>
       <button
@@ -44,7 +44,7 @@ export function InstallCommand({
         onClick={copy}
         aria-label={copied ? 'Copied' : `Copy ${command}`}
         className={cn(
-          'text-fd-muted-foreground inline-flex size-9 shrink-0 items-center justify-center rounded-md hover:text-fd-foreground',
+          'inline-flex size-9 shrink-0 items-center justify-center rounded-md text-muted hover:text-foreground',
           'transition-[color,transform] active:scale-97',
           easeOut,
           focusRing,

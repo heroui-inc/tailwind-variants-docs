@@ -13,8 +13,70 @@ const features = [
   {
     id: 'variants',
     name: 'Variants',
-    description: 'Declare color, size, and state once as a first-class API.',
-    block: `  variants: {
+    description: 'Declare color, size, and state once as a first-class API.'
+  },
+  {
+    id: 'slots',
+    name: 'Slots',
+    description: 'Style multi-part components from one shared recipe.'
+  },
+  {
+    id: 'compound',
+    name: 'Compound',
+    description: 'Styles that only show when variants combine.'
+  },
+  {
+    id: 'defaults',
+    name: 'Defaults',
+    description: 'Sensible defaults so every call stays concise.'
+  }
+] as const;
+
+type FeatureId = (typeof features)[number]['id'];
+
+/** Compound / Defaults require Variants. */
+const requiresVariants = new Set<FeatureId>(['compound', 'defaults']);
+
+const initialSelected = ['variants', 'defaults'] satisfies FeatureId[];
+
+const slotsBlock = `  slots: {
+    base: 'inline-flex items-center gap-2 rounded-full font-medium',
+    icon: 'size-4 shrink-0',
+    label: 'truncate',
+  },`;
+
+const defaultsBlock = `  defaultVariants: {
+    color: 'primary',
+    size: 'md',
+  },`;
+
+function variantsBlock(hasSlots: boolean) {
+  if (hasSlots) {
+    return `  variants: {
+    color: {
+      primary: {
+        base: 'bg-blue-500 text-white',
+        icon: 'text-white',
+      },
+      secondary: {
+        base: 'bg-zinc-800 text-white',
+        icon: 'text-white',
+      },
+    },
+    size: {
+      sm: {
+        base: 'text-sm px-3 py-1',
+        icon: 'size-3.5',
+      },
+      md: {
+        base: 'text-base px-4 py-2',
+        icon: 'size-4',
+      },
+    },
+  },`;
+  }
+
+  return `  variants: {
     color: {
       primary: 'bg-blue-500 text-white',
       secondary: 'bg-zinc-800 text-white',
@@ -23,61 +85,72 @@ const features = [
       sm: 'text-sm px-3 py-1',
       md: 'text-base px-4 py-2',
     },
-  },`
-  },
-  {
-    id: 'slots',
-    name: 'Slots',
-    description: 'Style multi-part components from one shared recipe.',
-    block: `  slots: {
-    base: 'inline-flex items-center gap-2 rounded-full font-medium',
-    icon: 'size-4 shrink-0',
-    label: 'truncate',
-  },`
-  },
-  {
-    id: 'compound',
-    name: 'Compound',
-    description: 'Styles that only show when variants combine.',
-    block: `  compoundVariants: [
+  },`;
+}
+
+function compoundBlock(hasSlots: boolean) {
+  if (hasSlots) {
+    return `  compoundVariants: [
+    {
+      color: 'primary',
+      size: 'sm',
+      class: {
+        base: 'uppercase tracking-wide',
+        label: 'tracking-wide',
+      },
+    },
+  ],`;
+  }
+
+  return `  compoundVariants: [
     {
       color: 'primary',
       size: 'sm',
       class: 'uppercase tracking-wide',
     },
-  ],`
-  },
-  {
-    id: 'defaults',
-    name: 'Defaults',
-    description: 'Sensible defaults so every call stays concise.',
-    block: `  defaultVariants: {
-    color: 'primary',
-    size: 'md',
-  },`
-  }
-] as const;
-
-type FeatureId = (typeof features)[number]['id'];
-
-const initialSelected = ['variants', 'defaults'] satisfies FeatureId[];
+  ],`;
+}
 
 function createTvCode(selected: readonly FeatureId[]) {
-  const active = features.filter((feature) => selected.includes(feature.id));
   const hasSlots = selected.includes('slots');
-
-  return [
+  const parts: Array<string | null> = [
     `import { tv } from 'tailwind-variants';`,
     '',
     'export const button = tv({',
     hasSlots
-      ? null
+      ? slotsBlock
       : `  base: 'inline-flex items-center rounded-full font-medium',`,
-    ...active.map((feature) => feature.block),
+    selected.includes('variants') ? variantsBlock(hasSlots) : null,
+    selected.includes('compound') ? compoundBlock(hasSlots) : null,
+    selected.includes('defaults') ? defaultsBlock : null,
     '});'
-  ]
-    .filter((line) => line !== null)
-    .join('\n');
+  ];
+
+  return parts.filter((line) => line !== null).join('\n');
+}
+
+function toggleFeature(current: FeatureId[], id: FeatureId): FeatureId[] {
+  const isSelected = current.includes(id);
+
+  if (isSelected) {
+    let next = current.filter((item) => item !== id);
+
+    // Drop dependents when Variants turns off.
+    if (id === 'variants') {
+      next = next.filter((item) => !requiresVariants.has(item));
+    }
+
+    return next;
+  }
+
+  const next = new Set<FeatureId>([...current, id]);
+
+  // Selecting Compound / Defaults always pulls Variants in.
+  if (requiresVariants.has(id)) {
+    next.add('variants');
+  }
+
+  return features.map((feature) => feature.id).filter((item) => next.has(item));
 }
 
 export function VariantsPlayground() {
@@ -104,7 +177,7 @@ export function VariantsPlayground() {
           description="A small API with full control over variants, slots, and compound styles."
         />
 
-        <div className="@md:grid-cols-2 mt-8 grid grid-cols-1 gap-2.5">
+        <div className="@md:grid-cols-2 mt-8 grid grid-cols-1 gap-2">
           {features.map((feature) => {
             const isSelected = selected.includes(feature.id);
 
@@ -114,41 +187,26 @@ export function VariantsPlayground() {
                 key={feature.id}
                 aria-pressed={isSelected}
                 onClick={() => {
-                  setSelected((current) =>
-                    current.includes(feature.id)
-                      ? current.filter((item) => item !== feature.id)
-                      : [...current, feature.id]
-                  );
+                  setSelected((current) => toggleFeature(current, feature.id));
                 }}
                 className={cn(
-                  'group relative overflow-hidden rounded-xl p-4 ps-4.5 text-start',
-                  'border transition-[border-color,background-color,color]',
+                  'group rounded-xl p-4 text-start',
+                  'transition-[background-color,color,box-shadow]',
                   easeOut,
                   focusRing,
                   interactive,
                   isSelected
-                    ? 'border-fd-border/70 bg-fd-secondary/50'
-                    : 'border-fd-border/55 bg-transparent hover:border-fd-border hover:bg-fd-secondary/30'
+                    ? 'bg-default text-default-foreground'
+                    : 'bg-transparent text-muted hover:bg-default/60 hover:text-foreground'
                 )}
               >
-                <span
-                  aria-hidden
-                  className={cn(
-                    'bg-fd-primary absolute inset-y-3 inset-s-0 w-0.5 rounded-full',
-                    'origin-center transition-[opacity,transform]',
-                    easeOut,
-                    isSelected
-                      ? 'scale-y-100 opacity-100'
-                      : 'scale-y-50 opacity-0'
-                  )}
-                />
                 <span className="flex items-center justify-between gap-3">
                   <span
                     className={cn(
                       'text-sm font-medium tracking-tight sm:text-[0.9375rem]',
                       isSelected
-                        ? 'text-fd-foreground'
-                        : 'text-fd-foreground/85 group-hover:text-fd-foreground'
+                        ? 'text-foreground'
+                        : 'group-hover:text-foreground'
                     )}
                   >
                     {feature.name}
@@ -157,11 +215,11 @@ export function VariantsPlayground() {
                     aria-hidden
                     className={cn(
                       'flex size-5 shrink-0 items-center justify-center rounded-full',
-                      'transition-[background-color,color,box-shadow]',
+                      'transition-[background-color,color]',
                       easeOut,
                       isSelected
-                        ? 'bg-fd-primary text-fd-primary-foreground shadow-sm shadow-fd-primary/25'
-                        : 'bg-fd-secondary/80 text-fd-muted-foreground group-hover:bg-fd-secondary group-hover:text-fd-foreground'
+                        ? 'bg-foreground text-background'
+                        : 'bg-default text-muted group-hover:text-foreground'
                     )}
                   >
                     {isSelected ? (
@@ -175,8 +233,8 @@ export function VariantsPlayground() {
                   className={cn(
                     'mt-2 block text-sm/relaxed',
                     isSelected
-                      ? 'text-fd-muted-foreground'
-                      : 'text-fd-muted-foreground/80 group-hover:text-fd-muted-foreground'
+                      ? 'text-muted'
+                      : 'text-muted/80 group-hover:text-muted'
                   )}
                 >
                   {feature.description}

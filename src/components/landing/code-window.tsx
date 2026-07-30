@@ -15,19 +15,19 @@ export function CodeWindow({ filename, children, className }: CodeWindowProps) {
     <div
       className={cn(
         'landing-code-window relative flex flex-col overflow-x-auto overflow-y-visible rounded-2xl border',
-        'border-zinc-200/90 bg-zinc-50 shadow-code-window-light',
-        'dark:border-white/10 dark:bg-zinc-950 dark:shadow-code-window',
+        'border-border bg-code-window shadow-code-window-light',
+        'dark:shadow-code-window',
         className
       )}
     >
-      <div className="via-fd-primary/60 absolute inset-x-10 top-0 h-px bg-linear-to-r from-transparent to-transparent" />
-      <div className="grid shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-zinc-200/80 px-4 py-3 dark:border-white/5">
+      <div className="via-primary/50 absolute inset-x-10 top-0 h-px bg-linear-to-r from-transparent to-transparent" />
+      <div className="grid shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-separator px-4 py-3">
         <div className="flex gap-1.5">
-          <span className="size-2.5 rounded-full bg-[oklch(67%_0.18_24)]" />
-          <span className="size-2.5 rounded-full bg-[oklch(76%_0.15_82)]" />
-          <span className="size-2.5 rounded-full bg-[oklch(70%_0.17_150)]" />
+          <span className="size-2.5 rounded-full bg-code-traffic-red" />
+          <span className="size-2.5 rounded-full bg-code-traffic-yellow" />
+          <span className="size-2.5 rounded-full bg-code-traffic-green" />
         </div>
-        <span className="font-mono text-xs tracking-tight text-zinc-500">
+        <span className="font-mono text-xs tracking-tight text-muted">
           {filename}
         </span>
       </div>

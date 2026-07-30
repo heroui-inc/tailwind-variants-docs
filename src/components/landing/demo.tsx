@@ -72,13 +72,13 @@ export function LandingDemo() {
 
   return (
     <DemoPreview
-      className="landing-hero-demo my-0"
+      className="my-0"
       code={code}
       lang="tsx"
       meta={
         <span>
-          <span className="text-zinc-500 dark:text-zinc-500">result → </span>
-          <span className="text-zinc-700 dark:text-zinc-300">{className}</span>
+          <span className="text-muted">result → </span>
+          <span className="text-foreground">{className}</span>
         </span>
       }
       controls={

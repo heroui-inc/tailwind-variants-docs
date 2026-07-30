@@ -6,12 +6,28 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { cn } from 'tailwind-variants';
 
+/**
+ * Neutral mesh: cool ink + a warm graphite accent.
+ * Enough value range for depth, without loud chroma.
+ */
 const themes = {
   dark: {
-    colors: ['#05080f', '#0a1628', '#0072f5', '#1e3a8a'] as string[]
+    colors: [
+      '#08080a', // void
+      '#12131a', // cool ink
+      '#1c1d26', // slate depth
+      '#2e2c34', // lifted charcoal
+      '#3f3a35' // warm graphite
+    ] as string[]
   },
   light: {
-    colors: ['#f4f8ff', '#dbeafe', '#60a5fa', '#0072f5'] as string[]
+    colors: [
+      '#faf9f7', // paper
+      '#f1efec', // warm mist
+      '#e6e4e8', // cool stone
+      '#d2cfc9', // soft taupe
+      '#a9a49c' // muted bronze
+    ] as string[]
   }
 } as const;
 
@@ -37,11 +53,12 @@ export function HeroGrain({ className }: HeroGrainProps) {
         key={mode}
         className="absolute inset-0"
         colors={[...colors]}
-        distortion={0.65}
-        swirl={0.18}
-        grainMixer={0.35}
-        grainOverlay={0.45}
-        speed={reducedMotion ? 0 : 0.28}
+        distortion={0.78}
+        swirl={0.32}
+        grainMixer={0.22}
+        grainOverlay={0.28}
+        speed={reducedMotion ? 0 : 0.18}
+        scale={1.15}
       />
     </div>
   );

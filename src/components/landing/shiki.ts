@@ -7,16 +7,13 @@ import type {
 
 import { createHighlighterCoreSync } from 'shiki/core';
 import typescript from 'shiki/dist/langs/typescript.mjs';
-import oneLight from 'shiki/dist/themes/one-light.mjs';
 import vesper from 'shiki/dist/themes/vesper.mjs';
+import vitesseLight from 'shiki/dist/themes/vitesse-light.mjs';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
-
-export const codeThemeLight = 'one-light';
-export const codeThemeDark = 'vesper';
 
 export const highlighter = createHighlighterCoreSync({
   engine: createJavaScriptRegexEngine(),
-  themes: [oneLight, vesper],
+  themes: [vitesseLight, vesper],
   langs: [typescript]
 });
 

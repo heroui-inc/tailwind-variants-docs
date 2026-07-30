@@ -298,7 +298,7 @@ export function CoreConcepts() {
           aria-label="Core concepts"
           tabIndex={0}
           onKeyDown={handleListKeyDown}
-          className="divide-fd-border/60 flex min-h-112 flex-col divide-y md:min-h-128"
+          className="divide-separator flex min-h-112 flex-col divide-y md:min-h-128"
         >
           {concepts.map((concept) => {
             const isActive = concept.id === active.id;
@@ -313,30 +313,20 @@ export function CoreConcepts() {
                   data-concept-id={concept.id}
                   onClick={() => setActiveId(concept.id)}
                   className={cn(
-                    'relative w-full px-3 py-3 text-start sm:px-3.5 sm:py-3.5',
+                    'w-full px-3 py-3 text-start sm:px-3.5 sm:py-3.5',
                     'transition-[color,background-color]',
                     easeOut,
                     focusRing,
                     interactive,
                     isActive
-                      ? 'bg-fd-secondary/45 text-fd-foreground'
-                      : 'text-fd-muted-foreground hover:bg-fd-secondary/25 hover:text-fd-foreground'
+                      ? 'bg-default text-foreground'
+                      : 'text-muted hover:bg-default/50 hover:text-foreground'
                   )}
                 >
                   <span
                     className={cn(
-                      'bg-fd-primary absolute inset-y-3.5 inset-s-0 w-0.5 rounded-full',
-                      'transition-[opacity,transform] origin-center',
-                      easeOut,
-                      isActive
-                        ? 'scale-y-100 opacity-100'
-                        : 'scale-y-50 opacity-0'
-                    )}
-                  />
-                  <span
-                    className={cn(
                       'mb-0.5 block text-sm font-medium tracking-tight',
-                      isActive && 'text-fd-foreground'
+                      isActive && 'text-foreground'
                     )}
                   >
                     {concept.name}
@@ -344,9 +334,7 @@ export function CoreConcepts() {
                   <span
                     className={cn(
                       'block text-xs/relaxed',
-                      isActive
-                        ? 'text-fd-muted-foreground'
-                        : 'text-fd-muted-foreground/80'
+                      isActive ? 'text-muted' : 'text-muted/80'
                     )}
                   >
                     {concept.blurb}
@@ -362,14 +350,14 @@ export function CoreConcepts() {
             <h3 className="text-xl font-medium tracking-tight sm:text-2xl">
               {active.name}
             </h3>
-            <p className="text-fd-muted-foreground mt-2 text-pretty text-sm/relaxed">
+            <p className="mt-2 text-pretty text-sm/relaxed text-muted">
               {active.description}
             </p>
             <Link
               href={active.docsHref}
               className={cn(
-                'text-fd-primary mt-4 inline-flex min-h-9 items-center gap-1.5 text-sm font-medium',
-                'transition-[opacity,transform] hover:opacity-80 active:scale-97',
+                'mt-4 inline-flex min-h-9 items-center gap-1.5 text-sm font-medium text-foreground',
+                'underline-offset-4 transition-[opacity,text-decoration-color] hover:underline',
                 easeOut,
                 focusRing,
                 interactive

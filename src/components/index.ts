@@ -4,7 +4,5 @@ export * from './heroui-logo';
 export * from './icons';
 export * from './logo';
 export * from './radio';
-export * from './snippet';
-export * from './tooltip';
 export * from './tv-component';
 export * from './window-resizer';

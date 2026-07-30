@@ -86,8 +86,8 @@ export function ThemeToggle({
           className={cn(
             'inline-flex size-7 items-center justify-center rounded-md transition-colors duration-150 ease-out',
             value === id
-              ? 'bg-fd-accent text-fd-accent-foreground'
-              : 'text-fd-muted-foreground hover:text-fd-foreground'
+              ? 'bg-default text-default-foreground'
+              : 'text-muted hover:text-foreground'
           )}
           onClick={() => setTheme(id)}
         >

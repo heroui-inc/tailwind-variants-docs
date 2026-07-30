@@ -15,7 +15,7 @@ export function LandingFooter() {
       <div
         className={cn(
           landingMax,
-          'text-fd-muted-foreground grid grid-cols-1 items-center gap-4 text-sm sm:grid-cols-3'
+          'text-muted grid grid-cols-1 items-center gap-4 text-sm sm:grid-cols-3'
         )}
       >
         <a
@@ -23,7 +23,7 @@ export function LandingFooter() {
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            'text-fd-foreground inline-flex w-fit items-center justify-center gap-2 justify-self-center transition-opacity hover:opacity-80 sm:justify-self-start',
+            'inline-flex w-fit items-center justify-center gap-2 justify-self-center text-foreground transition-opacity hover:opacity-80 sm:justify-self-start',
             interactive
           )}
           title="HeroUI homepage"
@@ -47,7 +47,7 @@ export function LandingFooter() {
               target="_blank"
               rel="noreferrer"
               className={cn(
-                'hover:text-fd-foreground transition-colors',
+                'transition-colors hover:text-foreground',
                 easeOut,
                 interactive
               )}

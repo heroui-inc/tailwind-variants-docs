@@ -3,9 +3,8 @@
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
-import { codeThemeDark, codeThemeLight } from '@/components/landing/shiki';
+import { codeThemeDark, codeThemeLight } from '@/lib/code-themes';
 
-/** Returns null until mounted so we never paint the wrong Shiki theme. */
 export function useCodeTheme() {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);

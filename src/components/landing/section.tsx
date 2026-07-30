@@ -14,9 +14,9 @@ type LandingSectionProps = {
 };
 
 const borderClass: Record<Border, string | null> = {
-  'x-b': 'border-fd-border border-x border-b',
-  'x-y': 'border-fd-border border-x border-y',
-  full: 'border-fd-border border',
+  'x-b': 'border-border border-x border-b',
+  'x-y': 'border-border border-x border-y',
+  full: 'border-border border',
   none: null
 };
 
@@ -62,7 +62,7 @@ export function SectionIntro({
         className
       )}
     >
-      <p className="text-fd-primary text-sm font-medium">{eyebrow}</p>
+      <p className="text-primary text-sm font-medium">{eyebrow}</p>
       <h2
         className={cn(
           'mt-4 text-3xl font-medium tracking-tight text-balance md:text-4xl',
@@ -73,7 +73,7 @@ export function SectionIntro({
       </h2>
       <p
         className={cn(
-          'text-fd-muted-foreground mt-4 text-pretty',
+          'mt-4 text-pretty text-muted',
           align === 'start' ? 'max-w-xl' : 'mx-auto max-w-xl'
         )}
       >

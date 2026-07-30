@@ -7,5 +7,4 @@ export { LandingFooter } from './footer';
 export { LandingHero } from './hero';
 export { InstallCommand } from './install-command';
 export { LandingSection, SectionIntro } from './section';
-export { easeOut, focusRing, landingButtonClass } from './styles';
 export { VariantsPlayground } from './variants-playground';
