@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
@@ -56,6 +57,7 @@
     "eslint-plugin-sort-destructure-keys": "3.0.0",
     "eslint-plugin-sort-keys-fix": "1.1.2",
     "eslint-plugin-unused-imports": "4.4.1",
+    "pagefind": "1.5.2",
     "postcss": "8.5.15",
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "0.6.14",
