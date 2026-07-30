@@ -34,7 +34,6 @@ const features = [
 
 type FeatureId = (typeof features)[number]['id'];
 
-/** Compound / Defaults require Variants. */
 const requiresVariants = new Set<FeatureId>(['compound', 'defaults']);
 
 const initialSelected = ['variants', 'defaults'] satisfies FeatureId[];
@@ -140,7 +139,6 @@ const toggleFeature = (current: FeatureId[], id: FeatureId): FeatureId[] => {
   if (isSelected) {
     let next = current.filter((item) => item !== id);
 
-    // Drop dependents when Variants turns off.
     if (id === 'variants') {
       next = next.filter((item) => !requiresVariants.has(item));
     }
@@ -150,7 +148,6 @@ const toggleFeature = (current: FeatureId[], id: FeatureId): FeatureId[] => {
 
   const next = new Set<FeatureId>([...current, id]);
 
-  // Selecting Compound / Defaults always pulls Variants in.
   if (requiresVariants.has(id)) {
     next.add('variants');
   }

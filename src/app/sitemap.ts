@@ -1,16 +1,25 @@
 import type { MetadataRoute } from 'next';
 
 import { statSync } from 'node:fs';
+import path from 'node:path';
 
 import { siteUrl } from '@/lib/site';
 import { source } from '@/lib/source';
 
-const getPageLastModified = (absolutePath: string) => {
+const getFileLastModified = (absolutePath: string) => {
   try {
     return statSync(absolutePath).mtime;
   } catch {
     return undefined;
   }
+};
+
+const maxDate = (dates: Array<Date | undefined>) => {
+  return dates.reduce<Date | undefined>((latest, date) => {
+    if (!date) return latest;
+    if (!latest || date > latest) return date;
+    return latest;
+  }, undefined);
 };
 
 const sitemap = (): MetadataRoute.Sitemap => {
@@ -20,16 +29,21 @@ const sitemap = (): MetadataRoute.Sitemap => {
 
     return {
       url: `${siteUrl}${page.url}`,
-      lastModified: getPageLastModified(page.absolutePath),
+      lastModified: getFileLastModified(page.absolutePath),
       changeFrequency: 'weekly' as const,
       priority: isIntro || isQuickStart ? 0.9 : 0.7
     };
   });
 
+  const homeLastModified = maxDate([
+    getFileLastModified(path.join(process.cwd(), 'src/app/(landing)/page.tsx')),
+    ...pages.map((page) => page.lastModified)
+  ]);
+
   return [
     {
       url: siteUrl,
-      lastModified: new Date('2026-07-01'),
+      lastModified: homeLastModified,
       changeFrequency: 'weekly',
       priority: 1
     },

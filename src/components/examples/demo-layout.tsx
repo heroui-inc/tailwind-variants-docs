@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 
 import { cn } from 'tailwind-variants';
 
-/** Shared layout for demo rows — enables Emil-style stagger entrance. */
 export function DemoRow({
   children,
   className,

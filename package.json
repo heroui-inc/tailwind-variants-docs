@@ -19,7 +19,7 @@
     "start": "next start",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
-    "lint:links": "bun ./scripts/lint-links.ts",
+    "lint:links": "node ./scripts/lint-links.mts",
     "postinstall": "node ./node_modules/fumadocs-mdx/bin.js",
     "clean": "pnpm clean:cache && pnpm i",
     "clean:cache": "find . \\( -name '.next' -o -name '.source' -o -name 'node_modules' -o -name 'pnpm-lock.yaml' \\) -prune -exec rm -rf '{}' +"
@@ -60,5 +60,5 @@
     "node": ">=24.x",
     "pnpm": ">=11.x"
   },
-  "packageManager": "pnpm@11.17.0"
+  "packageManager": "pnpm@11.18.0"
 }

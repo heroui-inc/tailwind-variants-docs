@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        script: [lint, build]
+        script: [lint, build, lint:links]
     steps:
       - name: Checkout Codebase
         uses: actions/checkout@v7
@@ -22,18 +22,3 @@ jobs:
 
       - name: Run Script ${{ matrix.script }}
         run: pnpm ${{ matrix.script }}
-
-  lint-links:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Codebase
-        uses: actions/checkout@v7
-
-      - name: Install dependencies
-        uses: ./.github/actions/install
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Lint docs links
-        run: pnpm lint:links

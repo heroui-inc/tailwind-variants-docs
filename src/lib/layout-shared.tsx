@@ -19,7 +19,6 @@ export const baseOptions = (): BaseLayoutProps => {
   };
 };
 
-/** Docs notebook layout: top header + sidebar (no sidebar collapse on desktop). */
 export const docsOptions = (): BaseLayoutProps => {
   return {
     nav: {

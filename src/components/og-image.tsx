@@ -10,7 +10,6 @@ type SiteOgImageProps = {
   description?: ReactNode;
 };
 
-/** Minimal mark for dark OG canvases (white plate + dark glyph). */
 const OgLogo = ({ size = 40 }: { size?: number }) => {
   const height = Math.round((size * 220) / 230);
 
@@ -84,10 +83,6 @@ const OgBrand = () => {
   );
 };
 
-/**
- * Docs OG canvas — dark, sparse, left-weighted.
- * Title + description top-left; brand bottom-left.
- */
 export const DocsOgImage = ({ title, description }: DocsOgImageProps) => {
   return (
     <OgShell>
@@ -135,9 +130,6 @@ export const DocsOgImage = ({ title, description }: DocsOgImageProps) => {
   );
 };
 
-/**
- * Home / site OG — logo, name, tagline. Nothing else.
- */
 export const SiteOgImage = ({
   title = 'Tailwind Variants',
   description = 'A first-class variant API for Tailwind CSS.'

@@ -6,10 +6,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/*
- * Neutral design tokens — cool gray, monochrome primary.
- * Hierarchy: foreground > muted > subtle for text; surface / default / border for chrome.
- */
 :root {
   color-scheme: light;
 
@@ -231,9 +227,7 @@ html > body[data-scroll-locked] {
   cursor: ew-resize !important;
 }
 
-/* Resizable demo preview — quiet neutral canvas + unclipped edge handle */
 .demo-preview-resizable .demo-resizer {
-  /* Sit between page background and surface chrome */
   background-color: color-mix(in oklab, var(--default) 42%, var(--background));
   background-image: radial-gradient(
     circle at 1px 1px,
@@ -241,7 +235,7 @@ html > body[data-scroll-locked] {
     transparent 0
   );
   background-size: 12px 12px;
-  /* Right pad: entire grip sits outside the frame */
+  /* right pad clears the drag grip */
   padding: 0.625rem 1.375rem 0.625rem 0.625rem;
 }
 
@@ -252,7 +246,6 @@ html > body[data-scroll-locked] {
 .demo-resizer-frame {
   overflow: hidden;
   border-radius: 0.5rem;
-  /* Match demo stage so the viewport reads as one surface */
   background: var(--background);
   border: 1px solid var(--separator);
   box-shadow: none;
@@ -261,7 +254,6 @@ html > body[data-scroll-locked] {
 .demo-resizer-handle {
   position: absolute;
   top: 0;
-  /* Entirely in the canvas pad — no overlap with the frame */
   right: -1.25rem;
   z-index: 20;
   display: flex;
@@ -343,7 +335,6 @@ html > body[data-scroll-locked] {
   background-size: 12px 12px;
 }
 
-/* Quiet loading surface — same grid as the stage, no pulsing bars */
 .demo-iframe-placeholder {
   background: var(--background);
 }
@@ -362,7 +353,6 @@ html > body[data-scroll-locked] {
   background-size: 12px 12px;
 }
 
-/* Press feedback — Emil: scale(0.97), ~150ms strong ease-out */
 .demo-stage button:not(:disabled),
 .demo-stage [data-demo-press] {
   transition-property: transform;
@@ -457,21 +447,16 @@ html > body[data-scroll-locked] {
   );
 }
 
-/* Docs notebook layout: neutral chrome + denser page rhythm */
 #nd-notebook-layout {
   background: var(--background);
   color: var(--foreground);
 }
 
-/* Home layout hardcodes 1400px — keep the shared token. */
 #nd-home-layout {
   --fd-layout-width: 1440px;
 }
 
-/*
- * Below md, fumadocs keeps empty 1fr gutters that squeeze `main`.
- * Span the page across the grid instead of touching sidebar/toc widths.
- */
+/* fumadocs empty gutters squeeze main below md */
 @media (max-width: 767px) {
   #nd-notebook-layout #nd-page {
     grid-column: 1 / -1;
@@ -487,7 +472,6 @@ html > body[data-scroll-locked] {
   border-inline-end: 1px solid var(--border);
 }
 
-/* Collapse empty notebook sidebar chrome when logo lives in the top header */
 #nd-notebook-layout
   #nd-sidebar
   > div:first-child:not(:has(a, button, [data-state])) {
@@ -555,11 +539,6 @@ html > body[data-scroll-locked] {
   margin-bottom: 1.25rem;
 }
 
-/*
- * Docs tables — Linear-inspired: no outer box, no vertical rules,
- * hairline header + row separators, airy padding, muted body copy.
- * @see https://linear.app/docs
- */
 #nd-notebook-layout .prose div.relative.overflow-auto:has(> table) {
   margin-block: 1.35rem;
   border: 0;
@@ -641,11 +620,6 @@ html > body[data-scroll-locked] {
   }
 }
 
-/*
- * Docs code blocks — structure aligned with shadcn/ui docs
- * (text-sm, 1.75 leading, py-3.5 / px-4, soft radius, no shadow).
- * Syntax colors stay on our theme.
- */
 #nd-notebook-layout figure.shiki {
   --padding-left: 1rem;
   --padding-right: 1rem;

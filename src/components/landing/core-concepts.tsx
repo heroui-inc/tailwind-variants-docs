@@ -18,7 +18,7 @@ const concepts = [
     name: 'Variants',
     blurb: 'Variant, size, and state as a first-class API.',
     description:
-      'Map variant axes once and reuse them across every instance of the component.',
+      'Map variants like color and size once, then reuse them on every instance.',
     docsHref: '/docs/variants',
     fileName: 'button.styles.ts',
     usage: `import { tv } from 'tailwind-variants';

@@ -7,7 +7,6 @@ export const interactive = 'cursor-pointer select-none';
 export const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 
-/** Shared chrome for icon-only buttons and icon links. */
 export const iconButtonClass = (className?: string) => {
   return cn(
     'inline-flex size-8 shrink-0 items-center justify-center rounded-md',
@@ -21,7 +20,6 @@ export const iconButtonClass = (className?: string) => {
   );
 };
 
-/** Shared surface for PopoverContent menus. */
 export const popoverContentClass = (className?: string) => {
   return cn(
     'select-none border-border bg-surface text-foreground shadow-lg',

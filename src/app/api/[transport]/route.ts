@@ -51,6 +51,7 @@ const handler = createMcpHandler(
           title: string;
           description: string | undefined;
           url: string;
+          markdownUrl: string;
           score: number;
         }> = [];
 
@@ -58,11 +59,13 @@ const handler = createMcpHandler(
           const title = page.data.title;
           const description = page.data.description;
           const url = getCanonicalUrl(page.url);
+          const markdownUrl = getCanonicalUrl(`${page.url}.md`);
           const body = await getLLMText(page);
           const fields = [
             { text: title, weight: 5 },
             { text: description ?? '', weight: 3 },
             { text: url, weight: 2 },
+            { text: markdownUrl, weight: 2 },
             { text: body, weight: 1 }
           ];
 
@@ -74,17 +77,18 @@ const handler = createMcpHandler(
           }
 
           if (score > 0) {
-            scored.push({ title, description, url, score });
+            scored.push({ title, description, url, markdownUrl, score });
           }
         }
 
         const results = scored
           .sort((a, b) => b.score - a.score)
           .slice(0, 20)
-          .map(({ title, description, url }) => ({
+          .map(({ title, description, url, markdownUrl }) => ({
             title,
             description,
-            url
+            url,
+            markdownUrl
           }));
 
         return {

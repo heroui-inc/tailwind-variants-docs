@@ -1,7 +1,22 @@
 ---
 title: "Comparison"
-description: "Compare Tailwind Variants with Class Variance Authority (CVA) and hand-written class strings for component libraries."
+description: "Compare Tailwind Variants with Class Variance Authority (CVA), Windstitch, and hand-written class strings for component libraries."
 ---
+
+## Feature matrix
+
+| Feature | Tailwind Variants | CVA | Windstitch | Classnames |
+| --- | --- | --- | --- | --- |
+| Variants & defaults | Yes | Yes | Yes | — |
+| Compound variants | Yes | Yes | Yes | — |
+| Framework agnostic | Yes | Yes | — | Yes |
+| Slots (split components) | Yes | — | — | — |
+| Compound slots | Yes | — | — | — |
+| Overrides | Yes | Yes | Yes | — |
+| `extend` composition | Yes | — | Yes | — |
+| TypeScript autocomplete | Yes | Yes | Yes | — |
+| Requires Tailwind CSS | Yes | — | Yes | — |
+| Conflict resolution | Built-in | Via `tailwind-merge` | — | — |
 
 ## vs manual class strings
 
@@ -11,21 +26,10 @@ description: "Compare Tailwind Variants with Class Variance Authority (CVA) and 
 | Overrides | String concat, merge bugs | Built-in conflict resolution |
 | Multi-part UI | Separate strings per element | Slots with per-slot variants |
 | Types | None | `VariantProps` inference |
-| Bundle | Smallest | Default or lite build |
 
 ## vs CVA (Class Variance Authority)
 
 [CVA](https://cva.style) is an excellent, lightweight variant generator. Tailwind Variants started as an extension of that idea.
-
-| Feature | CVA | Tailwind Variants |
-| --- | --- | --- |
-| Variants & defaults | Yes | Yes |
-| Compound variants | Yes | Yes |
-| Conflict resolution | Via `tailwind-merge` | Built into default build |
-| Slots | — | Yes |
-| Compound slots | — | Yes |
-| `extend` composition | Limited | First-class `extend` |
-| Lite build | — | `tailwind-variants/lite` |
 
 **Choose CVA** when you want the smallest possible variant helper and are fine wiring `tailwind-merge` yourself.
 

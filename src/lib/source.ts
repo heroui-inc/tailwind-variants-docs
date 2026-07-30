@@ -1,11 +1,25 @@
 import { docs } from 'collections/server';
 import { loader } from 'fumadocs-core/source';
 
+import { injectComingSoonSidebarItems } from '@/lib/sidebar-coming-soon';
 import { getCanonicalUrl } from '@/lib/site';
 
 export const source = loader({
   baseUrl: '/docs',
-  source: docs.toFumadocsSource()
+  source: docs.toFumadocsSource(),
+  plugins: [
+    {
+      name: 'coming-soon-sidebar',
+      transformPageTree: {
+        root(node) {
+          return {
+            ...node,
+            children: injectComingSoonSidebarItems(node.children)
+          };
+        }
+      }
+    }
+  ]
 });
 
 export const getPageImageUrl = (page: (typeof source)['$inferPage']) => {

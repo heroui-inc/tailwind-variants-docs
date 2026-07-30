@@ -31,7 +31,6 @@ export type ThemeToggleProps = ComponentProps<'button'> & {
   mode?: 'light-dark' | 'light-dark-system';
 };
 
-/** Ghost icon theme select — same chrome as header GitHub / search icons. */
 export const ThemeToggle = ({
   className,
   mode: _mode,

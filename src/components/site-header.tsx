@@ -179,8 +179,7 @@ const HeaderShell = ({
         'sticky overflow-x-clip',
         variant === 'home' && 'top-0 z-40',
         variant === 'docs' &&
-          // Include border-b in --fd-header-height so sticky sidebar top
-          // matches the real header edge (avoids 1px overlap / content jump).
+          // +1px so sticky offset includes border-b
           'top-(--fd-docs-row-1) z-30 col-span-full row-start-1 layout:[--fd-header-height:calc(--spacing(14)+1px)]',
         props.className
       )}
@@ -201,7 +200,6 @@ export type SiteHeaderProps = {
   variant: 'home' | 'docs';
 };
 
-/** Shared site header for home + docs layouts. */
 export const SiteHeader = ({ variant }: SiteHeaderProps) => {
   return (
     <HeaderShell variant={variant}>

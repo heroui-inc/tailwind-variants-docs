@@ -14,7 +14,6 @@ type LandingSectionProps = {
 };
 
 const borderClass: Record<Border, string | null> = {
-  // No left/right borders on mobile; hero `full` also skips top on mobile.
   'x-b': 'border-border border-b md:border-x',
   'x-y': 'border-border border-y md:border-x',
   full: 'border-border border-b md:border',

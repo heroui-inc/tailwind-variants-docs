@@ -3,7 +3,6 @@ import { source } from '@/lib/source';
 
 export const revalidate = false;
 
-/** https://llmstxt.org/ — H1, summary, H2 lists of `[name](url)` links. */
 export const GET = () => {
   const docsLinks = source
     .getPages()

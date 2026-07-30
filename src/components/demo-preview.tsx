@@ -17,14 +17,8 @@ export type DemoPreviewProps = {
   title?: string;
   description?: string;
   meta?: ReactNode;
-  /** Style isolation via iframe contentDocument. Default true. */
   iframe?: boolean;
-  /**
-   * Enable a drag handle so the iframe viewport can be resized.
-   * Needed for demos that rely on `sm:` / `md:` / `lg:` media queries.
-   */
   resizable?: boolean;
-  /** Initial resizable frame width in px. */
   defaultWidth?: number;
 };
 

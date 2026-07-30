@@ -29,7 +29,22 @@ function findParentSheet(href: string | null) {
   return [...document.styleSheets].find((sheet) => sheet.href === href) ?? null;
 }
 
-/** Prefer inlining CSS text so styles apply synchronously (avoids FOUC). */
+function absolutizeCssUrls(cssText: string, baseHref: string) {
+  return cssText.replace(
+    /url\(\s*(['"]?)(?!data:|https?:|blob:|\/\/)(.+?)\1\s*\)/gi,
+    (match, quote: string, rawUrl: string) => {
+      const url = rawUrl.trim();
+      if (!url || url.startsWith('/')) return match;
+
+      try {
+        return `url(${quote}${new URL(url, baseHref).href}${quote})`;
+      } catch {
+        return match;
+      }
+    }
+  );
+}
+
 function injectStyleNode(from: Element, to: Document, after: ChildNode) {
   if (from instanceof HTMLStyleElement) {
     const style = to.createElement('style');
@@ -46,16 +61,17 @@ function injectStyleNode(from: Element, to: Document, after: ChildNode) {
     const parentSheet = findParentSheet(from.href);
     if (parentSheet) {
       try {
-        const cssText = [...parentSheet.cssRules]
-          .map((rule) => rule.cssText)
-          .join('\n');
+        const cssText = absolutizeCssUrls(
+          [...parentSheet.cssRules].map((rule) => rule.cssText).join('\n'),
+          from.href
+        );
         const style = to.createElement('style');
         style.dataset.href = from.href;
         style.textContent = cssText;
         after.after(style);
         return style;
       } catch {
-        // Cross-origin sheet — fall through to cloned <link>.
+        // cross-origin: clone <link> instead
       }
     }
 
@@ -162,7 +178,6 @@ export function DemoIframe({
     const token = ++setupTokenRef.current;
 
     doc.documentElement.lang = document.documentElement.lang || 'en';
-    // Hide until styles apply — prevents FOUC on fast refresh.
     doc.documentElement.style.visibility = 'hidden';
 
     if (!doc.getElementById(STYLE_MARKER_ID)) {
@@ -189,7 +204,7 @@ export function DemoIframe({
     }
 
     await waitForLinks(pendingLinks);
-    // Two frames: ensure layout + paint use the new CSSOM.
+    // wait for CSSOM paint after stylesheet sync
     await new Promise<void>((resolve) => {
       requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
     });
@@ -294,7 +309,6 @@ export function DemoIframe({
         />
       ) : null}
 
-      {/* Portal only after styles are ready — avoids painting unstyled demos. */}
       {ready && mountNode ? createPortal(children, mountNode) : null}
     </div>
   );

@@ -15,7 +15,7 @@ type MagicCodeProps = {
 export const MagicCode = ({ code, lang = 'typescript' }: MagicCodeProps) => {
   const theme = useCodeTheme();
 
-  // ShikiMagicMove closes over the initial theme in a ref — remount on change.
+  // ShikiMagicMove caches theme in a ref; remount when it changes
   if (!theme) {
     return <pre className="shiki-magic-move-container min-h-40" aria-hidden />;
   }

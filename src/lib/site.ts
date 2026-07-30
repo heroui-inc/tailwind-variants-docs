@@ -1,14 +1,20 @@
 const PRODUCTION_SITE_URL = 'https://www.tailwind-variants.org';
+const APEX_SITE_URL = 'https://tailwind-variants.org';
 
 export const isProd = process.env.NODE_ENV === 'production';
 export const isDev = process.env.NODE_ENV === 'development';
 export const isVercel = process.env.VERCEL === '1';
 
 const normalizeOrigin = (value: string) => {
-  return value.replace(/\/$/, '');
+  const origin = value.replace(/\/$/, '');
+
+  if (origin === APEX_SITE_URL) {
+    return PRODUCTION_SITE_URL;
+  }
+
+  return origin;
 };
 
-/** Canonical site origin for SEO (sitemap, robots, metadataBase). */
 export const siteUrl = normalizeOrigin(
   process.env.NEXT_PUBLIC_SITE_URL ?? PRODUCTION_SITE_URL
 );
@@ -19,10 +25,6 @@ const getDevOrigin = () => {
   return `http://localhost:${port}`;
 };
 
-/**
- * Runtime origin for actionable links (View as Markdown, MCP, copy prompt).
- * Prefer `siteUrl` for SEO absolute URLs instead of this helper.
- */
 export const getSiteOrigin = () => {
   if (typeof window !== 'undefined') {
     return window.location.origin;
@@ -51,7 +53,6 @@ export const getAbsoluteUrl = (path: string, origin = getSiteOrigin()) => {
   return `${origin}${path.startsWith('/') ? path : `/${path}`}`;
 };
 
-/** Absolute URL against the canonical site origin (SEO / OG / sitemap). */
 export const getCanonicalUrl = (path: string) => {
   return getAbsoluteUrl(path, siteUrl);
 };

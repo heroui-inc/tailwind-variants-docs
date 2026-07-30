@@ -35,7 +35,7 @@ export function DemoResizer({
   } | null>(null);
 
   const [width, setWidth] = useState(defaultWidth);
-  // Unbounded until measured — avoids first paint treating defaultWidth as max (100%).
+  // Infinity until measured so first paint isn't capped at defaultWidth
   const [maxWidth, setMaxWidth] = useState(Number.POSITIVE_INFINITY);
   const [dragging, setDragging] = useState(false);
 
