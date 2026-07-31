@@ -13,7 +13,7 @@ const handler = createMcpHandler(
         title: 'List Pages',
         description:
           'List all Tailwind Variants documentation pages with titles, URLs, and descriptions.',
-        inputSchema: {}
+        inputSchema: z.object({})
       },
       async () => {
         const pages = source.getPages().map((page) => ({
@@ -41,9 +41,9 @@ const handler = createMcpHandler(
         title: 'Search Docs',
         description:
           'Full-text search across Tailwind Variants documentation (title, description, URL, and page body).',
-        inputSchema: {
+        inputSchema: z.object({
           query: z.string().min(1).describe('Search query')
-        }
+        })
       },
       async ({ query }) => {
         const q = query.toLowerCase();
@@ -108,14 +108,14 @@ const handler = createMcpHandler(
         title: 'Get Page',
         description:
           'Fetch the full Markdown content of a documentation page by path or slug.',
-        inputSchema: {
+        inputSchema: z.object({
           path: z
             .string()
             .min(1)
             .describe(
               'Page path such as /docs/variants or variants, or a slug path like slots'
             )
-        }
+        })
       },
       async ({ path }) => {
         const normalized = path
@@ -151,10 +151,7 @@ const handler = createMcpHandler(
       }
     );
   },
-  {},
   {
-    basePath: '/api',
-    maxDuration: 60,
     verboseLogs: false
   }
 );

@@ -4,8 +4,6 @@ node_modules
 .DS_Store
 .env
 .env*.local
-.agents/
-skills-lock.json
 next-env.d.ts
 
 # Logs
