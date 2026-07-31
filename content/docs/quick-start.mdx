@@ -3,8 +3,8 @@ title: "Quick Start"
 description: "Install Tailwind Variants, choose default or lite, create your first tv recipe, and set up editor IntelliSense."
 ---
 
-import { QuickStartButtonDemo } from '@/components/examples';
-import { quickStartButton } from '@/demos/code';
+import { QuickStartButtonDemo } from "@/components/examples";
+import { quickStartButton } from "@/demos/code";
 
 ## Install
 
@@ -17,7 +17,7 @@ Conflict resolution is included in the default build. You do not need `tailwind-
 For the lite build (no merge, smaller bundle):
 
 ```ts
-import { tv } from 'tailwind-variants/lite';
+import { tv } from "tailwind-variants/lite";
 ```
 
 ## Your first component
@@ -49,15 +49,64 @@ If you use [`prettier-plugin-tailwindcss`](https://github.com/tailwindlabs/prett
 ```js
 // prettier.config.js
 module.exports = {
-  plugins: ['prettier-plugin-tailwindcss'],
-  tailwindFunctions: ['tv', 'cn', 'cx']
+  plugins: ["prettier-plugin-tailwindcss"],
+  tailwindFunctions: ["tv", "cn", "cx"],
 };
 ```
 
 ## Framework agnostic
 
-Tailwind Variants is framework-agnostic. Use the returned string with React, Vue, Svelte, or plain DOM:
+Tailwind Variants is framework-agnostic. Use the class string with any framework or vanilla JS:
 
 ```ts
-element.className = button({ variant: 'primary' });
+import { tv } from "tailwind-variants";
+
+const button = tv({
+  base: "rounded-md px-4 py-2 text-sm font-medium",
+  variants: {
+    color: {
+      primary: "bg-blue-600 text-white",
+      secondary: "bg-zinc-100 text-zinc-900",
+    },
+  },
+  defaultVariants: {
+    color: "primary",
+  },
+});
+```
+
+**React**
+
+```tsx
+<button className={button({ color: "primary" })}>Save</button>
+```
+
+**Vue**
+
+```vue
+<button :class="button({ color: 'primary' })">Save</button>
+```
+
+**Svelte**
+
+```svelte
+<button class={button({ color: 'primary' })}>Save</button>
+```
+
+**Solid**
+
+```tsx
+<button class={button({ color: "primary" })}>Save</button>
+```
+
+**Angular**
+
+```html
+<button [class]="button({ color: 'primary' })">Save</button>
+```
+
+**Vanilla**
+
+```ts
+element.className = button({ color: "primary" });
 ```
