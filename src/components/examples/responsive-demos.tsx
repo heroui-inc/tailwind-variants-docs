@@ -99,7 +99,8 @@ const button = tv({
   variants: {
     variant: {
       primary: 'bg-foreground text-background hover:opacity-90',
-      secondary: 'border border-border bg-default text-foreground hover:bg-border/50',
+      secondary:
+        'border border-border bg-default text-foreground hover:bg-border/50',
       tertiary:
         'bg-transparent text-foreground/70 hover:bg-default hover:text-foreground'
     },
@@ -186,7 +187,8 @@ const eventAction = tv({
   variants: {
     variant: {
       primary: 'bg-foreground text-background hover:opacity-90',
-      secondary: 'border border-border bg-default text-foreground hover:bg-border/50'
+      secondary:
+        'border border-border bg-default text-foreground hover:bg-border/50'
     }
   }
 });
