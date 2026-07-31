@@ -6,6 +6,7 @@ node_modules
 .env*.local
 .agents/
 skills-lock.json
+next-env.d.ts
 
 # Logs
 logs
