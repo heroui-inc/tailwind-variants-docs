@@ -3,13 +3,13 @@ import { tv } from 'tailwind-variants';
 import { DemoRow } from '@/components/examples/demo-layout';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900',
       secondary:
-        'bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100',
-      tertiary: 'text-zinc-600 dark:text-zinc-400'
+        'bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100',
+      tertiary: 'text-zinc-700 dark:text-zinc-300'
     },
     size: {
       sm: 'h-8 px-3 text-sm',

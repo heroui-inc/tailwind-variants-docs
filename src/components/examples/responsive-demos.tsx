@@ -93,15 +93,15 @@ const total = tv({
 
 const button = tv({
   base: [
-    'inline-flex items-center justify-center rounded-lg font-medium',
+    'inline-flex cursor-pointer items-center justify-center rounded-lg font-medium select-none',
     'transition-colors duration-150'
   ],
   variants: {
     variant: {
       primary: 'bg-foreground text-background hover:opacity-90',
-      secondary: 'bg-default text-foreground hover:bg-border/70',
+      secondary: 'border border-border bg-default text-foreground hover:bg-border/50',
       tertiary:
-        'bg-transparent text-muted hover:bg-default hover:text-foreground'
+        'bg-transparent text-foreground/70 hover:bg-default hover:text-foreground'
     },
     size: {
       sm: ['h-9 px-3 text-[0.8125rem]', 'sm:h-9 sm:px-3.5 sm:text-sm'],
@@ -178,15 +178,15 @@ const event = tv({
 
 const eventAction = tv({
   base: [
-    'inline-flex h-9 flex-1 items-center justify-center rounded-lg px-3',
+    'inline-flex h-9 flex-1 cursor-pointer items-center justify-center rounded-lg px-3 select-none',
     'text-[0.8125rem] font-medium transition-colors duration-150',
-    'sm:text-sm sm:px-3.5',
+    'sm:px-3.5 sm:text-sm',
     'md:flex-none'
   ],
   variants: {
     variant: {
       primary: 'bg-foreground text-background hover:opacity-90',
-      secondary: 'bg-default text-foreground hover:bg-border/70'
+      secondary: 'border border-border bg-default text-foreground hover:bg-border/50'
     }
   }
 });

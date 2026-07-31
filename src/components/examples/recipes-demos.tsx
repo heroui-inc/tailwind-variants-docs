@@ -4,18 +4,18 @@ import { DemoRow, DemoStack } from '@/components/examples/demo-layout';
 
 const button = tv({
   base: [
-    'inline-flex items-center justify-center gap-2',
-    'font-medium rounded-lg transition-colors',
-    'disabled:opacity-50 disabled:pointer-events-none'
+    'inline-flex cursor-pointer items-center justify-center gap-2 select-none',
+    'rounded-lg font-medium transition-colors',
+    'disabled:cursor-not-allowed disabled:opacity-50'
   ],
   variants: {
     variant: {
       primary:
         'bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white',
       secondary:
-        'border border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800',
+        'border border-zinc-300 bg-zinc-50 text-zinc-900 hover:bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700',
       tertiary:
-        'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100'
+        'text-zinc-700 hover:bg-zinc-200/70 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50'
     },
     size: {
       sm: 'h-8 px-3 text-sm',
@@ -150,7 +150,7 @@ export function RecipesAlertDemo() {
 }
 
 const badge = tv({
-  base: 'inline-flex items-center rounded-full font-medium',
+  base: 'inline-flex select-none items-center rounded-full font-medium',
   variants: {
     variant: {
       solid: '',

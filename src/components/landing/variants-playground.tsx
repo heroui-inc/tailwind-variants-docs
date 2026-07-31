@@ -39,7 +39,7 @@ const requiresVariants = new Set<FeatureId>(['compound', 'defaults']);
 const initialSelected = ['variants', 'defaults'] satisfies FeatureId[];
 
 const slotsBlock = `  slots: {
-    base: 'inline-flex items-center gap-2 rounded-full font-medium',
+    base: 'inline-flex cursor-pointer items-center gap-2 rounded-full font-medium select-none',
     icon: 'size-4 shrink-0',
     label: 'truncate',
   },`;
@@ -123,7 +123,7 @@ const createTvCode = (selected: readonly FeatureId[]) => {
     'export const button = tv({',
     hasSlots
       ? slotsBlock
-      : `  base: 'inline-flex items-center rounded-full font-medium',`,
+      : `  base: 'inline-flex cursor-pointer items-center rounded-full font-medium select-none',`,
     selected.includes('variants') ? variantsBlock(hasSlots) : null,
     selected.includes('compound') ? compoundBlock(hasSlots) : null,
     selected.includes('defaults') ? defaultsBlock : null,

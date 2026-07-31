@@ -24,7 +24,7 @@ const concepts = [
     usage: `import { tv } from 'tailwind-variants';
 
 export const button = tv({
-  base: 'rounded-full font-medium',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white',
@@ -51,7 +51,7 @@ button({ variant: 'primary', size: 'sm' });`
     usage: `import { tv } from 'tailwind-variants';
 
 export const button = tv({
-  base: 'rounded-full font-medium',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white',
@@ -84,7 +84,7 @@ button({ size: 'sm' }); // primary + sm`
 
 export const button = tv({
   slots: {
-    base: 'inline-flex items-center gap-2 rounded-full',
+    base: 'inline-flex cursor-pointer items-center gap-2 rounded-full select-none',
     icon: 'size-4 shrink-0',
     label: 'truncate font-medium',
   },
@@ -109,7 +109,7 @@ const { base, icon, label } = button({ size: 'md' });`
     usage: `import { tv } from 'tailwind-variants';
 
 export const button = tv({
-  base: 'rounded-full font-medium',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
   variants: {
     variant: {
       primary: 'text-white',
@@ -140,7 +140,7 @@ export const button = tv({
     usage: `import { tv } from 'tailwind-variants';
 
 export const button = tv({
-  base: 'rounded-full bg-zinc-900 px-3 py-1 font-medium text-white',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full bg-zinc-900 px-3 py-1 font-medium text-white select-none',
 });
 
 button({ class: 'bg-pink-500' });
@@ -157,7 +157,7 @@ button({ class: 'bg-pink-500' });
     usage: `import { tv } from 'tailwind-variants';
 
 const baseButton = tv({
-  base: 'rounded-full font-medium active:opacity-80',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none active:opacity-80',
 });
 
 export const button = tv({
@@ -230,7 +230,7 @@ export const tv = createTV({
     usage: `import { tv, type VariantProps } from 'tailwind-variants';
 
 export const button = tv({
-  base: 'rounded-full font-medium',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white',

@@ -1,12 +1,12 @@
 export const introButton = `import { tv } from 'tailwind-variants';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white hover:bg-zinc-800',
-      secondary: 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200',
-      tertiary: 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+      secondary: 'bg-zinc-200 text-zinc-900 hover:bg-zinc-300',
+      tertiary: 'text-zinc-700 hover:bg-zinc-200/70 hover:text-zinc-950'
     },
     size: {
       sm: 'h-8 px-3 text-sm',
@@ -22,12 +22,12 @@ const button = tv({
 export const quickStartButton = `import { tv } from 'tailwind-variants';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white hover:bg-zinc-800',
-      secondary: 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200',
-      tertiary: 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+      secondary: 'bg-zinc-200 text-zinc-900 hover:bg-zinc-300',
+      tertiary: 'text-zinc-700 hover:bg-zinc-200/70 hover:text-zinc-950'
     },
     size: {
       sm: 'h-8 px-3 text-sm',
@@ -49,12 +49,12 @@ const button = tv({
 export const variantsColor = `import { tv } from 'tailwind-variants';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white hover:bg-zinc-800',
-      secondary: 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200',
-      tertiary: 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+      secondary: 'bg-zinc-200 text-zinc-900 hover:bg-zinc-300',
+      tertiary: 'text-zinc-700 hover:bg-zinc-200/70 hover:text-zinc-950'
     }
   }
 });
@@ -62,12 +62,12 @@ const button = tv({
 button({ variant: 'secondary' });`;
 
 export const variantsMulti = `const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white',
-      secondary: 'bg-zinc-100 text-zinc-900',
-      tertiary: 'text-zinc-600'
+      secondary: 'bg-zinc-200 text-zinc-900',
+      tertiary: 'text-zinc-700'
     },
     size: {
       sm: 'h-8 px-3 text-sm',
@@ -80,10 +80,10 @@ export const variantsMulti = `const button = tv({
 button({ variant: 'primary', size: 'lg' });`;
 
 export const variantsBoolean = `const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white select-none',
   variants: {
     disabled: {
-      true: 'opacity-45 pointer-events-none',
+      true: 'cursor-not-allowed opacity-45',
       false: ''
     }
   }
@@ -92,7 +92,7 @@ export const variantsBoolean = `const button = tv({
 button({ disabled: true });`;
 
 export const variantsBadge = `const badge = tv({
-  base: 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-sm font-medium',
+  base: 'inline-flex select-none items-center rounded-full border px-2.5 py-0.5 text-sm font-medium',
   variants: {
     color: {
       primary: ['bg-zinc-100', 'text-zinc-800', 'border-zinc-300']
@@ -103,12 +103,12 @@ export const variantsBadge = `const badge = tv({
 export const defaultVariants = `import { tv } from 'tailwind-variants';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white',
-      secondary: 'bg-zinc-100 text-zinc-900',
-      tertiary: 'text-zinc-600'
+      secondary: 'bg-zinc-200 text-zinc-900',
+      tertiary: 'text-zinc-700'
     },
     size: {
       sm: 'h-8 px-3 text-sm',
@@ -128,12 +128,12 @@ const button = tv({
 export const compoundVariants = `import { tv } from 'tailwind-variants';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white',
-      secondary: 'bg-zinc-100 text-zinc-900',
-      tertiary: 'text-zinc-600'
+      secondary: 'bg-zinc-200 text-zinc-900',
+      tertiary: 'text-zinc-700'
     },
     size: {
       sm: 'h-8 px-3 text-sm',
@@ -203,7 +203,7 @@ export const slotsCompound = `const card = tv({
 export const overridesButton = `import { tv } from 'tailwind-variants';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-medium select-none',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white'
@@ -217,12 +217,12 @@ button({ variant: 'primary', class: 'w-full' });`;
 export const extendingButton = `import { tv } from 'tailwind-variants';
 
 const baseButton = tv({
-  base: 'inline-flex items-center justify-center rounded-full font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white',
-      secondary: 'bg-zinc-100 text-zinc-900',
-      tertiary: 'text-zinc-600'
+      secondary: 'bg-zinc-200 text-zinc-900',
+      tertiary: 'text-zinc-700'
     },
     size: {
       sm: 'h-8 px-3 text-sm',
@@ -250,15 +250,15 @@ export const recipesButton = `import { tv, type VariantProps } from 'tailwind-va
 
 export const button = tv({
   base: [
-    'inline-flex items-center justify-center gap-2',
-    'font-medium rounded-lg transition-colors',
-    'disabled:opacity-50 disabled:pointer-events-none'
+    'inline-flex cursor-pointer items-center justify-center gap-2 select-none',
+    'rounded-lg font-medium transition-colors',
+    'disabled:cursor-not-allowed disabled:opacity-50'
   ],
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white hover:bg-zinc-800',
-      secondary: 'border border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50',
-      tertiary: 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+      secondary: 'border border-zinc-300 bg-zinc-50 text-zinc-900 hover:bg-zinc-100',
+      tertiary: 'text-zinc-700 hover:bg-zinc-200/70 hover:text-zinc-950'
     },
     size: {
       sm: 'h-8 px-3 text-sm',
@@ -318,7 +318,7 @@ export type AlertVariants = VariantProps<typeof alert>;`;
 export const recipesBadge = `import { tv, type VariantProps } from 'tailwind-variants';
 
 export const badge = tv({
-  base: 'inline-flex items-center rounded-full font-medium',
+  base: 'inline-flex select-none items-center rounded-full font-medium',
   variants: {
     variant: {
       solid: '',
@@ -383,12 +383,12 @@ const price = tv({
 export const responsiveVariants = `import { tv } from 'tailwind-variants';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-lg font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-lg font-medium select-none transition-colors',
   variants: {
     variant: {
       primary: 'bg-zinc-900 text-white',
-      secondary: 'bg-zinc-100 text-zinc-900',
-      tertiary: 'text-zinc-500 hover:bg-zinc-100'
+      secondary: 'bg-zinc-200 text-zinc-900',
+      tertiary: 'text-zinc-700 hover:bg-zinc-200/70'
     },
     size: {
       sm: 'h-9 px-3 text-[0.8125rem] sm:px-3.5 sm:text-sm',

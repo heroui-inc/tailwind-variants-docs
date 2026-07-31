@@ -3,7 +3,7 @@ import { tv } from 'tailwind-variants';
 import { DemoStack } from '@/components/examples/demo-layout';
 
 const button = tv({
-  base: 'inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-2 text-sm font-medium select-none transition-colors',
   variants: {
     variant: {
       primary:

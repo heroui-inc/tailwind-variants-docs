@@ -62,11 +62,11 @@ Tailwind Variants is framework-agnostic. Use the class string with any framework
 import { tv } from "tailwind-variants";
 
 const button = tv({
-  base: "rounded-md px-4 py-2 text-sm font-medium",
+  base: "inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 text-sm font-medium select-none",
   variants: {
     color: {
       primary: "bg-blue-600 text-white",
-      secondary: "bg-zinc-100 text-zinc-900",
+      secondary: "bg-zinc-200 text-zinc-900",
     },
   },
   defaultVariants: {
