@@ -63,7 +63,7 @@ const Page = async (props: { params: Promise<{ slug?: string[] }> }) => {
       />
       <header className="not-prose flex flex-col gap-4 border-b border-border pb-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-          <DocsTitle className="text-2xl font-semibold tracking-tight md:text-[1.75rem]">
+          <DocsTitle className="text-2xl font-semibold tracking-tight md:text-3xl">
             {page.data.title}
           </DocsTitle>
           <PageActions
@@ -73,7 +73,7 @@ const Page = async (props: { params: Promise<{ slug?: string[] }> }) => {
           />
         </div>
         {page.data.description ? (
-          <DocsDescription className="mb-0 max-w-3xl text-base text-muted md:text-[1.0625rem]">
+          <DocsDescription className="mb-0 max-w-3xl text-base text-muted md:text-lg">
             {page.data.description}
           </DocsDescription>
         ) : null}

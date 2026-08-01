@@ -41,38 +41,6 @@ export const button = tv({
 button({ variant: 'primary', size: 'sm' });`
   },
   {
-    id: 'defaults',
-    name: 'Defaults',
-    blurb: 'Sensible defaults for every call site.',
-    description:
-      'Define the common case once, then override only what needs to change.',
-    docsHref: '/docs/default-variants',
-    fileName: 'button.styles.ts',
-    usage: `import { tv } from 'tailwind-variants';
-
-export const button = tv({
-  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
-  variants: {
-    variant: {
-      primary: 'bg-zinc-900 text-white',
-      secondary: 'bg-zinc-100 text-zinc-900',
-      tertiary: 'text-zinc-600',
-    },
-    size: {
-      sm: 'text-sm px-3 py-1',
-      md: 'text-base px-4 py-2',
-    },
-  },
-  defaultVariants: {
-    variant: 'primary',
-    size: 'md',
-  },
-});
-
-button(); // primary + md
-button({ size: 'sm' }); // primary + sm`
-  },
-  {
     id: 'slots',
     name: 'Slots',
     blurb: 'Multi-part UI without losing structure.',
@@ -129,6 +97,64 @@ export const button = tv({
     },
   ],
 });`
+  },
+  {
+    id: 'defaults',
+    name: 'Defaults',
+    blurb: 'Sensible defaults for every call site.',
+    description:
+      'Define the common case once, then override only what needs to change.',
+    docsHref: '/docs/default-variants',
+    fileName: 'button.styles.ts',
+    usage: `import { tv } from 'tailwind-variants';
+
+export const button = tv({
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
+  variants: {
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900',
+      tertiary: 'text-zinc-600',
+    },
+    size: {
+      sm: 'text-sm px-3 py-1',
+      md: 'text-base px-4 py-2',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+    size: 'md',
+  },
+});
+
+button(); // primary + md
+button({ size: 'sm' }); // primary + sm`
+  },
+  {
+    id: 'typescript',
+    name: 'Types',
+    blurb: 'Types that follow your variant map.',
+    description:
+      'Props and slots stay in sync with the recipe as the API grows.',
+    docsHref: '/docs/typescript',
+    fileName: 'button.styles.ts',
+    usage: `import { tv, type VariantProps } from 'tailwind-variants';
+
+export const button = tv({
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
+  variants: {
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900',
+      tertiary: 'text-zinc-600',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+  },
+});
+
+export type ButtonVariants = VariantProps<typeof button>;`
   },
   {
     id: 'override',
@@ -218,32 +244,6 @@ export const tv = createTV({
 });
 
 // import { tv } from './tv' in every recipe`
-  },
-  {
-    id: 'typescript',
-    name: 'Types',
-    blurb: 'Types that follow your variant map.',
-    description:
-      'Props and slots stay in sync with the recipe as the API grows.',
-    docsHref: '/docs/typescript',
-    fileName: 'button.styles.ts',
-    usage: `import { tv, type VariantProps } from 'tailwind-variants';
-
-export const button = tv({
-  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
-  variants: {
-    variant: {
-      primary: 'bg-zinc-900 text-white',
-      secondary: 'bg-zinc-100 text-zinc-900',
-      tertiary: 'text-zinc-600',
-    },
-  },
-  defaultVariants: {
-    variant: 'primary',
-  },
-});
-
-export type ButtonVariants = VariantProps<typeof button>;`
   }
 ] as const;
 
@@ -251,7 +251,7 @@ type ConceptId = (typeof concepts)[number]['id'];
 
 export const CoreConcepts = () => {
   const [activeId, setActiveId] = useState<ConceptId>(concepts[0].id);
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const active =
     concepts.find((concept) => concept.id === activeId) ?? concepts[0];
@@ -279,6 +279,24 @@ export const CoreConcepts = () => {
     } else if (event.key === 'ArrowUp') {
       event.preventDefault();
       moveSelection(-1);
+    } else if (event.key === 'Home') {
+      event.preventDefault();
+      const first = concepts[0];
+      if (first) {
+        setActiveId(first.id);
+        listRef.current
+          ?.querySelector<HTMLElement>(`[data-concept-id="${first.id}"]`)
+          ?.focus();
+      }
+    } else if (event.key === 'End') {
+      event.preventDefault();
+      const last = concepts[concepts.length - 1];
+      if (last) {
+        setActiveId(last.id);
+        listRef.current
+          ?.querySelector<HTMLElement>(`[data-concept-id="${last.id}"]`)
+          ?.focus();
+      }
     }
   };
 
@@ -297,58 +315,54 @@ export const CoreConcepts = () => {
       />
 
       <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 md:gap-8">
-        <ul
+        <div
           ref={listRef}
           role="listbox"
           aria-label="Core concepts"
+          aria-activedescendant={`concept-option-${active.id}`}
           tabIndex={0}
           onKeyDown={handleListKeyDown}
-          className="divide-separator flex min-h-112 flex-col divide-y md:min-h-128"
+          className="divide-separator flex flex-col divide-y outline-none"
         >
           {concepts.map((concept) => {
             const isActive = concept.id === active.id;
 
             return (
-              <li key={concept.id} role="presentation">
-                <button
-                  type="button"
-                  id={`concept-option-${concept.id}`}
-                  role="option"
-                  aria-selected={isActive}
-                  data-concept-id={concept.id}
-                  onClick={() => setActiveId(concept.id)}
+              <button
+                key={concept.id}
+                type="button"
+                id={`concept-option-${concept.id}`}
+                role="option"
+                aria-selected={isActive}
+                data-concept-id={concept.id}
+                tabIndex={-1}
+                onClick={() => setActiveId(concept.id)}
+                className={cn(
+                  'w-full px-3 py-3 text-start sm:px-3.5 sm:py-3.5',
+                  'transition-[color,background-color]',
+                  easeOut,
+                  focusRing,
+                  interactive,
+                  isActive
+                    ? 'bg-default font-medium text-foreground'
+                    : 'text-muted hover:bg-default/50 hover:text-foreground'
+                )}
+              >
+                <span
                   className={cn(
-                    'w-full px-3 py-3 text-start sm:px-3.5 sm:py-3.5',
-                    'transition-[color,background-color]',
-                    easeOut,
-                    focusRing,
-                    interactive,
-                    isActive
-                      ? 'bg-default text-foreground'
-                      : 'text-muted hover:bg-default/50 hover:text-foreground'
+                    'mb-0.5 block text-sm tracking-tight',
+                    isActive ? 'font-semibold text-foreground' : 'font-medium'
                   )}
                 >
-                  <span
-                    className={cn(
-                      'mb-0.5 block text-sm font-medium tracking-tight',
-                      isActive && 'text-foreground'
-                    )}
-                  >
-                    {concept.name}
-                  </span>
-                  <span
-                    className={cn(
-                      'block text-xs/relaxed',
-                      isActive ? 'text-muted' : 'text-muted/80'
-                    )}
-                  >
-                    {concept.blurb}
-                  </span>
-                </button>
-              </li>
+                  {concept.name}
+                </span>
+                <span className="block text-xs/relaxed text-muted">
+                  {concept.blurb}
+                </span>
+              </button>
             );
           })}
-        </ul>
+        </div>
 
         <div className="flex min-h-112 flex-col gap-5 md:min-h-128">
           <div>
@@ -375,6 +389,7 @@ export const CoreConcepts = () => {
 
           <CodeWindow
             filename={active.fileName}
+            code={active.usage}
             className="flex min-h-0 flex-1 flex-col justify-start"
           >
             <MagicCode code={active.usage} />

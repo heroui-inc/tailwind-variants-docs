@@ -17,7 +17,10 @@ import { cn } from 'tailwind-variants';
 import { GitHubIconLink } from '@/components/header-actions';
 import { ChevronDownIcon } from '@/components/icons';
 import { Logo } from '@/components/logo';
-import { SearchTriggerSm } from '@/components/search-trigger';
+import {
+  SearchTriggerFull,
+  SearchTriggerSm
+} from '@/components/search-trigger';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { iconButtonClass, popoverContentClass } from '@/lib/styles';
 import pkg from '../../package.json';
@@ -166,6 +169,39 @@ const DocsMobileSidebar = () => {
   );
 };
 
+const DocsMobileMenu = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        aria-label="Toggle Menu"
+        className={cn(
+          buttonVariants({
+            size: 'icon',
+            color: 'ghost',
+            className: 'group [&_svg]:size-5.5'
+          })
+        )}
+      >
+        <ChevronDownIcon
+          size={20}
+          className="size-5.5 transition-transform duration-300 group-data-[state=open]:rotate-180"
+        />
+      </PopoverTrigger>
+      <PopoverContent
+        align="end"
+        className={popoverContentClass('flex w-56 flex-col gap-3 p-4')}
+      >
+        <div className="flex items-center gap-1.5">
+          <GitHubIconLink />
+          <ThemeToggle />
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
 const HeaderShell = ({
   variant,
   children,
@@ -208,20 +244,30 @@ export const SiteHeader = ({ variant }: SiteHeaderProps) => {
       {variant === 'home' ? <HomeNavLinks /> : null}
 
       <div className="ms-auto flex flex-row items-center gap-1.5">
+        {variant === 'docs' ? (
+          <SearchTriggerFull
+            hideIfDisabled
+            className="me-1 hidden w-44 lg:flex xl:w-56"
+          />
+        ) : null}
+
         <div className="hidden items-center gap-1.5 md:flex">
-          <SearchTriggerSm />
+          {variant === 'docs' ? (
+            <SearchTriggerSm className="lg:hidden" hideIfDisabled />
+          ) : (
+            <SearchTriggerSm hideIfDisabled />
+          )}
           <GitHubIconLink />
           <ThemeToggle />
         </div>
 
         <div className="flex items-center gap-1.5 md:hidden">
-          <SearchTriggerSm />
+          <SearchTriggerSm hideIfDisabled />
           {variant === 'home' ? (
             <HomeMobileMenu />
           ) : (
             <>
-              <GitHubIconLink />
-              <ThemeToggle />
+              <DocsMobileMenu />
               <DocsMobileSidebar />
             </>
           )}

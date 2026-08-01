@@ -25,7 +25,7 @@ import {
   getCursorMcpInstallUrl,
   getVSCodeMcpInstallUrl
 } from '@/lib/ai-actions';
-import { iconButtonClass, popoverContentClass } from '@/lib/styles';
+import { focusRing, iconButtonClass, popoverContentClass } from '@/lib/styles';
 
 type PageActionsProps = {
   title: string;
@@ -100,8 +100,9 @@ const ClaudeGlyph = ({ className }: { className?: string }) => {
 
 const actionButtonClass = cn(
   buttonVariants({ variant: 'outline', size: 'sm' }),
-  'h-8 cursor-pointer select-none gap-1.5 border-border bg-background text-foreground/85',
-  'hover:bg-default hover:text-foreground'
+  'min-h-10 cursor-pointer select-none gap-1.5 border-border bg-background px-3 text-foreground',
+  'hover:bg-default hover:text-foreground',
+  focusRing
 );
 
 export const PageActions = ({
@@ -191,32 +192,14 @@ export const PageActions = ({
   ];
 
   return (
-    <div className="not-prose flex shrink-0 flex-wrap items-center gap-2 select-none">
-      <button
-        type="button"
-        onClick={onCopyPrompt}
-        className={actionButtonClass}
-        aria-label={
-          promptCopied
-            ? 'Prompt copied to clipboard'
-            : 'Copy prompt to clipboard'
-        }
-      >
-        {promptCopied ? (
-          <CheckIcon size={14} className="size-3.5 text-muted" />
-        ) : (
-          <MagicWandIcon size={14} className="size-3.5 text-muted" />
-        )}
-        {promptCopied ? 'Copied' : 'Copy Prompt'}
-      </button>
-
-      <div className="inline-flex h-8 items-stretch overflow-hidden rounded-md border border-border bg-background">
+    <div className="not-prose flex w-full shrink-0 flex-wrap items-center gap-2 select-none sm:w-auto sm:justify-end">
+      <div className="inline-flex min-h-10 min-w-0 flex-1 items-stretch overflow-hidden rounded-xl border border-border bg-background sm:flex-initial">
         <button
           type="button"
           onClick={onCopyMarkdown}
           className={cn(
             actionButtonClass,
-            'rounded-none border-0 bg-transparent shadow-none'
+            'min-w-0 flex-1 rounded-none border-0 bg-default/50 font-medium shadow-none sm:flex-initial'
           )}
           aria-label={
             markdownCopied
@@ -237,7 +220,7 @@ export const PageActions = ({
             aria-label="Open Markdown and AI actions"
             className={cn(
               iconButtonClass(),
-              'size-8 rounded-none border-0 border-l border-border'
+              'h-auto min-h-10 w-10 rounded-none border-0 border-l border-border'
             )}
           >
             <ChevronDownIcon size={14} className="size-3.5" />
@@ -247,6 +230,31 @@ export const PageActions = ({
             className={popoverContentClass('w-72 p-1.5')}
           >
             <div className="flex flex-col gap-0.5">
+              <button
+                type="button"
+                onClick={onCopyPrompt}
+                className={cn(
+                  'flex w-full cursor-pointer select-none items-start gap-3 rounded-md px-2.5 py-2 text-start',
+                  'text-foreground transition-colors hover:bg-default',
+                  focusRing
+                )}
+              >
+                <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center text-muted">
+                  {promptCopied ? (
+                    <CheckIcon size={16} className="size-4" />
+                  ) : (
+                    <MagicWandIcon size={16} className="size-4" />
+                  )}
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  <span className="text-sm font-medium text-foreground">
+                    {promptCopied ? 'Prompt copied' : 'Copy Prompt'}
+                  </span>
+                  <span className="text-xs text-muted">
+                    Prompt for agents about this page
+                  </span>
+                </span>
+              </button>
               {menuItems.map((item) => (
                 <a
                   key={item.key}
@@ -255,7 +263,8 @@ export const PageActions = ({
                   rel={item.external ? 'noreferrer' : undefined}
                   className={cn(
                     'flex cursor-pointer select-none items-start gap-3 rounded-md px-2.5 py-2',
-                    'text-foreground transition-colors hover:bg-default'
+                    'text-foreground transition-colors hover:bg-default',
+                    focusRing
                   )}
                 >
                   <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center text-muted">

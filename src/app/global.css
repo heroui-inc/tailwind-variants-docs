@@ -326,10 +326,10 @@ html > body[data-scroll-locked] {
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.55;
+  opacity: 0.7;
   background-image: radial-gradient(
     circle at 1px 1px,
-    color-mix(in oklab, var(--foreground) 9%, transparent) 1px,
+    color-mix(in oklab, var(--foreground) 12%, transparent) 1px,
     transparent 0
   );
   background-size: 12px 12px;
@@ -410,12 +410,12 @@ html > body[data-scroll-locked] {
 
 .landing-code-window .shiki-magic-move-line-number {
   opacity: 1;
-  color: #6b7280;
+  color: var(--subtle);
 }
 
 .dark .landing-code-window .shiki-magic-move-line-number {
   opacity: 1;
-  color: #9ca3af;
+  color: var(--subtle);
 }
 
 @media (width >= 768px) {

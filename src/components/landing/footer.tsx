@@ -33,7 +33,7 @@ export const LandingFooter = () => {
         </a>
 
         <p className="text-center">
-          &copy; {new Date().getFullYear()} NextUI Inc.
+          &copy; {new Date().getFullYear()} HeroUI Inc.
         </p>
 
         <nav

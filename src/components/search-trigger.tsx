@@ -14,7 +14,7 @@ type SearchTriggerProps = ComponentProps<'button'> & {
 
 export const SearchTriggerSm = ({
   hideIfDisabled,
-  className: _className,
+  className,
   ...props
 }: SearchTriggerProps) => {
   const { setOpenSearch, enabled } = useSearchContext();
@@ -26,7 +26,7 @@ export const SearchTriggerSm = ({
       type="button"
       data-search=""
       aria-label="Open Search"
-      className={iconButtonClass()}
+      className={iconButtonClass(className)}
       onClick={() => setOpenSearch(true)}
       {...props}
     >
@@ -48,8 +48,9 @@ export const SearchTriggerFull = ({
     <button
       type="button"
       data-search-full=""
+      aria-label="Search documentation"
       className={cn(
-        'inline-flex h-8 w-full max-w-sm cursor-pointer items-center gap-2 rounded-md border border-border bg-default/70 px-2.5 text-sm text-muted transition-colors',
+        'inline-flex h-9 w-full max-w-sm cursor-pointer items-center gap-2 rounded-md border border-border bg-default/70 px-2.5 text-sm text-muted transition-colors',
         'hover:border-foreground/15 hover:bg-default hover:text-foreground',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus/40',
         className
@@ -63,7 +64,7 @@ export const SearchTriggerFull = ({
         {hotKey.map((k, i) => (
           <kbd
             key={String(i)}
-            className="rounded border border-border bg-background px-1.5 font-sans text-[0.6875rem] text-muted"
+            className="rounded border border-border bg-background px-1.5 font-sans text-xs text-muted"
           >
             {k.display}
           </kbd>

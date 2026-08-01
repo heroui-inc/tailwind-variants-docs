@@ -35,7 +35,7 @@ export const DocsSidebarItem = ({ item }: { item: PageTree.Item }) => {
         style={{ paddingInlineStart: itemOffset(depth) }}
       >
         <span className="truncate">{item.name}</span>
-        <span className="shrink-0 rounded-sm bg-default px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-muted uppercase">
+        <span className="shrink-0 rounded-sm bg-default px-1.5 py-0.5 text-xs font-medium tracking-wide text-muted uppercase">
           Soon
         </span>
       </span>
@@ -49,10 +49,10 @@ export const DocsSidebarItem = ({ item }: { item: PageTree.Item }) => {
       active={isItemActive(item.url, pathname)}
       icon={item.icon}
       className={cn(
-        'relative flex cursor-pointer flex-row items-center gap-2 rounded-sm px-2 py-1.5 text-sm leading-snug',
+        'relative flex cursor-pointer flex-row items-center gap-2 rounded-md px-2 py-1.5 text-sm leading-snug',
         'text-muted wrap-anywhere transition-colors',
-        'hover:bg-default/70 hover:text-foreground',
-        'data-[active=true]:text-foreground data-[active=true]:font-medium',
+        'hover:bg-default/40 hover:text-foreground',
+        'data-[active=true]:bg-default data-[active=true]:font-semibold data-[active=true]:text-foreground',
         '[&_svg]:size-4 [&_svg]:shrink-0'
       )}
       style={{ paddingInlineStart: itemOffset(depth) }}

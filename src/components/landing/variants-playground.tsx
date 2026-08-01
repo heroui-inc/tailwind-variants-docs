@@ -162,10 +162,7 @@ export const VariantsPlayground = () => {
   const code = useMemo(() => createTvCode(selected), [selected]);
 
   return (
-    <LandingSection
-      border="x-y"
-      className="grid grid-cols-1 items-stretch gap-8 py-10 md:grid-cols-2 md:gap-10 md:py-14"
-    >
+    <LandingSection className="grid grid-cols-1 items-stretch gap-8 py-10 md:grid-cols-2 md:gap-10 md:py-14">
       <div className="@container flex flex-col">
         <SectionIntro
           eyebrow="Features"
@@ -179,7 +176,7 @@ export const VariantsPlayground = () => {
           description="A small API with full control over variants, slots, and compound styles."
         />
 
-        <div className="@md:grid-cols-2 mt-8 grid grid-cols-1 gap-2">
+        <div className="@md:grid-cols-2 mt-8 grid grid-cols-1 gap-3">
           {features.map((feature) => {
             const isSelected = selected.includes(feature.id);
 
@@ -192,20 +189,20 @@ export const VariantsPlayground = () => {
                   setSelected((current) => toggleFeature(current, feature.id));
                 }}
                 className={cn(
-                  'group rounded-xl p-4 text-start',
-                  'transition-[background-color,color,box-shadow]',
+                  'group rounded-xl border p-4 text-start',
+                  'transition-[background-color,border-color]',
                   easeOut,
                   focusRing,
                   interactive,
                   isSelected
-                    ? 'bg-default text-default-foreground'
-                    : 'bg-transparent text-muted hover:bg-default/60 hover:text-foreground'
+                    ? 'border-border bg-default text-default-foreground'
+                    : 'border-transparent text-muted hover:border-border/70 hover:bg-default/40 hover:text-foreground'
                 )}
               >
                 <span className="flex items-center justify-between gap-3">
                   <span
                     className={cn(
-                      'text-sm font-medium tracking-tight sm:text-[0.9375rem]',
+                      'text-sm font-medium tracking-tight',
                       isSelected
                         ? 'text-foreground'
                         : 'group-hover:text-foreground'
@@ -216,9 +213,7 @@ export const VariantsPlayground = () => {
                   <span
                     aria-hidden
                     className={cn(
-                      'flex size-5 shrink-0 items-center justify-center rounded-full',
-                      'transition-[background-color,color]',
-                      easeOut,
+                      'flex size-5 shrink-0 items-center justify-center rounded-md',
                       isSelected
                         ? 'bg-foreground text-background'
                         : 'bg-default text-muted group-hover:text-foreground'
@@ -231,14 +226,7 @@ export const VariantsPlayground = () => {
                     )}
                   </span>
                 </span>
-                <span
-                  className={cn(
-                    'mt-2 block text-sm/relaxed',
-                    isSelected
-                      ? 'text-muted'
-                      : 'text-muted/80 group-hover:text-muted'
-                  )}
-                >
+                <span className="mt-2 block text-sm/relaxed text-muted">
                   {feature.description}
                 </span>
               </button>
@@ -249,6 +237,7 @@ export const VariantsPlayground = () => {
 
       <CodeWindow
         filename="button.styles.ts"
+        code={code}
         className="flex h-full min-h-88 flex-col md:min-h-full"
       >
         <MagicCode code={code} />

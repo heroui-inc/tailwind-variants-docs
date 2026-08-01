@@ -18,31 +18,39 @@ export const InstallCommand = ({
   fullWidth = false
 }: InstallCommandProps) => {
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState(false);
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(command);
+      setError(false);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
-    } catch {}
+    } catch {
+      setCopied(false);
+      setError(true);
+      window.setTimeout(() => setError(false), 2500);
+    }
   };
 
   return (
     <div
       className={cn(
-        'border-border/70 flex min-h-11 items-center gap-3 rounded-xl border px-4 py-2.5 font-mono text-xs md:text-code',
+        'flex min-h-11 items-center gap-3 rounded-xl border border-border px-4 py-2.5 font-mono text-xs md:text-code',
         fullWidth ? 'w-full' : 'mt-auto w-fit max-w-full',
         className
       )}
     >
-      <span className="min-w-0 flex-1 truncate">
+      <span className="min-w-0 flex-1 truncate text-foreground">
         <span className="text-muted">$ </span>
         <span>{command}</span>
       </span>
       <button
         type="button"
         onClick={copy}
-        aria-label={copied ? 'Copied' : `Copy ${command}`}
+        aria-label={
+          error ? 'Copy failed' : copied ? 'Copied' : `Copy ${command}`
+        }
         className={cn(
           'inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted hover:bg-default hover:text-foreground',
           'transition-colors active:bg-default/80',
@@ -57,6 +65,10 @@ export const InstallCommand = ({
           <CopyIcon size={16} className="size-4" />
         )}
       </button>
+      <span className="sr-only" aria-live="polite">
+        {error ? 'Couldn’t copy. Select the command and copy manually.' : ''}
+        {copied ? 'Copied to clipboard.' : ''}
+      </span>
     </div>
   );
 };

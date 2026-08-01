@@ -65,7 +65,7 @@ export const SectionIntro = ({
       <p className="text-primary text-sm font-medium">{eyebrow}</p>
       <h2
         className={cn(
-          'mt-4 text-3xl font-medium tracking-tight text-balance md:text-4xl',
+          'mt-4 text-3xl font-semibold tracking-tight text-balance md:text-4xl',
           align === 'start' && 'max-w-lg'
         )}
       >

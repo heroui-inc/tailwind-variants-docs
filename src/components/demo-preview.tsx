@@ -28,7 +28,7 @@ function DemoStage({ children }: { children: ReactNode }) {
       data-demo-stage
       className={cn(
         'demo-stage relative flex min-h-60 w-full items-center justify-center overflow-hidden px-5 py-10 sm:px-6 sm:py-12',
-        'bg-background'
+        'bg-[color-mix(in_oklab,var(--background)_55%,var(--default)_45%)]'
       )}
     >
       <div className="relative z-10 flex w-full min-w-0 items-center justify-center">
@@ -63,7 +63,7 @@ export function DemoPreview({
   return (
     <div
       className={cn(
-        'demo-preview not-prose my-6 overflow-hidden rounded-xl border border-border bg-surface',
+        'demo-preview not-prose my-6 overflow-hidden rounded-xl border border-border bg-surface shadow-none',
         resizable && 'demo-preview-resizable',
         className
       )}

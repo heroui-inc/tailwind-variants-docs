@@ -14,23 +14,20 @@ export const LandingHero = () => {
       className="relative mt-4 grid min-h-svh/2 grid-cols-1 overflow-hidden lg:grid-cols-2 lg:divide-x lg:divide-border"
     >
       <div className="flex flex-col px-6 py-12 md:px-12 md:py-24">
-        <p className="text-muted">
-          By <span className="text-foreground">HeroUI</span>
+        <p className="text-sm font-semibold tracking-tight text-foreground">
+          Tailwind Variants
+          <span className="ms-2 font-normal text-muted">by HeroUI</span>
         </p>
-        <h1 className="mt-4 text-4xl font-medium tracking-tight text-balance sm:text-5xl">
-          A{' '}
-          <span className="bg-linear-to-b from-primary to-foreground/75 bg-clip-text text-transparent dark:to-foreground">
-            first-class
-          </span>{' '}
-          variant API
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+          A first-class variant API
           <br />
           for Tailwind CSS.
         </h1>
-        <p className="mt-8 max-w-xl text-pretty text-base text-muted sm:text-lg">
+        <p className="mt-6 max-w-xl text-pretty text-base text-muted sm:text-lg">
           Fully typed for TypeScript, with trusted class merging across any
           framework.
         </p>
-        <div className="mt-8 mb-8 flex flex-wrap items-center gap-3">
+        <div className="mt-8 flex flex-wrap items-center gap-3">
           <Link href="/docs/introduction" className={landingButtonClass()}>
             <BookIcon size={16} className="size-4" aria-hidden />
             Getting Started
@@ -45,7 +42,7 @@ export const LandingHero = () => {
             GitHub
           </Link>
         </div>
-        <InstallCommand />
+        <InstallCommand className="mt-10" />
       </div>
 
       <HeroVisual />

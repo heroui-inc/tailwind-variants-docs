@@ -118,41 +118,40 @@ export const HeroVisual = () => {
           <span className={slots.badge()}>{badges[tone]}</span>
         </div>
 
-        <div
-          className="flex items-center gap-0.5"
-          role="group"
-          aria-label="Badge tone"
-        >
-          {tones.map((value) => {
-            const selected = tone === value;
+        <div className="flex flex-col items-center gap-3">
+          <div
+            className="inline-flex items-center rounded-xl border border-border/80 bg-background/60 p-0.5 backdrop-blur-sm"
+            role="group"
+            aria-label="Badge tone"
+          >
+            {tones.map((value) => {
+              const selected = tone === value;
 
-            return (
-              <button
-                key={value}
-                type="button"
-                aria-pressed={selected}
-                onClick={() => setTone(value)}
-                className={cn(
-                  'relative px-2 py-1 text-code font-medium tracking-tight outline-none',
-                  'transition-colors',
-                  easeOut,
-                  focusRing,
-                  interactive,
-                  selected
-                    ? 'text-foreground'
-                    : 'text-muted hover:text-foreground'
-                )}
-              >
-                {selected ? (
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 rounded-lg bg-default"
-                  />
-                ) : null}
-                <span className="relative">{labels[value]}</span>
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => setTone(value)}
+                  className={cn(
+                    'rounded-lg px-2.5 py-1.5 text-sm font-medium tracking-tight outline-none',
+                    'transition-colors',
+                    easeOut,
+                    focusRing,
+                    interactive,
+                    selected
+                      ? 'bg-default text-foreground'
+                      : 'text-muted hover:text-foreground'
+                  )}
+                >
+                  {labels[value]}
+                </button>
+              );
+            })}
+          </div>
+          {/* <p className="font-mono text-xs tracking-tight text-muted">
+            {`status({ tone: '${tone}' })`}
+          </p> */}
         </div>
       </div>
     </div>
