@@ -65,7 +65,7 @@
     color-mix(in oklab, var(--black) 14%, transparent);
 
   /* @see https://fumadocs.dev/docs/ui/theme#layout-width */
-  --fd-layout-width: 1440px;
+  --fd-layout-width: 1680px;
 }
 
 .dark {
@@ -150,7 +150,7 @@
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
 
-  --container-landing: 1440px;
+  --container-landing: 1680px;
   --text-code: 0.875rem;
 
   --shadow-code-window: var(--code-window-shadow);
@@ -452,12 +452,49 @@ html > body[data-scroll-locked] {
   color: var(--foreground);
 }
 
-#nd-home-layout {
-  --fd-layout-width: 1440px;
+/* Fumadocs sets --fd-sidebar-width on the layout root through its `layout:`
+   variant, which compiles to #nd-notebook-layout:has(&) and outranks a plain
+   id selector — so these need !important to take effect. */
+@media (min-width: 1024px) {
+  #nd-notebook-layout {
+    --fd-sidebar-width: 240px !important;
+  }
 }
 
-/* Mobile: drop side gutters so main isn't zero-width / clipped */
-@media (max-width: 767px) {
+/* The article track sizes to its content instead of filling the row, so the
+   outer gutters ended up uneven with the header's own mx-auto centering.
+   Pinning the article track makes sidebar + article + TOC add up to the layout
+   width, so the gutters match the header and the sidebar lines up with it. */
+@media (min-width: 1280px) {
+  #nd-notebook-layout {
+    --fd-layout-width: 1440px;
+    grid-template-columns:
+      1fr
+      var(--fd-sidebar-col)
+      min(
+        calc(100% - var(--fd-sidebar-col) - var(--fd-toc-width)),
+        calc(
+          var(--fd-layout-width) -
+          var(--fd-sidebar-col) -
+          var(--fd-toc-width)
+        )
+      )
+      var(--fd-toc-width)
+      1fr !important;
+  }
+}
+
+/* 1024–1279px: no TOC column, so keep the sidebar narrow and give the
+   leftover width to the article instead of the outer gutters. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  #nd-notebook-layout {
+    --fd-sidebar-width: 208px !important;
+    grid-template-columns: 0 var(--fd-sidebar-col) minmax(0, 1fr) 0 0 !important;
+  }
+}
+
+/* Mobile + tablet: drawer nav, full-width content */
+@media (max-width: 1023px) {
   #nd-notebook-layout {
     --fd-layout-width: 100%;
     grid-template-columns: 0 0 minmax(0, 1fr) 0 0 !important;
@@ -467,15 +504,32 @@ html > body[data-scroll-locked] {
     min-width: 0;
     max-width: 100%;
   }
+
+  #nd-notebook-layout [data-sidebar-placeholder] {
+    display: none !important;
+  }
+}
+
+/* Below xl there is no TOC column, so let the article use the free width */
+@media (max-width: 1279px) {
+  #nd-notebook-layout #nd-page > * {
+    max-width: 100%;
+  }
+}
+
+#nd-home-layout {
+  --fd-layout-width: 1680px;
 }
 
 #nd-notebook-layout #nd-subnav {
   border-color: var(--border);
 }
 
+/* The aside spans the left gutter plus the sidebar column, so its default
+   end-alignment is what keeps the nav inside the sidebar column itself. */
 #nd-notebook-layout #nd-sidebar {
   background: var(--background);
-  border-inline-end: 1px solid var(--border);
+  border-inline-end: none;
 }
 
 #nd-notebook-layout
@@ -493,6 +547,14 @@ html > body[data-scroll-locked] {
 #nd-notebook-layout #nd-sidebar [data-sidebar-viewport],
 #nd-notebook-layout #nd-sidebar [data-radix-scroll-area-viewport] {
   padding-block: 0.75rem;
+}
+
+#nd-notebook-layout #nd-sidebar a {
+  transition: none;
+}
+
+#nd-notebook-layout [class*="[grid-area:toc-popover]"] > header {
+  border-bottom: none;
 }
 
 #nd-notebook-layout #nd-page {
@@ -553,6 +615,47 @@ html > body[data-scroll-locked] {
   border: 0;
   background: transparent;
   border-radius: 0;
+}
+
+#nd-notebook-layout .prose .docs-callout > [role="none"] {
+  display: none;
+}
+
+#nd-notebook-layout .prose .docs-callout > svg {
+  height: 1rem;
+  width: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  fill: none;
+  stroke: var(--foreground);
+  stroke-width: 2;
+}
+
+#nd-notebook-layout .prose .docs-callout > div:last-child {
+  min-width: 0;
+  flex: 1;
+}
+
+#nd-notebook-layout .prose .docs-callout .text-fd-muted-foreground {
+  margin: 0;
+  color: var(--foreground);
+  line-height: 1.5;
+}
+
+#nd-notebook-layout
+  .prose
+  .docs-callout
+  .text-fd-muted-foreground
+  > :first-child {
+  margin-top: 0;
+}
+
+#nd-notebook-layout
+  .prose
+  .docs-callout
+  .text-fd-muted-foreground
+  > :last-child {
+  margin-bottom: 0;
 }
 
 #nd-notebook-layout
@@ -669,4 +772,51 @@ html > body[data-scroll-locked] {
 
 #nd-notebook-layout figure.shiki button {
   user-select: none;
+}
+
+/* Keep the scrollbar gutter reserved but invisible until the block is hovered
+   or focused, so revealing it never shifts the code. */
+#nd-notebook-layout figure.shiki [role="region"] {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+#nd-notebook-layout figure.shiki [role="region"]::-webkit-scrollbar {
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
+#nd-notebook-layout figure.shiki [role="region"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#nd-notebook-layout figure.shiki [role="region"]::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: transparent;
+  transition: background-color 150ms ease-out;
+}
+
+#nd-notebook-layout figure.shiki:hover [role="region"],
+#nd-notebook-layout figure.shiki [role="region"]:focus-visible {
+  scrollbar-color: color-mix(in oklab, var(--muted) 35%, transparent)
+    transparent;
+}
+
+#nd-notebook-layout figure.shiki:hover [role="region"]::-webkit-scrollbar-thumb,
+#nd-notebook-layout
+  figure.shiki
+  [role="region"]:focus-visible::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--muted) 35%, transparent);
+}
+
+#nd-notebook-layout
+  figure.shiki
+  [role="region"]::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--muted) 55%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #nd-notebook-layout figure.shiki [role="region"]::-webkit-scrollbar-thumb {
+    transition: none;
+  }
 }

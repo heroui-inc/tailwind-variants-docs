@@ -1,6 +1,5 @@
 'use client';
 
-import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import {
   Popover,
   PopoverContent,
@@ -26,7 +25,7 @@ import {
   getCursorMcpInstallUrl,
   getVSCodeMcpInstallUrl
 } from '@/lib/ai-actions';
-import { focusRing, iconButtonClass, popoverContentClass } from '@/lib/styles';
+import { focusRing, interactive, popoverContentClass } from '@/lib/styles';
 
 type PageActionsProps = {
   title: string;
@@ -99,11 +98,18 @@ const ClaudeGlyph = ({ className }: { className?: string }) => {
   );
 };
 
-const actionButtonClass = cn(
-  buttonVariants({ variant: 'outline', size: 'sm' }),
-  'min-h-10 cursor-pointer select-none gap-1.5 border-border bg-background px-3 text-foreground',
+const splitButtonClass = cn(
+  'inline-flex min-h-10 shrink-0 items-center justify-center self-stretch px-3 text-xs font-medium text-foreground transition-colors',
   'hover:bg-default hover:text-foreground',
-  focusRing
+  focusRing,
+  interactive
+);
+
+const splitTriggerClass = cn(
+  'inline-flex w-10 shrink-0 items-center justify-center self-stretch text-muted transition-colors',
+  'hover:bg-default hover:text-foreground',
+  focusRing,
+  interactive
 );
 
 export const PageActions = ({
@@ -194,13 +200,13 @@ export const PageActions = ({
 
   return (
     <div className="not-prose flex w-full shrink-0 flex-wrap items-center gap-2 select-none sm:w-auto sm:justify-end">
-      <div className="inline-flex min-h-10 min-w-0 flex-1 items-stretch overflow-hidden rounded-xl border border-border bg-background sm:flex-initial">
+      <div className="inline-flex min-h-10 min-w-0 flex-1 items-stretch overflow-hidden rounded-xl border border-border sm:flex-initial">
         <button
           type="button"
           onClick={onCopyMarkdown}
           className={cn(
-            actionButtonClass,
-            'min-w-0 flex-1 rounded-none border-0 bg-default/50 font-medium shadow-none sm:flex-initial'
+            splitButtonClass,
+            'min-w-0 flex-1 gap-1.5 rounded-none border-0 bg-default/50 shadow-none sm:flex-initial'
           )}
           aria-label={
             markdownCopied
@@ -223,8 +229,8 @@ export const PageActions = ({
           <PopoverTrigger
             aria-label="Open Markdown and AI actions"
             className={cn(
-              iconButtonClass(),
-              'h-auto min-h-10 w-10 rounded-none border-0 border-l border-border'
+              splitTriggerClass,
+              'rounded-none border-0 border-l border-border bg-background'
             )}
           >
             <ChevronDownIcon size={14} className="size-3.5" />

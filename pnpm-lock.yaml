@@ -51,8 +51,8 @@ importers:
         specifier: 4.4.1
         version: 4.4.1
       tailwind-variants:
-        specifier: 3.3.0
-        version: 3.3.0(tailwindcss@4.3.3)
+        specifier: 3.3.1
+        version: 3.3.1(tailwindcss@4.3.3)
       takumi-js:
         specifier: 2.5.4
         version: 2.5.4(csstype@3.2.3)(react@19.2.8)
@@ -2338,8 +2338,8 @@ packages:
       babel-plugin-macros:
         optional: true
 
-  tailwind-variants@3.3.0:
-    resolution: {integrity: sha512-t1QsB42dcwUdaCEArO0tRZcP0nbCcAmJKRYCs7jmwYSFOCXlGqgO8c0TrCYm9OranYmT6i9YOi8LFo2gxmxnow==}
+  tailwind-variants@3.3.1:
+    resolution: {integrity: sha512-4pAvwUtM4HKBiRZftncAbpn6V9Hhwoa5Fl7O2u5zbp7Z5Cvu+/o/6+176WY3WCEES209543quG8zFIcXCsc5Jw==}
     engines: {node: '>=16.9.x', pnpm: '>=7.x'}
     peerDependencies:
       tailwind-merge: '>=3.0.0'
@@ -4734,7 +4734,7 @@ snapshots:
       client-only: 0.0.1
       react: 19.2.8
 
-  tailwind-variants@3.3.0(tailwindcss@4.3.3):
+  tailwind-variants@3.3.1(tailwindcss@4.3.3):
     optionalDependencies:
       tailwindcss: 4.3.3
 

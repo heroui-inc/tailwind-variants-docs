@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { cn } from 'tailwind-variants';
 
 import { GitHubIconLink } from '@/components/header-actions';
+import { HeroUIIsotipo } from '@/components/heroui-logo';
 import { ChevronDownIcon } from '@/components/icons';
 import { Logo } from '@/components/logo';
 import {
@@ -22,7 +23,11 @@ import {
   SearchTriggerSm
 } from '@/components/search-trigger';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { iconButtonClass, popoverContentClass } from '@/lib/styles';
+import {
+  iconButtonClass,
+  interactive,
+  popoverContentClass
+} from '@/lib/styles';
 import pkg from '../../package.json';
 
 const DEFAULT_VERSION = '0.1.14';
@@ -47,11 +52,33 @@ const isDocsActive = (pathname: string) => {
 
 const Brand = () => {
   return (
-    <Link
-      href="/"
-      className="inline-flex items-center gap-2.5 font-semibold text-foreground"
-    >
-      <span className="inline-flex h-6 items-center gap-2 text-nowrap">
+    <div className="inline-flex items-center gap-2.5 font-semibold text-foreground">
+      <a
+        href="https://www.heroui.com/?utm_source=tailwind-variants.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cn(
+          'inline-flex shrink-0 transition-opacity hover:opacity-80',
+          interactive
+        )}
+        title="HeroUI homepage"
+      >
+        <HeroUIIsotipo height={22} className="shrink-0" />
+        <span className="sr-only">HeroUI</span>
+      </a>
+      <svg
+        aria-hidden
+        className="size-4 shrink-0 text-muted"
+        viewBox="0 0 16 16"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M4.01526 15.3939L4.3107 14.7046L10.3107 0.704556L10.6061 0.0151978L11.9849 0.606077L11.6894 1.29544L5.68942 15.2954L5.39398 15.9848L4.01526 15.3939Z"
+        />
+      </svg>
+      <Link href="/" className="inline-flex h-6 items-center gap-2 text-nowrap">
         <Logo height={22} width={23} className="shrink-0" />
         <span className="text-sm font-semibold tracking-tight">
           Tailwind Variants
@@ -59,8 +86,8 @@ const Brand = () => {
         <span className="bg-default text-muted shrink-0 rounded-md px-1.5 py-0.5 font-mono text-xs font-medium leading-none tabular-nums">
           v{getVersion()}
         </span>
-      </span>
-    </Link>
+      </Link>
+    </div>
   );
 };
 
@@ -153,7 +180,7 @@ const DocsMobileSidebar = () => {
   return (
     <SidebarTrigger
       aria-label="Open Sidebar"
-      className={iconButtonClass('md:hidden')}
+      className={iconButtonClass('lg:hidden')}
     >
       <svg
         viewBox="0 0 16 16"
@@ -245,10 +272,13 @@ export const SiteHeader = ({ variant }: SiteHeaderProps) => {
 
       <div className="ms-auto flex flex-row items-center gap-1.5">
         {variant === 'docs' ? (
-          <SearchTriggerFull
-            hideIfDisabled
-            className="me-1 hidden w-44 lg:flex xl:w-56"
-          />
+          <>
+            <SearchTriggerFull
+              hideIfDisabled
+              className="me-1 hidden w-44 lg:flex xl:w-56"
+            />
+            <DocsMobileSidebar />
+          </>
         ) : null}
 
         <div className="hidden items-center gap-1.5 md:flex">
@@ -263,14 +293,7 @@ export const SiteHeader = ({ variant }: SiteHeaderProps) => {
 
         <div className="flex items-center gap-1.5 md:hidden">
           <SearchTriggerSm hideIfDisabled />
-          {variant === 'home' ? (
-            <HomeMobileMenu />
-          ) : (
-            <>
-              <DocsMobileMenu />
-              <DocsMobileSidebar />
-            </>
-          )}
+          {variant === 'home' ? <HomeMobileMenu /> : <DocsMobileMenu />}
         </div>
       </div>
     </HeaderShell>

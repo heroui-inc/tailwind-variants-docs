@@ -29,11 +29,11 @@ export const LandingFooter = () => {
           title="HeroUI homepage"
         >
           <span>Powered by</span>
-          <HeroUILogo className="h-5 w-auto" />
+          <HeroUILogo size={20} className="text-foreground" />
         </a>
 
         <p className="text-center">
-          &copy; {new Date().getFullYear()} HeroUI Inc.
+          &copy; {new Date().getFullYear()} NextUI Inc.
         </p>
 
         <nav

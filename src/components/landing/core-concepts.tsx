@@ -372,19 +372,6 @@ export const CoreConcepts = () => {
             <p className="mt-2 text-pretty text-sm/relaxed text-muted">
               {active.description}
             </p>
-            <Link
-              href={active.docsHref}
-              className={cn(
-                'mt-4 inline-flex min-h-9 items-center gap-1.5 text-sm font-medium text-foreground',
-                'underline-offset-4 transition-[opacity,text-decoration-color] hover:underline',
-                easeOut,
-                focusRing,
-                interactive
-              )}
-            >
-              View {active.name} docs
-              <ArrowRightIcon size={14} className="size-3.5" aria-hidden />
-            </Link>
           </div>
 
           <CodeWindow
@@ -394,6 +381,20 @@ export const CoreConcepts = () => {
           >
             <MagicCode code={active.usage} />
           </CodeWindow>
+
+          <Link
+            href={active.docsHref}
+            className={cn(
+              'inline-flex min-h-9 items-center gap-1.5 text-sm font-medium text-foreground',
+              'underline-offset-4 transition-[opacity,text-decoration-color] hover:underline',
+              easeOut,
+              focusRing,
+              interactive
+            )}
+          >
+            View {active.name} docs
+            <ArrowRightIcon size={14} className="size-3.5" aria-hidden />
+          </Link>
         </div>
       </div>
     </LandingSection>

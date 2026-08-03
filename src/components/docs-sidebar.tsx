@@ -50,8 +50,7 @@ export const DocsSidebarItem = ({ item }: { item: PageTree.Item }) => {
       icon={item.icon}
       className={cn(
         'relative flex cursor-pointer flex-row items-center gap-2 rounded-md px-2 py-1.5 text-sm leading-snug',
-        'text-muted wrap-anywhere transition-colors',
-        'hover:bg-default/40 hover:text-foreground',
+        'text-muted wrap-anywhere',
         'data-[active=true]:bg-default data-[active=true]:font-semibold data-[active=true]:text-foreground',
         '[&_svg]:size-4 [&_svg]:shrink-0'
       )}
