@@ -103,7 +103,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           ])}
         />
       </head>
-      <body className="flex min-h-screen flex-col font-sans">
+      <body className="flex min-h-screen flex-col font-sans antialiased">
         <RootProvider dir="ltr">{children}</RootProvider>
         {isProd && isVercel ? <Analytics /> : null}
       </body>

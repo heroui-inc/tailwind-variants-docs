@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { cn } from 'tailwind-variants';
 
+import { ContextualSwapIcon } from '@/components/contextual-swap-icon';
 import { CheckIcon, CopyIcon } from '@/components/icons';
 import { easeOut, focusRing, interactive } from '@/components/landing/styles';
 
@@ -53,17 +54,18 @@ export const InstallCommand = ({
         }
         className={cn(
           'inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted hover:bg-default hover:text-foreground',
-          'transition-colors active:bg-default/80',
+          'transition-[color,background-color,transform] active:bg-default/80 active:scale-[0.96]',
+          'motion-reduce:transition-none motion-reduce:active:scale-100',
           easeOut,
           focusRing,
           interactive
         )}
       >
-        {copied ? (
-          <CheckIcon size={16} className="text-success size-4" />
-        ) : (
-          <CopyIcon size={16} className="size-4" />
-        )}
+        <ContextualSwapIcon
+          active={copied}
+          activeIcon={<CheckIcon size={16} className="text-success size-4" />}
+          inactiveIcon={<CopyIcon size={16} className="size-4" />}
+        />
       </button>
       <span className="sr-only" aria-live="polite">
         {error ? 'Couldn’t copy. Select the command and copy manually.' : ''}

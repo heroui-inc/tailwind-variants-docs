@@ -24,6 +24,8 @@ export const landingButtonClass = ({
       className: 'rounded-xl'
     }),
     'inline-flex min-h-11 w-fit items-center justify-center gap-2 px-5',
+    'transition-[transform,background-color,color,border-color]',
+    'active:scale-[0.96] motion-reduce:transition-none motion-reduce:active:scale-100',
     variant === 'primary' && 'text-primary-foreground',
     interactive,
     className

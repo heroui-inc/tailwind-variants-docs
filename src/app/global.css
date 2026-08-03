@@ -362,7 +362,7 @@ html > body[data-scroll-locked] {
 
 .demo-stage button:not(:disabled):active,
 .demo-stage [data-demo-press]:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -521,6 +521,7 @@ html > body[data-scroll-locked] {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   scroll-margin-top: 5.5rem;
+  text-wrap: balance;
 }
 
 #nd-notebook-layout
@@ -529,6 +530,7 @@ html > body[data-scroll-locked] {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
   scroll-margin-top: 5.5rem;
+  text-wrap: balance;
 }
 
 #nd-notebook-layout
@@ -536,6 +538,7 @@ html > body[data-scroll-locked] {
   :where(p, ul, ol):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   margin-top: 0.85rem;
   margin-bottom: 0.85rem;
+  text-wrap: pretty;
 }
 
 #nd-notebook-layout

@@ -9,10 +9,12 @@ export const focusRing =
 
 export const iconButtonClass = (className?: string) => {
   return cn(
-    'inline-flex size-8 shrink-0 items-center justify-center rounded-md',
-    'text-muted transition-colors',
+    'inline-flex size-9 shrink-0 items-center justify-center rounded-md',
+    'text-muted',
+    'transition-[color,background-color,transform]',
     'hover:bg-default hover:text-foreground',
-    'active:bg-default/80',
+    'active:bg-default/80 active:scale-[0.96]',
+    'motion-reduce:transition-none motion-reduce:active:scale-100',
     interactive,
     focusRing,
     easeOut,

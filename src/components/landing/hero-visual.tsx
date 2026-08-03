@@ -120,7 +120,7 @@ export const HeroVisual = () => {
 
         <div className="flex flex-col items-center gap-3">
           <div
-            className="inline-flex items-center rounded-xl border border-border/80 bg-background/60 p-0.5 backdrop-blur-sm"
+            className="inline-flex items-center rounded-[16px] border border-border/80 bg-background/60 p-0.5 backdrop-blur-sm"
             role="group"
             aria-label="Badge tone"
           >

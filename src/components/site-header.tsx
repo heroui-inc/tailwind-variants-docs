@@ -56,7 +56,7 @@ const Brand = () => {
         <span className="text-sm font-semibold tracking-tight">
           Tailwind Variants
         </span>
-        <span className="bg-default text-muted shrink-0 rounded-md px-1.5 py-0.5 text-xs font-medium leading-none">
+        <span className="bg-default text-muted shrink-0 rounded-md px-1.5 py-0.5 font-mono text-xs font-medium leading-none tabular-nums">
           v{getVersion()}
         </span>
       </span>

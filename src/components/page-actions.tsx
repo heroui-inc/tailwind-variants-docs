@@ -10,6 +10,7 @@ import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import { type ReactNode, useMemo } from 'react';
 import { cn } from 'tailwind-variants';
 
+import { ContextualSwapIcon } from '@/components/contextual-swap-icon';
 import {
   ArrowUpRightFromSquareIcon,
   CheckIcon,
@@ -207,11 +208,14 @@ export const PageActions = ({
               : 'Copy Markdown to clipboard'
           }
         >
-          {markdownCopied ? (
-            <CheckIcon size={14} className="size-3.5 text-muted" />
-          ) : (
-            <CopyIcon size={14} className="size-3.5 text-muted" />
-          )}
+          <ContextualSwapIcon
+            className="size-3.5"
+            active={markdownCopied}
+            activeIcon={<CheckIcon size={14} className="size-3.5 text-muted" />}
+            inactiveIcon={
+              <CopyIcon size={14} className="size-3.5 text-muted" />
+            }
+          />
           {markdownCopied ? 'Copied' : 'Copy Markdown'}
         </button>
 
@@ -240,11 +244,13 @@ export const PageActions = ({
                 )}
               >
                 <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center text-muted">
-                  {promptCopied ? (
-                    <CheckIcon size={16} className="size-4" />
-                  ) : (
-                    <MagicWandIcon size={16} className="size-4" />
-                  )}
+                  <ContextualSwapIcon
+                    active={promptCopied}
+                    activeIcon={<CheckIcon size={16} className="size-4" />}
+                    inactiveIcon={
+                      <MagicWandIcon size={16} className="size-4" />
+                    }
+                  />
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <span className="text-sm font-medium text-foreground">

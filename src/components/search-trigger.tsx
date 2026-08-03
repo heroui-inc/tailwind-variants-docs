@@ -64,7 +64,7 @@ export const SearchTriggerFull = ({
         {hotKey.map((k, i) => (
           <kbd
             key={String(i)}
-            className="rounded border border-border bg-background px-1.5 font-sans text-xs text-muted"
+            className="rounded border border-border bg-background px-1.5 font-sans text-xs text-muted tabular-nums"
           >
             {k.display}
           </kbd>
