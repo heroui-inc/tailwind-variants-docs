@@ -1,46 +1,51 @@
-import { Tabs } from 'nextra/components';
+---
+title: "Tailwind CSS v4"
+description: "Use Tailwind Variants with Tailwind CSS v4 — content scanning, conflict resolution, and what stays the same in recipes."
+---
 
-# Tailwind v4
+Tailwind Variants works with Tailwind CSS v4. Class strings are plain Tailwind utilities — TV does not depend on a specific Tailwind major version.
 
-TailwindCSS v4 is now available! You can use all the new features and improvements from `Tailwindcss v4` in your projects.
+## No TV-specific migration
 
-Upgrade `tailwind-variants` to `v1.x` to use it.
+Upgrade Tailwind and TV independently:
 
-### Migration Steps
+```bash
+npm install tailwindcss@latest tailwind-variants@latest
+```
 
-To upgrade your project to `v1.x`, you can run the upgrade script.
+Your recipes, variants, and slots stay the same. Conflict resolution in the default build handles v4 utility names.
 
-<Tabs items={['npm', 'yarn', 'pnpm']}>
-  <Tabs.Tab>
+## Content sources
 
-    ```bash copy
-    npm install tailwind-variants@latest
-    ```
+Tailwind v4 scans sources via `@source` in CSS instead of `content` in a JS config. Make sure files that **call** `tv()` are included so Tailwind generates the classes your variants reference:
 
-  </Tabs.Tab>
-  <Tabs.Tab>
+```css
+@import "tailwindcss";
 
-    ```bash copy
-    yarn upgrade tailwind-variants@latest
-    ```
+@source "../components/**/*.{js,ts,jsx,tsx}";
+@source "../node_modules/your-ui-lib/dist/**/*.{js,ts,jsx,tsx}";
+```
 
-  </Tabs.Tab>
-  <Tabs.Tab>
+If a class only appears inside a TV recipe string, the file defining that recipe must be in a scanned path.
 
-    ```bash copy
-    pnpm upgrade tailwind-variants@latest
-    ```
+## Responsive variants
 
-  </Tabs.Tab>
-</Tabs>
+Tailwind v4 removed `config.content.transform`, so TV's old `responsiveVariants` option is gone. Use Tailwind responsive prefixes directly in your classes — see [Responsive](/docs/responsive):
 
-### Breaking changes
+```ts
+const text = tv({
+  base: 'text-sm md:text-base lg:text-lg',
+  variants: {
+    emphasis: {
+      high: 'font-bold md:font-extrabold'
+    }
+  }
+});
+```
 
-- The `responsiveVariants` option has been removed.
-- `withTv` has been removed.
+## Removed APIs
 
-> ❕ Note: `Tailwindcss v4` no longer supports the `config.content.transform` so we remove the `responsiveVariants` feature
->
-> If you want to use `responsiveVariants`, you need to add it manually to your classname.
->
-> e.g. `className="sm:text-sm md:text-base lg:text-lg"` more info [here](https://tailwindcss.com/docs/responsive-design).
+These were removed in earlier major versions and do not apply to v3:
+
+- `responsiveVariants` — use responsive prefixes in class strings
+- `withTv` — use `tv` directly

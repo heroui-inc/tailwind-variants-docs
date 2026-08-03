@@ -1,0 +1,48 @@
+---
+title: "Overrides"
+description: "Pass one-off class overrides at the call site with class or className without changing the shared recipe."
+---
+
+import { OverridesDemo } from '@/components/examples';
+import { overridesButton } from '@/demos/code';
+
+Pass extra classes when calling a recipe to customize a single instance — for example a full-width button or tighter spacing.
+
+## Global override with `class` or `className`
+
+Both props work identically. Pass them when calling the recipe:
+
+<DemoPreview code={overridesButton} lang="ts">
+  <OverridesDemo />
+</DemoPreview>
+
+Overrides merge with variant output. In the default build, conflicting Tailwind utilities resolve — later wins according to merge rules.
+
+## Slot overrides
+
+With slots, pass overrides to individual slot functions:
+
+```ts
+const alert = tv({
+  slots: {
+    base: 'flex gap-3 rounded-lg p-4',
+    title: 'font-semibold'
+  }
+});
+
+const { base, title } = alert();
+
+base({ class: 'border border-zinc-200' });
+title({ className: 'text-lg' });
+```
+
+Each slot function accepts the same override props as the root call.
+
+## Slotted root overrides
+
+You can also pass overrides to the root call — they apply to the implicit or explicit `base` slot:
+
+```ts
+const slots = alert({ class: 'max-w-md' });
+slots.base(); // includes max-w-md
+```

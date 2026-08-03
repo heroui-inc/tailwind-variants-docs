@@ -16,62 +16,49 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "fmt": "prettier --write .",
-    "fmt:check": "prettier --check ."
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "lint:links": "node ./scripts/lint-links.mts",
+    "postinstall": "node ./node_modules/fumadocs-mdx/bin.js",
+    "clean": "pnpm clean:cache && pnpm i",
+    "clean:cache": "find . \\( -name '.next' -o -name '.source' -o -name 'node_modules' -o -name 'pnpm-lock.yaml' \\) -prune -exec rm -rf '{}' +"
   },
   "dependencies": {
-    "@react-aria/interactions": "3.28.1",
-    "@react-aria/radio": "3.13.1",
-    "@react-aria/ssr": "3.10.1",
-    "@react-aria/tooltip": "3.10.1",
-    "@react-aria/utils": "3.34.1",
-    "@react-stately/radio": "3.12.1",
-    "@react-stately/tooltip": "3.6.1",
+    "@gravity-ui/icons": "2.21.0",
+    "@modelcontextprotocol/server": "2.0.0",
+    "@paper-design/shaders-react": "0.0.78",
+    "@shikijs/magic-move": "4.4.1",
     "@vercel/analytics": "2.0.1",
-    "motion": "12.40.0",
-    "next": "15.5.18",
-    "nextra": "4.6.1",
-    "nextra-theme-docs": "4.6.1",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "sharp": "0.34.5",
-    "tailwind-variants": "3.3.0"
+    "fumadocs-core": "16.14.0",
+    "fumadocs-mdx": "15.2.1",
+    "fumadocs-ui": "16.14.0",
+    "mcp-handler": "2.1.0",
+    "next": "16.2.12",
+    "next-themes": "0.4.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "shiki": "4.4.1",
+    "tailwind-variants": "3.3.1",
+    "takumi-js": "2.5.4",
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.3.0",
-    "@types/node": "24.10.2",
-    "@types/react": "19.2.15",
-    "@types/react-dom": "19.2.3",
-    "@typescript-eslint/eslint-plugin": "8.60.0",
-    "eslint": "9.39.1",
-    "eslint-config-next": "15.5.18",
-    "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-prettier": "5.5.6",
-    "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-sort-destructure-keys": "3.0.0",
-    "eslint-plugin-sort-keys-fix": "1.1.2",
-    "eslint-plugin-unused-imports": "4.4.1",
-    "pagefind": "1.5.2",
-    "postcss": "8.5.15",
-    "prettier": "3.6.2",
-    "prettier-plugin-tailwindcss": "0.6.14",
-    "tailwindcss": "4.3.0",
-    "typescript": "5.9.3"
+    "@biomejs/biome": "2.5.6",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/mdx": "2.0.14",
+    "@types/node": "26.1.2",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "babel-plugin-react-compiler": "1.0.0",
+    "next-validate-link": "1.6.6",
+    "postcss": "8.5.25",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2"
   },
   "engines": {
-    "node": ">=20.x",
-    "pnpm": ">=9.x"
+    "node": ">=24.x",
+    "pnpm": ">=11.x"
   },
-  "packageManager": "pnpm@10.10.0",
-  "pnpm": {
-    "overrides": {
-      "zod": "4.3.6"
-    }
-  }
+  "packageManager": "pnpm@11.18.0"
 }

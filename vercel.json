@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "tailwind-variants.org"
+        }
+      ],
+      "destination": "https://www.tailwind-variants.org/:path*",
+      "permanent": true
+    }
+  ]
+}

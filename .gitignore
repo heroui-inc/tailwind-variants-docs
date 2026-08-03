@@ -1,6 +1,10 @@
 .next
+.source
 node_modules
 .DS_Store
+.env
+.env*.local
+next-env.d.ts
 
 # Logs
 logs
@@ -12,4 +16,3 @@ yarn-error.log*
 .vercel
 .idea
 tsconfig.tsbuildinfo
-_pagefind/

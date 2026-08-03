@@ -1,361 +1,53 @@
-import { Callout } from 'nextra/components';
-import { MultiVariantButton, TVComponent, WindowResizer } from '@components';
+---
+title: "Variants"
+description: "Define base styles and variant keys like color, size, and disabled on a tv recipe for typed call-site props."
+---
 
-# Variants
+import {
+  VariantsBadgeDemo,
+  VariantsBooleanDemo,
+  VariantsColorDemo,
+  VariantsMultiDemo
+} from '@/components/examples';
+import {
+  variantsBadge,
+  variantsBoolean,
+  variantsColor,
+  variantsMulti
+} from '@/demos/code';
 
-Variants allows you to create multiple versions of the same component.
+Variants turn one component definition into many visual states. You set a **base** — shared classes every call site gets — then add keys like `variant`, `size`, or `disabled`.
 
-### Adding variants
+## Base + variants
 
-You can add variants by using the `variants` key. There's no limit to how many variants you can add.
+<DemoPreview code={variantsColor} lang="ts">
+  <VariantsColorDemo />
+</DemoPreview>
 
-<br />
+Base classes apply first. Variant classes layer on top. Conflicting utilities resolve automatically in the default build.
 
-<TVComponent
-  as="button"
-  color="secondary"
-  tv={{
-    base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-    variants: {
-      color: {
-        primary: 'bg-blue-500 hover:bg-blue-700',
-        secondary: 'bg-purple-500 hover:bg-purple-700',
-        success: 'bg-green-500 hover:bg-green-700'
-      }
-    }
-  }}
->
-  Button
-</TVComponent>
+## Multiple variants
 
-```js copy /variants/2 /color/
-import { tv } from 'tailwind-variants';
+Combine as many variant keys as you need. Each key is an independent axis (`color` × `size` × `disabled`):
 
-const button = tv({
-  base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 hover:bg-blue-700',
-      secondary: 'bg-purple-500 hover:bg-purple-700',
-      success: 'bg-green-500 hover:bg-green-700'
-    }
-  }
-});
+<DemoPreview code={variantsMulti} lang="ts">
+  <VariantsMultiDemo />
+</DemoPreview>
 
-button({ color: 'secondary' });
-/**
- * Result:
- * font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80 bg-purple-500
- * hover:bg-purple-700
- */
-```
+## Boolean variants
 
-<Callout type="info">
-  <div className="text-sm">
-    You can also use the values as an array. e.g.&nbsp;
-    <code>base: ['font-semibold', 'text-white', ...]</code>
-  </div>
-</Callout>
+Use `true` / `false` keys for state flags:
 
-### Multiple variants
+<DemoPreview code={variantsBoolean} lang="ts">
+  <VariantsBooleanDemo />
+</DemoPreview>
 
-You can add multiple variants to a single component.
+Boolean variants work well for `disabled`, `active`, `loading`, or feature toggles.
 
-<br />
+## Array values
 
-<div className="flex-start flex items-center gap-3">
-  <MultiVariantButton color="primary" size="sm">
-    Primary
-  </MultiVariantButton>
-  <MultiVariantButton color="secondary" size="md">
-    Secondary
-  </MultiVariantButton>
-  <MultiVariantButton color="success" size="lg">
-    Success
-  </MultiVariantButton>
-</div>
+Variant values accept arrays. TV flattens them like `clsx`:
 
-```js copy /color/ /size/
-import { tv } from 'tailwind-variants';
-
-const button = tv({
-  base: 'font-semibold text-white py-1 px-3 rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 hover:bg-blue-700',
-      secondary: 'bg-purple-500 hover:bg-purple-700',
-      success: 'bg-green-500 hover:bg-green-700'
-    },
-    size: {
-      sm: 'py-1 px-3 text-xs',
-      md: 'py-1.5 px-4 text-sm',
-      lg: 'py-2 px-6 text-md'
-    }
-  }
-});
-
-button({ color: 'primary', size: 'sm' });
-/**
- * Result:
- * font-semibold text-white rounded-full active:opacity-80 bg-blue-500 hover:bg-blue-700
- * py-1 px-3 text-xs
- */
-
-button({ color: 'secondary', size: 'md' });
-/**
- * Result:
- * font-semibold text-white rounded-full active:opacity-80 bg-purple-500 hover:bg-purple-700
- * py-1.5 px-4 text-sm
- */
-
-button({ color: 'success', size: 'lg' });
-/**
- * Result:
- * font-semibold text-white rounded-full active:opacity-80 bg-green-500 hover:bg-green-700
- * py-2 px-6 text-md
- */
-```
-
-### Boolean variants
-
-You can also add boolean variants to a component. This is useful when you want to add a state variant e.g. `disabled`.
-
-<br />
-
-<TVComponent
-  as="button"
-  color="secondary"
-  disabled={true}
-  tv={{
-    base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-    variants: {
-      color: {
-        primary: 'bg-blue-500 hover:bg-blue-700',
-        secondary: 'bg-purple-500 hover:bg-purple-700',
-        success: 'bg-green-500 hover:bg-green-700'
-      },
-      disabled: {
-        true: 'opacity-50 bg-gray-500 pointer-events-none'
-      }
-    }
-  }}
->
-  Disabled
-</TVComponent>
-
-```js copy /disabled/
-import { tv } from 'tailwind-variants';
-
-const button = tv({
-  base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 hover:bg-blue-700',
-      secondary: 'bg-purple-500 hover:bg-purple-700',
-      success: 'bg-green-500 hover:bg-green-700'
-    },
-    disabled: {
-      true: 'opacity-50 bg-gray-500 pointer-events-none'
-    }
-  }
-});
-
-button({ color: 'secondary', disabled: true });
-/**
- * Result:
- * font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80
- * hover:bg-purple-700 bg-gray-500 opacity-50 cursor-not-allowed pointer-events-none
- */
-```
-
-### Compound variants
-
-Sometimes you might want to add a variant that depends on another variant. For example, you might want to add a `color` variant that depends on the `disabled` variant. This is possible by using the `compoundVariants` key.
-
-<br />
-
-<TVComponent
-  as="button"
-  color="success"
-  disabled={true}
-  tv={{
-    base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-    variants: {
-      color: {
-        primary: 'bg-blue-500 hover:bg-blue-700',
-        secondary: 'bg-purple-500 hover:bg-purple-700',
-        success: 'bg-green-500 hover:bg-green-700'
-      },
-      disabled: {
-        true: 'opacity-50 bg-gray-500 pointer-events-none'
-      }
-    },
-    compoundVariants: [
-      {
-        color: 'success',
-        disabled: true,
-        class: 'bg-green-100 text-green-700 dark:text-green-800' // You could also use "className" instead of "class"
-      }
-    ]
-  }}
->
-  Disabled
-</TVComponent>
-
-```js copy /compoundVariants/1 /color/2-3 /disabled/2-3
-import { tv } from 'tailwind-variants';
-
-const button = tv({
-  base: 'font-semibold text-white text-sm py-1 px-4 rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 hover:bg-blue-700',
-      secondary: 'bg-purple-500 hover:bg-purple-700',
-      success: 'bg-green-500 hover:bg-green-700'
-    },
-    disabled: {
-      true: 'opacity-50 bg-gray-500 pointer-events-none'
-    }
-  },
-  compoundVariants: [
-    {
-      color: 'success',
-      disabled: true,
-      class: 'bg-green-100 text-green-700 dark:text-green-800' // You can also use "className"
-    }
-  ]
-});
-
-button({ color: 'success', disabled: true });
-/**
- * Result:
- * font-semibold text-sm py-1 px-4 rounded-full active:opacity-80 hover:bg-green-700
- * opacity-50 pointer-events-none bg-green-100 text-green-700 dark:text-green-800
- */
-```
-
-<Callout type="warning" emoji="⚠️">
-  <div className="text-sm">
-    Notes that the <code>compoundVariants</code> key is an array.
-  </div>
-</Callout>
-
-You can also target **multiple** variants at once.
-
-<br />
-
-<div className="flex gap-2">
-  <button className="text-md pointer-events-none rounded-full bg-slate-200 px-4 py-1.5 font-semibold text-slate-400 opacity-100 hover:bg-blue-700 active:opacity-80 dark:bg-slate-800">
-    Primary
-  </button>
-  <button className="text-md pointer-events-none rounded-full bg-slate-200 px-4 py-1.5 font-semibold text-slate-400 opacity-100 hover:bg-purple-700 active:opacity-80 dark:bg-slate-800">
-    Secondary
-  </button>
-</div>
-
-```js copy {22}
-import { tv } from 'tailwind-variants';
-
-const button = tv({
-  base: 'font-semibold text-white text-md py-1.5 px-4 rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 hover:bg-blue-700',
-      secondary: 'bg-purple-500 hover:bg-purple-700',
-      success: 'bg-green-500 hover:bg-green-700'
-    },
-    disabled: {
-      true: 'opacity-50 bg-gray-500 pointer-events-none'
-    }
-  },
-  compoundVariants: [
-    {
-      color: 'success',
-      disabled: true,
-      class: 'bg-green-100 text-green-700 dark:text-green-800'
-    },
-    {
-      color: ['primary', 'secondary'],
-      disabled: true,
-      class: 'text-slate-400 bg-slate-200 dark:bg-slate-800 opacity-100'
-    }
-  ]
-});
-
-button({ color: 'primary', disabled: true });
-/**
- * Result:
- * font-semibold text-md py-1.5 px-4 rounded-full active:opacity-80 hover:bg-blue-700
- * pointer-events-none text-slate-400 bg-slate-200 dark:bg-slate-800 opacity-100
- */
-
-button({ color: 'secondary', disabled: true });
-/**
- * Result:
- * font-semibold text-md py-1.5 px-4 rounded-full active:opacity-80 hover:bg-purple-700
- * pointer-events-none text-slate-400 bg-slate-200 dark:bg-slate-800 opacity-100
- */
-```
-
-### Default variants
-
-You can also add a default variant to a component. This is useful when you want to add a predefined variants values to a component.
-
-<br />
-
-<TVComponent
-  as="button"
-  tv={{
-    base: 'font-semibold text-white py-1 px-3 rounded-full active:opacity-80',
-    variants: {
-      color: {
-        primary: 'bg-blue-500 hover:bg-blue-700',
-        secondary: 'bg-purple-500 hover:bg-purple-700',
-        success: 'bg-green-500 hover:bg-green-700'
-      },
-      size: {
-        sm: 'py-1 px-3 text-sm',
-        md: 'py-1.5 px-4 text-md',
-        lg: 'py-2 px-6 text-lg'
-      }
-    },
-    defaultVariants: {
-      color: 'primary',
-      size: 'md'
-    }
-  }}
->
-  Default
-</TVComponent>
-
-```js copy {17-20, 23}
-import { tv } from 'tailwind-variants';
-
-const button = tv({
-  base: 'font-semibold text-white py-1 px-3 rounded-full active:opacity-80',
-  variants: {
-    color: {
-      primary: 'bg-blue-500 hover:bg-blue-700',
-      secondary: 'bg-purple-500 hover:bg-purple-700',
-      success: 'bg-green-500 hover:bg-green-700'
-    },
-    size: {
-      sm: 'py-1 px-3 text-sm',
-      md: 'py-1.5 px-4 text-md',
-      lg: 'py-2 px-6 text-lg'
-    }
-  },
-  defaultVariants: {
-    color: 'primary',
-    size: 'md'
-  }
-});
-
-button();
-/**
- * Result:
- *
- * font-semibold text-white rounded-full active:opacity-80 bg-blue-500 hover:bg-blue-700
- * py-1.5 px-4 text-md
- */
-```
+<DemoPreview code={variantsBadge} lang="ts">
+  <VariantsBadgeDemo />
+</DemoPreview>

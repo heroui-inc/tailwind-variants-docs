@@ -1,112 +1,119 @@
-import { Callout } from 'nextra/components';
+---
+title: "TypeScript"
+description: "Extract typed props with VariantProps, work with slotted return types, and keep variant inference reliable."
+---
 
-# Typescript
+Tailwind Variants is written in TypeScript. Variant keys and values infer automatically — no code generation required.
 
-**Tailwind Variants** provides typing out of the box, but this page contains some further utilities and tips.
+## `VariantProps`
 
-### Extract variants from a component
+Extract the props a recipe accepts:
 
-You can use the `VariantProps` utility to extract variants from a component.
-
-```tsx copy /VariantProps/
+```tsx
 import { tv, type VariantProps } from 'tailwind-variants';
 
 export const button = tv({
-  base: 'px-4 py-1.5 rounded-full hover:opacity-80',
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-1.5 font-medium select-none',
   variants: {
-    color: {
-      primary: 'bg-blue-500 text-white',
-      neutral: 'bg-zinc-500 text-black dark:text-white'
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'bg-zinc-100 text-zinc-900',
+      tertiary: 'text-zinc-600'
     },
     flat: {
-      true: 'bg-transparent'
+      true: 'bg-transparent shadow-none'
     }
   },
   defaultVariants: {
-    color: 'primary'
-  },
-  compoundVariants: [
-    {
-      color: 'primary',
-      flat: true,
-      class: 'bg-blue-500/40'
-    },
-    {
-      color: 'neutral',
-      flat: true,
-      class: 'bg-zinc-500/20'
-    }
-  ]
+    variant: 'primary'
+  }
 });
 
-/**
- * Result:
- * color?: "primary" | "neutral"
- * flat?: boolean
- */
-
 type ButtonVariants = VariantProps<typeof button>;
+// variant?: "primary" | "secondary" | "tertiary"
+// flat?: boolean
 
 interface ButtonProps extends ButtonVariants {
   children: React.ReactNode;
+  className?: string;
 }
 
-export const Button = (props: ButtonProps) => {
-  return <button className={button(props)}>{props.children}</button>;
-};
+export function Button({ children, className, ...variants }: ButtonProps) {
+  return (
+    <button className={button({ ...variants, className })}>
+      {children}
+    </button>
+  );
+}
 ```
 
-### Required variants
+Keys with `defaultVariants` become optional on the type.
 
-**Tailwind Variants** doesn't offer a way to make variants required yet, but you can use TypeScript's [Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html) to achieve this.
+## Required variants
 
-```tsx copy /VariantProps/
-import { tv, type VariantProps } from 'tailwind-variants'
+TV does not have a built-in "required variant" flag. Use TypeScript utilities:
 
-const buttonStyles = tv({
-  base: "px-4 py-1.5 rounded-full hover:opacity-80",
+```ts
+type ButtonVariants = VariantProps<typeof button>;
+
+type RequiredSize = Omit<ButtonVariants, 'size'> &
+  Required<Pick<ButtonVariants, 'size'>>;
+```
+
+Or model the axis without a default so TypeScript keeps it required.
+
+## Slotted return types
+
+Slotted recipes return an object of slot functions. Destructure once for cleaner types:
+
+```ts
+const alert = tv({
+  slots: {
+    base: 'flex gap-3 rounded-lg p-4',
+    title: 'font-semibold',
+    description: 'text-sm'
+  },
   variants: {
     color: {
-      primary: "bg-blue-500 text-white",
-      neutral: "bg-zinc-500 text-black dark:text-white",
-    },
-    requiredFlat: {
-      true: "bg-transparent",
-      false: "bg-white",
-    },
-  },
-  defaultVariants: {
-    color: "primary",
-  },
-  compoundVariants: [...],
+      default: {
+        base: 'bg-zinc-100',
+        title: 'text-zinc-900'
+      },
+      danger: {
+        base: 'bg-red-50',
+        title: 'text-red-900'
+      }
+    }
+  }
 });
 
-/**
- * Result:
- * color?: "primary" | "neutral"
- * flat?: boolean
- */
-type ButtonVariants = VariantProps<typeof buttonStyles>
+type AlertSlots = ReturnType<typeof alert>;
+// AlertSlots.base, .title, .description — each (props?) => string
 
-export interface ButtonProps
-  extends Omit<ButtonVariants, "requiredFlat">,
-    Required<Pick<ButtonVariants, "requiredFlat">> {}
+function Alert({ color }: VariantProps<typeof alert>) {
+  const { base, title, description } = alert({ color });
 
-export const button = (props: ButtonProps) => buttonStyles(props);
-
-// ❌ TypeScript Error:
-// Argument of type "{}": is not assignable to parameter of type "ButtonProps".
-// Property "requiredFlat" is missing in type "{}" but required in type "ButtonProps".
-button({});
-
-// ✅
-button({ requiredFlat: true });
+  return (
+    <div className={base()}>
+      <p className={title()}>Title</p>
+      <p className={description()}>Body</p>
+    </div>
+  );
+}
 ```
 
-<Callout type="info">
-  <div className="text-sm">
-    This sample is taken from the "Required Variants" section of the
-    [CVA](https://github.com/joe-bell/cva) project on Github, which was
-    developed by [Joe Bell](https://github.com/joe-bell).
-  </div>
-</Callout>
+## `as const` for external definitions
+
+When variants live outside `tv`, use `as const` so TypeScript preserves literal keys:
+
+```ts
+const variants = {
+  primary: 'bg-zinc-900 text-white',
+  secondary: 'bg-zinc-100 text-zinc-900',
+  tertiary: 'text-zinc-600'
+} as const;
+
+const button = tv({
+  variants: { variant: variants }
+});
+```

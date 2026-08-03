@@ -1,0 +1,112 @@
+---
+title: "Quick Start"
+description: "Install Tailwind Variants, choose default or lite, create your first tv recipe, and set up editor IntelliSense."
+---
+
+import { QuickStartButtonDemo } from "@/components/examples";
+import { quickStartButton } from "@/demos/code";
+
+## Install
+
+```bash
+npm install tailwind-variants
+```
+
+Conflict resolution is included in the default build. You do not need `tailwind-merge` unless your app calls it directly elsewhere.
+
+For the lite build (no merge, smaller bundle):
+
+```ts
+import { tv } from "tailwind-variants/lite";
+```
+
+## Your first component
+
+Define a recipe with `tv`, then call it like a function. Defaults keep call sites short; pass props only when you need to diverge.
+
+<DemoPreview code={quickStartButton} lang="tsx">
+  <QuickStartButtonDemo />
+</DemoPreview>
+
+## Editor setup
+
+### VS Code IntelliSense
+
+So Tailwind CSS IntelliSense can complete classes inside `tv` strings, add this to your VS Code settings:
+
+```json
+{
+  "tailwindCSS.experimental.classRegex": [
+    ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ]
+}
+```
+
+### Prettier
+
+If you use [`prettier-plugin-tailwindcss`](https://github.com/tailwindlabs/prettier-plugin-tailwindcss), include `tv` in the function list so class order stays consistent:
+
+```js
+// prettier.config.js
+module.exports = {
+  plugins: ["prettier-plugin-tailwindcss"],
+  tailwindFunctions: ["tv", "cn", "cx"],
+};
+```
+
+## Framework agnostic
+
+Tailwind Variants is framework-agnostic. Use the class string with any framework or vanilla JS:
+
+```ts
+import { tv } from "tailwind-variants";
+
+const button = tv({
+  base: "inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 text-sm font-medium select-none",
+  variants: {
+    color: {
+      primary: "bg-blue-600 text-white",
+      secondary: "bg-zinc-200 text-zinc-900",
+    },
+  },
+  defaultVariants: {
+    color: "primary",
+  },
+});
+```
+
+**React**
+
+```tsx
+<button className={button({ color: "primary" })}>Save</button>
+```
+
+**Vue**
+
+```vue
+<button :class="button({ color: 'primary' })">Save</button>
+```
+
+**Svelte**
+
+```svelte
+<button class={button({ color: 'primary' })}>Save</button>
+```
+
+**Solid**
+
+```tsx
+<button class={button({ color: "primary" })}>Save</button>
+```
+
+**Angular**
+
+```html
+<button [class]="button({ color: 'primary' })">Save</button>
+```
+
+**Vanilla**
+
+```ts
+element.className = button({ color: "primary" });
+```

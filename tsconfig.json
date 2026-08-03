@@ -1,11 +1,8 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -17,27 +14,10 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "baseUrl": "./",
+    "jsx": "react-jsx",
     "paths": {
-      "@components/*": [
-        "./components/*"
-      ],
-      "@components": [
-        "./components/index.ts"
-      ],
-      "@hooks/*": [
-        "./hooks/*"
-      ],
-      "@hooks": [
-        "./hooks/index.ts"
-      ],
-      "@utils/*": [
-        "./utils/*"
-      ],
-      "@utils": [
-        "./utils/index.ts"
-      ]
+      "@/*": ["./src/*"],
+      "collections/*": ["./.source/*"]
     },
     "plugins": [
       {
@@ -46,12 +26,12 @@
     ]
   },
   "include": [
+    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "next-env.d.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    ".source/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

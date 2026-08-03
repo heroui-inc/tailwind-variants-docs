@@ -1,0 +1,72 @@
+---
+title: "MCP Server"
+description: "Query Tailwind Variants docs from AI tools via the Model Context Protocol — list pages, full-text search, and fetch Markdown by path."
+---
+
+The docs site runs an MCP server so agents can list, search, and fetch pages programmatically.
+
+## Endpoint
+
+**Streamable HTTP** at:
+
+```
+https://www.tailwind-variants.org/api/mcp
+```
+
+Works with MCP clients that support Streamable HTTP transport (Cursor, Claude Desktop with remote servers, etc.).
+
+## Tools
+
+| Tool | Description |
+| --- | --- |
+| `list_pages` | All doc pages with title, description, HTML/Markdown URLs, and slugs |
+| `search_docs` | Full-text search across title, description, URL, and page body |
+| `get_page` | Full Markdown for a page by path or slug |
+
+### Examples
+
+**List pages** — no arguments.
+
+**Search:**
+
+```json
+{ "query": "slots" }
+```
+
+**Get page** — accepts `/docs/variants`, `variants`, or `slots`:
+
+```json
+{ "path": "/docs/slots" }
+```
+
+## Cursor configuration
+
+Add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "tailwind-variants": {
+      "url": "https://www.tailwind-variants.org/api/mcp"
+    }
+  }
+}
+```
+
+For local development against this repo:
+
+```json
+{
+  "mcpServers": {
+    "tailwind-variants": {
+      "url": "http://localhost:3000/api/mcp"
+    }
+  }
+}
+```
+
+Restart Cursor after saving. The agent can then call `list_pages`, `search_docs`, and `get_page` while you work.
+
+## Related
+
+For raw text dumps without MCP, see [LLMs.txt](/docs/llms-txt).

@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "---Getting Started---",
+    "introduction",
+    "quick-start",
+    "comparison",
+    "---Concepts---",
+    "variants",
+    "default-variants",
+    "compound-variants",
+    "slots",
+    "overrides",
+    "extending",
+    "responsive",
+    "class-resolution",
+    "---Guides---",
+    "typescript",
+    "configuration",
+    "tailwind-v4",
+    "recipes",
+    "---For Agents---",
+    "llms-txt",
+    "mcp-server",
+    "---Reference---",
+    "api-reference",
+    "migration",
+    "releases",
+    "---More---",
+    "faq",
+    "acknowledgements"
+  ]
+}
