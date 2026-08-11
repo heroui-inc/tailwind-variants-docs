@@ -10,7 +10,7 @@ import { extendingButton, extendingMultiButton } from '@/demos/code';
 
 ## Basic extend
 
-Pass a parent recipe via the `extend` option:
+Pass a parent recipe via the `extend` option — or an array of parents, covered in [Multiple parents](#multiple-parents):
 
 <DemoPreview code={extendingButton} lang="ts">
   <ExtendingDemo />
@@ -28,6 +28,27 @@ Pass a parent recipe via the `extend` option:
 - **compoundSlots** — arrays concatenated
 
 The returned object exposes merged metadata: `variants`, `variantKeys`, `defaultVariants`, and slot keys reflect the full composed recipe.
+
+Plain and slotted recipes compose cleanly. When one side of a merge is a plain class string and the other is a per-slot object, the string folds into the `base` slot:
+
+```ts
+import { tv } from 'tailwind-variants';
+
+const plain = tv({
+  base: 'p-1',
+  variants: { size: { sm: 'text-sm' } }
+});
+
+const slotted = tv({
+  extend: plain,
+  slots: { icon: 'size-4' },
+  variants: { size: { sm: { icon: 'size-3' } } }
+});
+
+const { base, icon } = slotted({ size: 'sm' });
+base(); // => "p-1 text-sm"  — the parent's string lands on base
+icon(); // => "size-4 size-3"
+```
 
 ## Extending slotted recipes
 
@@ -76,9 +97,9 @@ A common real-world use is sharing cross-cutting concerns — focus rings, press
   <MultiExtendDemo />
 </DemoPreview>
 
-When parents overlap, the usual merge rules apply in array order: later parents win for `defaultVariants`, and conflicting classes resolve in favor of whoever contributed last. If two recipes share a variant axis that should stay independent, keep them separate and join their output with [`cx` / `cn`](/docs/class-resolution) instead.
+When parents overlap, the usual merge rules apply in array order: later parents win for `defaultVariants`, and conflicting classes resolve in favor of the last contributor. If two recipes share a variant axis that should stay independent, keep them separate and join their output with [`cx` / `cn`](/docs/class-resolution) instead.
 
-On earlier versions, chain extends to combine multiple bases:
+Before v3.4, chain extends to combine multiple bases:
 
 ```ts
 const extended = tv({ extend: baseButton });

@@ -68,6 +68,14 @@ const button = tv({ extend: [baseButton, focusRing, pressable] });
 
 On earlier versions, chain extends or compose class strings manually. See [Extending](/docs/extending#multiple-parents).
 
+## Why did a class disappear from the output?
+
+Conflict resolution likely merged it away — the last conflicting utility wins ([Class Resolution](/docs/class-resolution)). To see exactly which classes were dropped and by what, enable the experimental [debug mode](/docs/debugging) in development:
+
+```ts
+const button = tv({ /* ... */ }, { debug: true });
+```
+
 ## TypeScript not inferring variants?
 
 Define variants inline inside `tv`, or use `as const` on external objects:
