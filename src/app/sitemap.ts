@@ -6,7 +6,9 @@ import path from 'node:path';
 import { siteUrl } from '@/lib/site';
 import { source } from '@/lib/source';
 
-const getFileLastModified = (absolutePath: string) => {
+const getFileLastModified = (absolutePath: string | undefined) => {
+  if (!absolutePath) return undefined;
+
   try {
     return statSync(absolutePath).mtime;
   } catch {

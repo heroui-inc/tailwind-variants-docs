@@ -60,7 +60,13 @@ Tailwind Variants is framework-agnostic. It returns class strings — use with a
 
 ## Can I extend multiple components?
 
-One `extend` parent per recipe. Chain extends or compose class strings manually for multiple bases.
+Yes (v3.4+) — pass a non-empty array and parents merge left to right:
+
+```ts
+const button = tv({ extend: [baseButton, focusRing, pressable] });
+```
+
+On earlier versions, chain extends or compose class strings manually. See [Extending](/docs/extending#multiple-parents).
 
 ## TypeScript not inferring variants?
 

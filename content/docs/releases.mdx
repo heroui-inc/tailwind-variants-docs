@@ -3,6 +3,37 @@ title: "Releases"
 description: "Notable Tailwind Variants releases and changes, including performance, merge, and API updates."
 ---
 
+## v3.4.0
+
+Minor release adding multi-extend composition and an experimental debug mode, with faster invocations and more consistent returns ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306)).
+
+### Highlights
+
+- **Multi-extend** — `extend` accepts a non-empty array of parents, merged left to right ([Extending](/docs/extending#multiple-parents))
+- **Debug mode (experimental)** — `debug: true` logs how each invocation resolves; development and browser only ([Debugging](/docs/debugging))
+- **Consistent returns** — `tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` instead of `undefined` for empty class lists
+- **Base-slot targeting** — array classes in `compoundVariants` and array variant values in slotted recipes now apply to the `base` slot, matching string behavior
+- **Performance** — roughly 1.30–1.37× faster core invocation paths compared to v3.3.1
+
+### Multi-extend
+
+Compose several parent recipes in one definition. Parents merge at definition time, so invocation speed is unaffected:
+
+```ts
+const button = tv({
+  extend: [baseButton, focusable, animated],
+  base: 'inline-flex items-center'
+});
+```
+
+### Breaking changes & compatibility
+
+- **Empty string instead of `undefined`** — `tv()`, `cn()`, `cnMerge()`, and `cx()` now return `""` when no classes remain, and the `CnReturn` type is now `string`. Update code that compares against `undefined` (`result === undefined`, optional chaining) to use falsy checks. Common patterns like `className={cn(...) || fallback}` keep working.
+- **Stricter type checking** — unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants`, and unknown slot names in slot-shaped class values, now fail at compile time instead of being silently ignored at runtime. Fix any typos these errors surface; runtime output is unchanged for correct code.
+- **Array classes target the base slot** — in slotted recipes, array-based `compoundVariants` classes and array variant values previously did not reach the base slot; they now apply to it. Audit slotted recipes that rely on the old behavior.
+
+See [Migration](/docs/migration#to-v340) for upgrade steps.
+
 ## v3.3.1
 
 Patch release fixing slots shared-state contamination ([#305](https://github.com/heroui-inc/tailwind-variants/issues/305)).

@@ -3,7 +3,7 @@ title: "API Reference"
 description: "Reference for tv, createTV, VariantProps, cn/cx/cnMerge, and configuration types exported by Tailwind Variants."
 ---
 
-Condensed reference for `tailwind-variants` v3.3.
+Condensed reference for `tailwind-variants` v3.4.
 
 ```ts
 import {
@@ -45,7 +45,7 @@ button.compoundSlots;     // array
 
 ```ts
 type TVOptions = {
-  extend?: TVReturnType;
+  extend?: TVReturnType | TVReturnType[];
   base?: ClassValue;
   slots?: Record<string, ClassValue>;
   variants?: Record<string, Record<string, ClassValue>>;
@@ -57,7 +57,7 @@ type TVOptions = {
 
 | Option | Description |
 | --- | --- |
-| `extend` | Merge another recipe's base, slots, variants, defaults, compounds |
+| `extend` | Merge parent recipes' base, slots, variants, defaults, compounds; non-empty arrays merge left to right (v3.4+) |
 | `base` | Shared classes for every call |
 | `slots` | Named parts; `{}` enables implicit `base` slot only |
 | `variants` | Variant axes; per-slot objects when using slots |
@@ -71,8 +71,11 @@ type TVOptions = {
 type TVConfig = {
   twMerge?: boolean;
   twMergeConfig?: TwMergeConfig;
+  debug?: boolean; // experimental, v3.4+ — dev/browser only
 };
 ```
+
+`debug` logs how each invocation resolves; it is stripped from production builds. See [Debugging](/docs/debugging).
 
 ### Call-site props
 
@@ -103,9 +106,10 @@ Concatenate and merge with default config. Returns a **string** (v3.2.2+).
 ```ts
 cn('px-2', 'px-4'); // => "px-4"
 cn('text-sm', { 'font-bold': true }); // => "text-sm font-bold"
+cn(); // => "" (v3.4+ — never undefined)
 ```
 
-Default build only.
+Default build only. Like all utilities and `tv()` results, `cn` always returns a `string` — an empty class list yields `""` (v3.4+).
 
 ## `cnMerge`
 

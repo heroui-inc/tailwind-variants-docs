@@ -1,12 +1,12 @@
 ---
 title: "Extending"
-description: "Compose component recipes with extend — inherit base styles, variants, slots, and defaults without copying definitions."
+description: "Compose component recipes with extend — inherit base styles, variants, slots, and defaults from one or more parents without copying definitions."
 ---
 
-import { ExtendingDemo } from '@/components/examples';
-import { extendingButton } from '@/demos/code';
+import { ExtendingDemo, MultiExtendDemo } from '@/components/examples';
+import { extendingButton, extendingMultiButton } from '@/demos/code';
 
-`extend` merges one recipe into another. Start from a base button, then add icon-only sizing or new variant tokens without copying the whole definition.
+`extend` merges one or more recipes into another. Start from a base button, then add icon-only sizing or new variant tokens without copying the whole definition.
 
 ## Basic extend
 
@@ -57,9 +57,28 @@ const { base, media, title, description } = mediaCard();
 
 `mediaCard` keeps `base` / `description` from `card`, adds `media`, and tightens `title`.
 
-## One parent at a time
+## Multiple parents
 
-You can only `extend` one recipe per definition. To combine multiple bases, call them manually or chain extends:
+Pass a non-empty array to compose several recipes at once (v3.4+). Parents merge left to right, and the child's own options are applied last:
+
+```ts
+const button = tv({
+  extend: [baseButton, focusRing, pressable],
+  base: 'gap-2' // applied after every parent
+});
+```
+
+Merging happens once at definition time, so composing multiple parents does not slow down invocations.
+
+A common real-world use is sharing cross-cutting concerns — focus rings, press feedback, disabled states — as small recipes and composing them into interactive components. Try tabbing to and pressing the buttons below:
+
+<DemoPreview code={extendingMultiButton} lang="ts">
+  <MultiExtendDemo />
+</DemoPreview>
+
+When parents overlap, the usual merge rules apply in array order: later parents win for `defaultVariants`, and conflicting classes resolve in favor of whoever contributed last. If two recipes share a variant axis that should stay independent, keep them separate and join their output with [`cx` / `cn`](/docs/class-resolution) instead.
+
+On earlier versions, chain extends to combine multiple bases:
 
 ```ts
 const extended = tv({ extend: baseButton });

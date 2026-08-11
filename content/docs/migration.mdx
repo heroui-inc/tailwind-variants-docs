@@ -3,6 +3,45 @@ title: "Migration"
 description: "Upgrade guides for moving between Tailwind Variants major versions, including v2 to v3 and the lite build split."
 ---
 
+## To v3.4.0
+
+### Empty string instead of `undefined`
+
+`tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` instead of `undefined` when no classes remain. The `CnReturn` type is now `string`. Replace `undefined` comparisons with falsy checks:
+
+```diff
+- if (cn(classes) === undefined) { /* ... */ }
++ if (!cn(classes)) { /* ... */ }
+```
+
+### Stricter variant types
+
+Unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants` — and unknown slot names in slot-shaped class values — now fail at compile time. Previously they were silently ignored at runtime, so new errors after upgrading usually point at real typos:
+
+```ts
+const button = tv({
+  variants: { size: { sm: 'text-sm' } },
+  // ✗ now a compile error — 'colour' is not a variant key
+  defaultVariants: { colour: 'primary' }
+});
+```
+
+### Array classes and the base slot
+
+In slotted recipes, array-based classes in `compoundVariants` (without a slot key) and array variant values now apply to the `base` slot, matching string behavior. Audit slotted recipes if you relied on those classes being dropped.
+
+### Optional: adopt multi-extend
+
+Chained extends still work, but a single definition can now compose several parents:
+
+```diff
+- const extended = tv({ extend: baseButton });
+- const button = tv({ extend: extended, base: 'gap-2' });
++ const button = tv({ extend: [baseButton, focusRing], base: 'gap-2' });
+```
+
+---
+
 ## To v3.3.0
 
 ### Drop `tailwind-merge` for TV
