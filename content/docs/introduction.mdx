@@ -6,7 +6,7 @@ description: "Learn what Tailwind Variants is, why it exists, and the core featu
 import { IntroButtonDemo } from '@/components/examples';
 import { introButton } from '@/demos/code';
 
-**Tailwind Variants** is a first-class variant API for [Tailwind CSS](https://tailwindcss.com/). You define a component recipe once — base styles, variants, defaults, and compound rules — and call it anywhere with typed props.
+**Tailwind Variants** is a first-class variant API for [Tailwind CSS](https://tailwindcss.com/). You define a component recipe once (base styles, variants, defaults, and compound rules) and call it anywhere with typed props.
 
 Design systems need consistency without copy-pasting class strings. Tailwind Variants gives you Stitches-style variants on top of Tailwind: composable, predictable, and framework-agnostic.
 
@@ -14,7 +14,7 @@ Design systems need consistency without copy-pasting class strings. Tailwind Var
 
 - **One recipe, many call sites** — Change `color` or `size` at the call site instead of editing long class strings.
 - **Conflict resolution built in** — The default build merges conflicting Tailwind classes. No extra `tailwind-merge` install for TV.
-- **Slots for multi-part UI** — Buttons with icons, alerts with titles, cards with headers — each part gets its own styles and variants.
+- **Slots for multi-part UI** — Buttons with icons, alerts with titles, cards with headers: each part gets its own styles and variants.
 - **TypeScript-first** — Infer variant props with `VariantProps`. Slotted components get typed slot functions.
 - **Two builds** — Default (with merge) or `tailwind-variants/lite` when bundle size matters more.
 
@@ -30,7 +30,7 @@ Define variant keys like `color`, `size`, or boolean flags like `disabled`. Each
 
 ### Slots
 
-Split a component into named parts — `base`, `icon`, `label` — and style each independently.
+Split a component into named parts like `base`, `icon`, and `label`, then style each independently.
 
 ### Compound variants
 

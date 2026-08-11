@@ -16,7 +16,7 @@ description: "Upgrade guides for moving between Tailwind Variants major versions
 
 ### Stricter variant types
 
-Unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants` — and unknown slot names in slot-shaped class values — now fail at compile time. Previously they were silently ignored at runtime, so new errors after upgrading usually point at real typos:
+Unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants` now fail at compile time, as do unknown slot names in slot-shaped class values. They used to be silently ignored at runtime, so new errors after upgrading usually point at real typos:
 
 ```ts
 const button = tv({

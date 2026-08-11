@@ -10,7 +10,7 @@ import { extendingButton, extendingMultiButton } from '@/demos/code';
 
 ## Basic extend
 
-Pass a parent recipe via the `extend` option — or an array of parents, covered in [Multiple parents](#multiple-parents):
+Pass a parent recipe via the `extend` option (arrays of parents are covered in [Multiple parents](#multiple-parents)):
 
 <DemoPreview code={extendingButton} lang="ts">
   <ExtendingDemo />
@@ -46,7 +46,7 @@ const slotted = tv({
 });
 
 const { base, icon } = slotted({ size: 'sm' });
-base(); // => "p-1 text-sm"  — the parent's string lands on base
+base(); // => "p-1 text-sm" (the parent's string lands on base)
 icon(); // => "size-4 size-3"
 ```
 
@@ -80,7 +80,7 @@ const { base, media, title, description } = mediaCard();
 
 ## Multiple parents
 
-Pass a non-empty array to compose several recipes at once (v3.4+). Parents merge left to right, and the child's own options are applied last:
+Pass a non-empty array to compose several recipes at once. Parents merge left to right, and the child's own options are applied last:
 
 ```ts
 const button = tv({
@@ -89,9 +89,9 @@ const button = tv({
 });
 ```
 
-Merging happens once at definition time, so composing multiple parents does not slow down invocations.
+Merging happens once at definition time, so composing multiple parents doesn't slow down calls.
 
-A common real-world use is sharing cross-cutting concerns — focus rings, press feedback, disabled states — as small recipes and composing them into interactive components. Try tabbing to and pressing the buttons below:
+Small recipes are a natural home for cross-cutting concerns like focus rings, press feedback, and disabled states. Compose them into any interactive component. Try tabbing to and pressing the buttons below:
 
 <DemoPreview code={extendingMultiButton} lang="ts">
   <MultiExtendDemo />

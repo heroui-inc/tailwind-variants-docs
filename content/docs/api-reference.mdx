@@ -57,7 +57,7 @@ type TVOptions = {
 
 | Option | Description |
 | --- | --- |
-| `extend` | Merge parent recipes' base, slots, variants, defaults, compounds; non-empty arrays merge left to right (v3.4+) |
+| `extend` | Merge parent recipes' base, slots, variants, defaults, compounds; non-empty arrays merge left to right |
 | `base` | Shared classes for every call |
 | `slots` | Named parts; `{}` enables implicit `base` slot only |
 | `variants` | Variant axes; per-slot objects when using slots |
@@ -71,7 +71,7 @@ type TVOptions = {
 type TVConfig = {
   twMerge?: boolean;
   twMergeConfig?: TwMergeConfig;
-  debug?: boolean; // experimental, v3.4+ — dev/browser only
+  debug?: boolean; // experimental; dev and browser only
 };
 ```
 
@@ -101,15 +101,15 @@ const tv = createTV({
 
 ## `cn`
 
-Concatenate and merge with default config. Returns a **string** (v3.2.2+).
+Concatenate and merge with default config:
 
 ```ts
 cn('px-2', 'px-4'); // => "px-4"
 cn('text-sm', { 'font-bold': true }); // => "text-sm font-bold"
-cn(); // => "" (v3.4+ — never undefined)
+cn(); // => "" (never undefined)
 ```
 
-Default build only. Like all utilities and `tv()` results, `cn` always returns a `string` — an empty class list yields `""` (v3.4+).
+Default build only. Like all utilities and `tv()` results, `cn` always returns a `string`; an empty class list yields `""`.
 
 ## `cnMerge`
 

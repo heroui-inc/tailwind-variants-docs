@@ -32,7 +32,7 @@ const button = tv({
 
 - **Empty string instead of `undefined`** — `tv()`, `cn()`, `cnMerge()`, and `cx()` now return `""` when no classes remain, and the `CnReturn` type is now `string`. Update code that compares against `undefined` (`result === undefined`, optional chaining) to use falsy checks. Common patterns like `className={cn(...) || fallback}` keep working.
 - **Stricter type checking** — unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants`, and unknown slot names in slot-shaped class values, now fail at compile time instead of being silently ignored at runtime. Fix any typos these errors surface; runtime output is unchanged for correct code.
-- **Array classes target the base slot** — in slotted recipes, array-based `compoundVariants` classes and array variant values previously did not reach the base slot; they now apply to it. Audit slotted recipes that rely on the old behavior.
+- **Array classes target the base slot** — in slotted recipes, array-based `compoundVariants` classes and array variant values previously never reached the base slot; now they apply to it. Audit slotted recipes that relied on the old behavior.
 
 See [Migration](/docs/migration#to-v340) for upgrade steps.
 

@@ -7,7 +7,7 @@ Configure merge behavior once, then reuse it across every recipe in your design 
 
 ## Global `defaultConfig`
 
-To change settings for every `tv` call, mutate the exported `defaultConfig` value (v3.2+):
+To change settings for every `tv` call, mutate the exported `defaultConfig` value:
 
 ```ts
 import { defaultConfig } from 'tailwind-variants';
@@ -89,7 +89,7 @@ const badge = tv(
 
 Per-recipe config wins over `createTV` defaults for that instance.
 
-The config object also accepts the experimental `debug` flag (v3.4+) for tracing how a recipe resolves — development-only, with no production cost. See [Debugging](/docs/debugging).
+The config object also accepts the experimental `debug` flag for tracing how a recipe resolves. It runs in development only and costs nothing in production. See [Debugging](/docs/debugging).
 
 ## Lite build
 

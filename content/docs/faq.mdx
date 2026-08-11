@@ -60,7 +60,7 @@ Tailwind Variants is framework-agnostic. It returns class strings — use with a
 
 ## Can I extend multiple components?
 
-Yes (v3.4+) — pass a non-empty array and parents merge left to right:
+Yes. Pass a non-empty array and parents merge left to right:
 
 ```ts
 const button = tv({ extend: [baseButton, focusRing, pressable] });
@@ -70,7 +70,7 @@ On earlier versions, chain extends or compose class strings manually. See [Exten
 
 ## Why did a class disappear from the output?
 
-Conflict resolution likely merged it away — the last conflicting utility wins ([Class Resolution](/docs/class-resolution)). To see exactly which classes were dropped and by what, enable the experimental [debug mode](/docs/debugging) in development:
+Conflict resolution probably merged it away: the last conflicting utility wins ([Class Resolution](/docs/class-resolution)). To see exactly which classes were dropped, enable the experimental [debug mode](/docs/debugging) in development:
 
 ```ts
 const button = tv({ /* ... */ }, { debug: true });

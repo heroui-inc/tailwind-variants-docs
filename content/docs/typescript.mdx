@@ -64,7 +64,7 @@ Or model the axis without a default so TypeScript keeps it required.
 
 ## Stricter validation
 
-Since v3.4, unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants` — and unknown slot names in slot-shaped class values — fail at compile time instead of being silently ignored:
+Unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants` fail at compile time, as do unknown slot names in slot-shaped class values. Nothing gets silently ignored:
 
 ```ts
 const button = tv({
