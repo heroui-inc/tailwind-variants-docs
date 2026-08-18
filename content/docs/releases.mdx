@@ -15,7 +15,7 @@ Minor release adding multi-extend, experimental debug, and a lite inject path fo
 - **Base-slot targeting** — array classes in `compoundVariants` and array variant values in slotted recipes now apply to the `base` slot, matching string behavior
 - **Composition fixes** — plain and slotted recipes compose cleanly: string classes fold into the `base` slot instead of producing `[object Object]`
 - **Whitespace-robust merging** — conflicts resolve across newlines and tabs, so multi-line template literals merge correctly
-- **Performance** — roughly 1.30–1.37× faster core invocation paths compared to v3.3.1
+- **Performance** — roughly 1.45–1.65× faster core invocation paths compared to v3.3.1
 - **Lite inject** — `createTV({ twMerge })` and `createCN({ twMerge })` on `/lite` if you already have `tailwind-merge` ([Configuration](/docs/configuration#lite-build))
 - **twMergeConfig knobs** — `cacheSize`, `prefix`, and `experimentalParseClassName` are applied
 
@@ -26,7 +26,7 @@ Compose several parent recipes in one definition. Parents merge at definition ti
 ```ts
 const button = tv({
   extend: [baseButton, focusable, animated],
-  base: 'inline-flex items-center'
+  base: "inline-flex items-center",
 });
 ```
 
