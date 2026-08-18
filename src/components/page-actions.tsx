@@ -25,7 +25,12 @@ import {
   getCursorMcpInstallUrl,
   getVSCodeMcpInstallUrl
 } from '@/lib/ai-actions';
-import { easeOut, focusRing, interactive, popoverContentClass } from '@/lib/styles';
+import {
+  easeOut,
+  focusRing,
+  interactive,
+  popoverContentClass
+} from '@/lib/styles';
 
 type PageActionsProps = {
   title: string;
