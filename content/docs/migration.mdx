@@ -40,6 +40,22 @@ Chained extends still work, but a single definition can now compose several pare
 + const button = tv({ extend: [baseButton, focusRing], base: 'gap-2' });
 ```
 
+### Lite inject
+
+If you already have `twMerge`, inject it:
+
+```ts
+import { createCN, createTV } from 'tailwind-variants/lite';
+import { twMerge } from 'tailwind-merge';
+
+export const tv = createTV({ twMerge });
+export const cn = createCN({ twMerge });
+```
+
+`createTV` does not bind `cn`. `{ twMerge: false }` on the default entry turns merging off at runtime. It does not drop the table.
+
+On `/lite`, a function `twMerge` is invoked. In 3.3.1 a function was treated as `true`.
+
 ---
 
 ## To v3.3.0
@@ -124,12 +140,14 @@ On the default build, `cn` resolves conflicting Tailwind classes automatically.
 ### Two builds
 
 ```ts
-// Default — conflict resolution included (v3.3+)
+// Default. Conflict resolution included (v3.3+)
 import { tv, cn, cx } from 'tailwind-variants';
 
-// Lite — no merge, ~80% smaller
+// Lite. No built-in table
 import { tv, cx } from 'tailwind-variants/lite';
 ```
+
+If you already have `twMerge`, inject it. See [Configuration](/docs/configuration#lite-build).
 
 ### Removed APIs
 
@@ -139,6 +157,6 @@ import { tv, cx } from 'tailwind-variants/lite';
 
 ### Performance
 
-v3 is significantly faster for merge operations. The default build includes merge; lite skips it entirely.
+v3 is significantly faster for merge operations. The default build includes merge. Lite has no table unless you inject a function.
 
 See [Class Resolution](/docs/class-resolution) and [Releases](/docs/releases) for v3.3.0 details.

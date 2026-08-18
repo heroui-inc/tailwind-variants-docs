@@ -5,7 +5,7 @@ description: "Notable Tailwind Variants releases and changes, including performa
 
 ## v3.4.0
 
-Minor release adding multi-extend composition and an experimental debug mode, with faster invocations and more consistent returns ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306)).
+Minor release adding multi-extend, experimental debug, and a lite inject path for apps that already have `tailwind-merge` ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306)). Faster invocations and more consistent returns.
 
 ### Highlights
 
@@ -16,6 +16,8 @@ Minor release adding multi-extend composition and an experimental debug mode, wi
 - **Composition fixes** — plain and slotted recipes compose cleanly: string classes fold into the `base` slot instead of producing `[object Object]`
 - **Whitespace-robust merging** — conflicts resolve across newlines and tabs, so multi-line template literals merge correctly
 - **Performance** — roughly 1.30–1.37× faster core invocation paths compared to v3.3.1
+- **Lite inject** — `createTV({ twMerge })` and `createCN({ twMerge })` on `/lite` if you already have `tailwind-merge` ([Configuration](/docs/configuration#lite-build))
+- **twMergeConfig knobs** — `cacheSize`, `prefix`, and `experimentalParseClassName` are applied
 
 ### Multi-extend
 
@@ -33,6 +35,9 @@ const button = tv({
 - **Empty string instead of `undefined`** — `tv()`, `cn()`, `cnMerge()`, and `cx()` now return `""` when no classes remain, and the `CnReturn` type is now `string`. Update code that compares against `undefined` (`result === undefined`, optional chaining) to use falsy checks. Common patterns like `className={cn(...) || fallback}` keep working.
 - **Stricter type checking** — unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants`, and unknown slot names in slot-shaped class values, now fail at compile time instead of being silently ignored at runtime. Fix any typos these errors surface; runtime output is unchanged for correct code.
 - **Array classes target the base slot** — in slotted recipes, array-based `compoundVariants` classes and array variant values previously never reached the base slot; now they apply to it. Audit slotted recipes that relied on the old behavior.
+- **`{ twMerge: false }` does not drop the table** — It turns merging off at runtime. Use `/lite` to leave the table out of the bundle.
+- **Lite function `twMerge` is invoked** — In 3.3.1 a function was treated as `true`.
+- **No `tailwindcss` peer** — The optional peer from v3.3 is removed. Tailwind Variants still works with Tailwind CSS.
 
 See [Migration](/docs/migration#to-v340) for upgrade steps.
 

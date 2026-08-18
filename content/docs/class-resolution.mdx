@@ -19,8 +19,6 @@ cn('text-sm', { 'font-bold': true }); // => "text-sm font-bold"
 
 Use `cn` for the common case — concatenating classes with automatic Tailwind conflict resolution.
 
-Available on the **default build only**. Not exported from `/lite`.
-
 ## `cx` — lightweight concat
 
 `cx` joins classes without resolving conflicts. Same role as `clsx` — smaller and faster when merge is unnecessary.
@@ -60,19 +58,19 @@ cnMerge('px-2', 'px-4')({
 ```
 
 <Callout type="info">
-  If you used `cn(...)(config)` before v3.2.2, migrate to `cnMerge`. `cn` no longer accepts config.
+  On the default build, if you used `cn(...)(config)` before v3.2.2, migrate to `cnMerge`. Default `cn` no longer accepts config.
 </Callout>
 
 ## Default vs lite
 
 | Utility | Default build | Lite build |
 | --- | --- | --- |
-| `cn` | String, with merge | Curried no-merge adapter |
+| `cn` | String, with merge | Curried join. Bind a merger with `createCN` |
 | `cnMerge` | Custom merge config | Not exported |
 | `cx` | Concat only | Concat only |
-| `tv` | Merge enabled by default | No merge |
+| `tv` | Merge enabled by default | No table. Inject with `createTV({ twMerge })` |
 
-Import from `tailwind-variants` for merge. Import from `tailwind-variants/lite` when bundle size is the priority.
+Import from `tailwind-variants` for the built-in table. Import from `tailwind-variants/lite` when you skip it, or inject a function you already have. See [Configuration](/docs/configuration#lite-build).
 
 ## `twMerge` on `tv`
 
