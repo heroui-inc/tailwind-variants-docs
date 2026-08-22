@@ -1,6 +1,7 @@
 import { createMcpHandler } from 'mcp-handler';
 import { z } from 'zod';
 
+import { MCP_TOOLS } from '@/lib/agent';
 import { getLLMText } from '@/lib/get-llm-text';
 import { getCanonicalUrl } from '@/lib/site';
 import { source } from '@/lib/source';
@@ -11,8 +12,7 @@ const handler = createMcpHandler(
       'list_pages',
       {
         title: 'List Pages',
-        description:
-          'List all Tailwind Variants documentation pages with titles, URLs, and descriptions.',
+        description: MCP_TOOLS.list_pages,
         inputSchema: z.object({})
       },
       async () => {
@@ -39,8 +39,7 @@ const handler = createMcpHandler(
       'search_docs',
       {
         title: 'Search Docs',
-        description:
-          'Full-text search across Tailwind Variants documentation (title, description, URL, and page body).',
+        description: MCP_TOOLS.search_docs,
         inputSchema: z.object({
           query: z.string().min(1).describe('Search query')
         })
@@ -106,8 +105,7 @@ const handler = createMcpHandler(
       'get_page',
       {
         title: 'Get Page',
-        description:
-          'Fetch the full Markdown content of a documentation page by path or slug.',
+        description: MCP_TOOLS.get_page,
         inputSchema: z.object({
           path: z
             .string()

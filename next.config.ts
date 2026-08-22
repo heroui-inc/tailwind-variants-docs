@@ -15,11 +15,39 @@ const config: NextConfig = {
     useTypeScriptCli: true,
     optimizePackageImports: ['@gravity-ui/icons']
   },
+  // Negotiated paths (HTML vs Markdown via Accept) must include Accept in
+  // Vary; Next overrides Vary set by the proxy on page responses.
+  async headers() {
+    return [
+      {
+        source: '/',
+        headers: [{ key: 'Vary', value: 'Accept' }]
+      },
+      {
+        source: '/docs/:path*',
+        headers: [{ key: 'Vary', value: 'Accept' }]
+      }
+    ];
+  },
   async rewrites() {
     return [
       {
         source: '/docs/:path*.md',
         destination: '/llms.mdx/docs/:path*'
+      },
+      // The app router ignores dot-prefixed directories, so .well-known
+      // paths are served by rewrite.
+      {
+        source: '/.well-known/mcp.json',
+        destination: '/mcp-manifest.json'
+      },
+      {
+        source: '/.well-known/mcp',
+        destination: '/api/mcp'
+      },
+      {
+        source: '/mcp',
+        destination: '/api/mcp'
       }
     ];
   },
