@@ -3,21 +3,24 @@ title: "Releases"
 description: "Notable Tailwind Variants releases and changes, including performance, merge, and API updates."
 ---
 
-## v3.4.0
+## v4.0.0
 
-Minor release adding multi-extend, experimental debug, and a lite inject path for apps that already have `tailwind-merge` ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306)). Faster invocations and more consistent returns.
+Major release ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306)). Compiled merge tables, new `/merge` and `/config` entries, multi-extend, experimental debug, and a lite inject path for apps that already have a merger. Faster invocations and more consistent returns.
 
 ### Highlights
 
-- **Multi-extend** — `extend` accepts a non-empty array of parents, merged left to right ([Extending](/docs/extending#multiple-parents))
-- **Debug mode (experimental)** — `debug: true` logs how each invocation resolves; development and browser only ([Debugging](/docs/debugging))
-- **Consistent returns** — `tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` instead of `undefined` for empty class lists
-- **Base-slot targeting** — array classes in `compoundVariants` and array variant values in slotted recipes now apply to the `base` slot, matching string behavior
-- **Composition fixes** — plain and slotted recipes compose cleanly: string classes fold into the `base` slot instead of producing `[object Object]`
-- **Whitespace-robust merging** — conflicts resolve across newlines and tabs, so multi-line template literals merge correctly
-- **Performance** — roughly 1.45–1.65× faster core invocation paths compared to v3.3.1
-- **Lite inject** — `createTV({ twMerge })` and `createCN({ twMerge })` on `/lite` if you already have `tailwind-merge` ([Configuration](/docs/configuration#lite-build))
-- **twMergeConfig knobs** — `cacheSize`, `prefix`, and `experimentalParseClassName` are applied
+- **Compiled merge tables**. The default entry exports `twMerge`, `twJoin`, and `clsx` next to `tv`
+- **`tailwind-variants/merge`**. The merger without `tv`
+- **`tailwind-variants/config`**. `twMergeConfig` plus `extendTailwindMerge`, `createTailwindMerge`, `createTwMerge`, `fromTheme`, `validators`, `mergeConfigs`, and `getDefaultConfig`
+- **Multi-extend**. `extend` accepts a non-empty array of parents, merged left to right ([Extending](/docs/extending#multiple-parents))
+- **Debug mode (experimental)**. `debug: true` logs how each invocation resolves; development and browser only ([Debugging](/docs/debugging))
+- **Consistent returns**. `tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` instead of `undefined` for empty class lists
+- **Base-slot targeting**. Array classes in `compoundVariants` and array variant values in slotted recipes apply to the `base` slot, matching string behavior
+- **Composition fixes**. Plain and slotted recipes compose cleanly: string classes fold into the `base` slot instead of producing `[object Object]`
+- **Performance**. Hot `tv()` about 1.6 to 2× vs 3.3.1. `cn()` about 3× on join-and-merge
+- **Lite inject**. `createTV({ twMerge })` and `createCN({ twMerge })` on `/lite` ([Configuration](/docs/configuration#lite-build))
+- **`twMergeConfig` knobs**. `cacheSize` and `prefix` are applied on the config entry
+- **Merge fixes**. Unlabeled `font-[Inter]` is a family and `font-[700]` a weight. Animation names, `contain-*`, `bg-gradient-to-*`, `bg-conic`, `columns-auto`, `max-h-none`, and extra size scales merge correctly
 
 ### Multi-extend
 
@@ -30,16 +33,27 @@ const button = tv({
 });
 ```
 
-### Breaking changes & compatibility
+### Breaking changes
 
-- **Empty string instead of `undefined`** — `tv()`, `cn()`, `cnMerge()`, and `cx()` now return `""` when no classes remain, and the `CnReturn` type is now `string`. Update code that compares against `undefined` (`result === undefined`, optional chaining) to use falsy checks. Common patterns like `className={cn(...) || fallback}` keep working.
-- **Stricter type checking** — unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants`, and unknown slot names in slot-shaped class values, now fail at compile time instead of being silently ignored at runtime. Fix any typos these errors surface; runtime output is unchanged for correct code.
-- **Array classes target the base slot** — in slotted recipes, array-based `compoundVariants` classes and array variant values previously never reached the base slot; now they apply to it. Audit slotted recipes that relied on the old behavior.
-- **`{ twMerge: false }` does not drop the table** — It turns merging off at runtime. Use `/lite` to leave the table out of the bundle.
-- **Lite function `twMerge` is invoked** — In 3.3.1 a function was treated as `true`.
-- **No `tailwindcss` peer** — The optional peer from v3.3 is removed. Tailwind Variants still works with Tailwind CSS.
+- **`twMergeConfig` moved to `tailwind-variants/config`**. The default entry throws when a recipe is defined with it. Import `tv`, `createTV`, or `cnMerge` from the config entry, or inject a merger from `createTwMerge` through `twMerge`
+- **`experimentalParseClassName` removed**. Compiled tables cannot run a per-class parse hook. Keep `tailwind-merge` and inject it through `twMerge`
+- **`cn` drops a numeric `0`**. `cn("a", 0)` is `"a"`. `cn(0)` is `"0"`. `cx` keeps `0`
+- **Empty string instead of `undefined`**. `tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` when no classes remain, and `CnReturn` is `string`. Use falsy checks instead of `=== undefined`. Patterns like `className={cn(...) || fallback}` keep working
+- **Stricter type checking**. Unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants`, and unknown slot names in slot-shaped class values, fail at compile time
+- **Array classes target the base slot**. In slotted recipes, array-based `compoundVariants` classes and array variant values previously never reached the base slot. Audit slotted recipes that relied on the old behavior
+- **Peers dropped**. `tailwind-merge` and `tailwindcss` are no longer peer dependencies
+- **Lite function `twMerge` is invoked**. In 3.3.1 a function was treated as `true`
+- **`twMerge: false` joins with `cx`**. Class strings are whitespace-normalized once, when a recipe is first used. On the default entry this turns merging off at runtime and does not drop the table. Use `/lite` for that
 
-See [Migration](/docs/migration#to-v340) for upgrade steps.
+### Bundle size
+
+| Entry | min+gzip |
+| --- | --- |
+| `tailwind-variants` | about 16.6 KB |
+| `tailwind-variants/merge` | about 10.8 KB |
+| `tailwind-variants/lite` | about 5.3 KB |
+
+See [Migration](/docs/migration#to-v400) for upgrade steps.
 
 ## v3.3.1
 

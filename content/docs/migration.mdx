@@ -1,9 +1,52 @@
 ---
 title: "Migration"
-description: "Upgrade guides for moving between Tailwind Variants major versions, including v2 to v3 and the lite build split."
+description: "Upgrade guides for moving between Tailwind Variants major versions, including v3 to v4, v2 to v3, and the lite build split."
 ---
 
-## To v3.4.0
+## To v4.0.0
+
+### `twMergeConfig` moved to `tailwind-variants/config`
+
+The default entry ships the compiled default tables only. `twMergeConfig` on `tv`, `createTV`, or `cnMerge` needs the table compiler, which lives on the config entry. That entry exports the same API plus `extendTailwindMerge`, `createTailwindMerge`, `createTwMerge`, `fromTheme`, `validators`, `mergeConfigs`, and `getDefaultConfig`.
+
+```diff
+- import { createTV } from 'tailwind-variants';
++ import { createTV } from 'tailwind-variants/config';
+
+  export const tv = createTV({ twMergeConfig });
+```
+
+The default entry throws when a recipe is defined with `twMergeConfig`, so a missed import fails at definition time. The config entry exports `TVCustomConfig` and `TWMCustomConfig`; type a wrapper around its `tv` as `TV<TVCustomConfig>`.
+
+To keep the default or lite import, inject a compiled merger instead:
+
+```ts
+import { createTwMerge } from 'tailwind-variants/config';
+import { createTV } from 'tailwind-variants/lite';
+
+export const tv = createTV({ twMerge: createTwMerge(twMergeConfig) });
+```
+
+### `experimentalParseClassName` removed
+
+Compiled tables cannot run a per-class parse hook. Keep `tailwind-merge` and inject it:
+
+```ts
+import { extendTailwindMerge } from 'tailwind-merge';
+import { createTV } from 'tailwind-variants';
+
+export const tv = createTV({ twMerge: extendTailwindMerge({ experimentalParseClassName }) });
+```
+
+### `cn` drops a numeric `0`
+
+`cn` follows `clsx` on every entry. A lone `0` still stringifies. `cx` keeps `0`:
+
+```ts
+cn('foo', 0); // => "foo" (3.3.1: "foo 0")
+cn(0);        // => "0"
+cx('foo', 0); // => "foo 0"
+```
 
 ### Empty string instead of `undefined`
 
@@ -26,6 +69,28 @@ const button = tv({
 });
 ```
 
+### Peers dropped
+
+`tailwind-merge` and `tailwindcss` are no longer peer dependencies. Conflict resolution ships in the default entry. Keep `tailwind-merge` only if your app imports it directly.
+
+### Lite invokes a function `twMerge`
+
+Factory and per-call config on `/lite` accept `twMerge` only. A function is invoked. In 3.3.1 a function was treated as `true`:
+
+```ts
+import { createCN, createTV } from 'tailwind-variants/lite';
+import { twMerge } from 'tailwind-merge';
+
+export const tv = createTV({ twMerge });
+export const cn = createCN({ twMerge });
+```
+
+`createTV` does not bind `cn`.
+
+### `twMerge: false` joins with `cx`
+
+Base, slot, variant, and compound class strings are whitespace-normalized once, when a recipe is first used. `'px-2  px-4'` becomes `'px-2 px-4'`. On the default entry this turns merging off at runtime. It does not drop the table; use `/lite` for that.
+
 ### Array classes and the base slot
 
 In slotted recipes, array-based classes in `compoundVariants` (without a slot key) and array variant values now apply to the `base` slot, matching string behavior. Audit slotted recipes if you relied on those classes being dropped.
@@ -40,21 +105,19 @@ Chained extends still work, but a single definition can now compose several pare
 + const button = tv({ extend: [baseButton, focusRing], base: 'gap-2' });
 ```
 
-### Lite inject
+### Pick one engine
 
-If you already have `twMerge`, inject it:
+Do not ship a second merger next to the default tables. Alias everything to this package, or keep the merger you have and inject it through the lite entry:
 
-```ts
-import { createCN, createTV } from 'tailwind-variants/lite';
-import { twMerge } from 'tailwind-merge';
+```js
+// app that already uses tv
+resolve: { alias: { 'tailwind-merge': 'tailwind-variants', clsx: 'tailwind-variants' } }
 
-export const tv = createTV({ twMerge });
-export const cn = createCN({ twMerge });
+// merge-only code, without the tv runtime
+resolve: { alias: { 'tailwind-merge': 'tailwind-variants/merge', clsx: 'tailwind-variants/merge' } }
 ```
 
-`createTV` does not bind `cn`. `{ twMerge: false }` on the default entry turns merging off at runtime. It does not drop the table.
-
-On `/lite`, a function `twMerge` is invoked. In 3.3.1 a function was treated as `true`.
+Code that calls `extendTailwindMerge` aliases `tailwind-merge` to `tailwind-variants/config`.
 
 ---
 

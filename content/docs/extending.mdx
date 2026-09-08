@@ -99,7 +99,7 @@ Small recipes are a natural home for cross-cutting concerns like focus rings, pr
 
 When parents overlap, the usual merge rules apply in array order: later parents win for `defaultVariants`, and conflicting classes resolve in favor of the last contributor. If two recipes share a variant axis that should stay independent, keep them separate and join their output with [`cx` / `cn`](/docs/class-resolution) instead.
 
-Before v3.4, chain extends to combine multiple bases:
+Before v4.0.0, chain extends to combine multiple bases:
 
 ```ts
 const extended = tv({ extend: baseButton });

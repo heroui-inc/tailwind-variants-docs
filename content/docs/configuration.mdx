@@ -21,10 +21,10 @@ Prefer `createTV` when only some recipes should share a config. Mutating `defaul
 
 ## `createTV`
 
-`createTV` returns a `tv` function with baked-in config:
+`createTV` returns a `tv` function with baked-in config. On the default entry it accepts `twMerge` and `debug`. `twMergeConfig` needs the table compiler, so import from `tailwind-variants/config`:
 
 ```ts
-import { createTV } from 'tailwind-variants';
+import { createTV } from 'tailwind-variants/config';
 
 const tv = createTV({
   twMerge: true,
@@ -52,10 +52,10 @@ Every recipe created with this `tv` inherits the same merge settings.
 
 ## `twMergeConfig`
 
-Extend or override the built-in merge groups when you use custom Tailwind tokens:
+Extend or override the built-in merge groups when you use custom Tailwind tokens. `twMergeConfig` is only supported by `tailwind-variants/config`. The default entry throws when a recipe is defined with it:
 
 ```ts
-import { createTV } from 'tailwind-variants';
+import { createTV } from 'tailwind-variants/config';
 
 const tv = createTV({
   twMergeConfig: {
@@ -74,7 +74,20 @@ const tv = createTV({
 });
 ```
 
-Prefer `{ extend, override }` over replacing the entire config. Existing `twMergeConfig` objects from tailwind-merge generally keep working. `cacheSize`, `prefix`, and `experimentalParseClassName` on that object are applied.
+Prefer `{ extend, override }` over replacing the entire config. Existing `twMergeConfig` objects from tailwind-merge generally keep working. `cacheSize` and `prefix` on that object are applied. `experimentalParseClassName` is not supported; see [Migration](/docs/migration#experimentalparseclassname-removed).
+
+To keep the default or lite import, compile the config once and inject the result through `twMerge`:
+
+```ts
+import { createTwMerge } from 'tailwind-variants/config';
+import { createTV } from 'tailwind-variants';
+
+const tv = createTV({
+  twMerge: createTwMerge({ extend: { classGroups: { gap: [{ gap: ['grid'] }] } } })
+});
+```
+
+The config entry also exports `extendTailwindMerge`, `createTailwindMerge`, `fromTheme`, `validators`, `mergeConfigs`, and `getDefaultConfig`.
 
 ## Per-recipe config
 
@@ -89,7 +102,7 @@ const badge = tv(
 );
 ```
 
-Per-recipe config wins over `createTV` defaults for that instance.
+Per-recipe config wins over `createTV` defaults for that instance. Per-recipe `twMergeConfig` also needs `tv` from `tailwind-variants/config`.
 
 The config object also accepts the experimental `debug` flag for tracing how a recipe resolves. It runs in development only and costs nothing in production. See [Debugging](/docs/debugging).
 
@@ -105,4 +118,13 @@ export const tv = createTV({ twMerge });
 export const cn = createCN({ twMerge });
 ```
 
-`createTV` does not bind `cn`. `twMergeConfig` and `debug` are default-entry only. `true` or omitting `twMerge` still joins only.
+`createTV` does not bind `cn`. A function `twMerge` is invoked. `true` or omitting `twMerge` still joins only. `twMergeConfig` and `debug` are not available on lite.
+
+To use a custom table on lite, compile it on the config entry and inject it:
+
+```ts
+import { createTwMerge } from 'tailwind-variants/config';
+import { createTV } from 'tailwind-variants/lite';
+
+export const tv = createTV({ twMerge: createTwMerge(twMergeConfig) });
+```
