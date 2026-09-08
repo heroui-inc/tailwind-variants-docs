@@ -13,6 +13,8 @@ The docs site runs an MCP server so agents can list, search, and fetch pages pro
 https://www.tailwind-variants.org/api/mcp
 ```
 
+The same server also answers at `/mcp` and `/.well-known/mcp`, and a JSON manifest (endpoint, transport, tool list) is published at [`/.well-known/mcp.json`](https://www.tailwind-variants.org/.well-known/mcp.json).
+
 Works with MCP clients that support Streamable HTTP transport (Cursor, Claude Desktop with remote servers, etc.).
 
 ## Tools

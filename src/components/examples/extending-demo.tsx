@@ -68,3 +68,34 @@ export function ExtendingDemo() {
     </DemoRow>
   );
 }
+
+const focusRing = tv({
+  base: 'outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-500'
+});
+
+const pressable = tv({
+  base: 'transition active:scale-95'
+});
+
+const actionButton = tv({
+  extend: [baseButton, focusRing, pressable]
+});
+
+export function MultiExtendDemo() {
+  return (
+    <DemoRow>
+      <button type="button" className={actionButton()}>
+        Save changes
+      </button>
+      <button type="button" className={actionButton({ variant: 'secondary' })}>
+        Preview
+      </button>
+      <button
+        type="button"
+        className={actionButton({ variant: 'tertiary', size: 'sm' })}
+      >
+        Dismiss
+      </button>
+    </DemoRow>
+  );
+}

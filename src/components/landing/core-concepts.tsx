@@ -230,7 +230,7 @@ button({ size: 'lg' });
       'Share merge rules and custom class groups across every component recipe.',
     docsHref: '/docs/configuration',
     fileName: 'tv.ts',
-    usage: `import { createTV } from 'tailwind-variants';
+    usage: `import { createTV } from 'tailwind-variants/config';
 
 export const tv = createTV({
   twMerge: true,

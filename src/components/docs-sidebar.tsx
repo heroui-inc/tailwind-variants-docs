@@ -10,7 +10,9 @@ import {
 } from 'fumadocs-ui/components/sidebar/base';
 import { cn } from 'tailwind-variants';
 
+import { FlaskIcon } from '@/components/icons';
 import { isComingSoonSidebarItem } from '@/lib/sidebar-coming-soon';
+import { isExperimentalSidebarItem } from '@/lib/sidebar-experimental';
 
 const itemOffset = (depth: number) => {
   return `calc(${2 + 2.5 * depth} * var(--spacing))`;
@@ -57,6 +59,15 @@ export const DocsSidebarItem = ({ item }: { item: PageTree.Item }) => {
       style={{ paddingInlineStart: itemOffset(depth) }}
     >
       {item.name}
+      {isExperimentalSidebarItem(item) && (
+        <span
+          title="Experimental"
+          className="flex shrink-0 items-center text-subtle"
+        >
+          <FlaskIcon size={14} className="size-3.5!" aria-hidden />
+          <span className="sr-only">(Experimental)</span>
+        </span>
+      )}
     </BaseSidebarItem>
   );
 };

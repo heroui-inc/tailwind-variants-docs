@@ -1,13 +1,13 @@
 ---
 title: "Class Resolution"
-description: "How Tailwind Variants resolves and merges conflicting utilities with cn, cx, and cnMerge in the default and lite builds."
+description: "How Tailwind Variants resolves and merges conflicting utilities with cn, cx, cnMerge, twMerge, twJoin, and clsx in the default and lite builds."
 ---
 
 Tailwind Variants ships utilities for joining class strings. Pick the one that matches whether you need conflict resolution and how much bundle you can spend.
 
 ## `cn` — merge with defaults
 
-In v3.2.2+, `cn` returns a **string directly** with the default merge config. No second function call.
+`cn` returns a **string** directly, merged with the default config. No second function call.
 
 ```ts
 import { cn } from 'tailwind-variants';
@@ -18,8 +18,6 @@ cn('text-sm', { 'font-bold': true }); // => "text-sm font-bold"
 ```
 
 Use `cn` for the common case — concatenating classes with automatic Tailwind conflict resolution.
-
-Available on the **default build only**. Not exported from `/lite`.
 
 ## `cx` — lightweight concat
 
@@ -36,6 +34,38 @@ cx(['px-4', 'py-2'], { hidden: false }); // => "px-4 py-2"
 
 Use `cx` inside lite builds, static strings with no overlap, or when you handle conflicts yourself.
 
+## `cx` vs `clsx` vs `twJoin`
+
+The default and `/merge` entries also export `twMerge`, `twJoin`, and `clsx`. The three joiners differ:
+
+| Utility | Objects | Numeric `0` | Whitespace |
+| --- | --- | --- | --- |
+| `cx` | Yes | Kept | Normalized |
+| `clsx` | Yes | Dropped among other arguments | As given |
+| `twJoin` | No, strings and arrays only | Dropped | As given |
+
+`cn` is `clsx` followed by `twMerge`, so it drops a numeric `0` among other arguments. A lone `0` still stringifies:
+
+```ts
+import { cn, cx, clsx, twJoin } from 'tailwind-variants';
+
+cn('foo', 0);     // => "foo"
+cn(0);            // => "0"
+cx('foo', 0);     // => "foo 0"
+clsx('foo', 0);   // => "foo"
+twJoin('foo', ['bar']); // => "foo bar"
+```
+
+## Arbitrary font values
+
+Unlabeled `font-[…]` follows Tailwind v4. `font-[Inter]` is a font family and `font-[700]` is a weight. Labeled and CSS-variable forms match tailwind-merge 3.6.0:
+
+```ts
+cn('font-sans font-[Inter]'); // => "font-[Inter]"
+cn('font-bold font-[700]');   // => "font-[700]"
+cn('font-sans font-[700]');   // => "font-sans font-[700]"
+```
+
 ## `cnMerge` — custom merge config
 
 When you need per-call control over merge behavior, use `cnMerge`. It returns a function that accepts config:
@@ -46,6 +76,13 @@ import { cnMerge } from 'tailwind-variants';
 cnMerge('px-2', 'px-4')(); // => "px-4" (default merge)
 
 cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4"
+
+```
+
+`twMergeConfig` needs the table compiler, so import `cnMerge` from the config entry for custom groups:
+
+```ts
+import { cnMerge } from 'tailwind-variants/config';
 
 cnMerge('px-2', 'px-4')({
   twMerge: true,
@@ -60,19 +97,20 @@ cnMerge('px-2', 'px-4')({
 ```
 
 <Callout type="info">
-  If you used `cn(...)(config)` before v3.2.2, migrate to `cnMerge`. `cn` no longer accepts config.
+  On the default build, if you used `cn(...)(config)` before v3.2.2, migrate to `cnMerge`. Default `cn` no longer accepts config.
 </Callout>
 
 ## Default vs lite
 
 | Utility | Default build | Lite build |
 | --- | --- | --- |
-| `cn` | String, with merge | Curried no-merge adapter |
+| `cn` | String, with merge | Curried join. Bind a merger with `createCN` |
 | `cnMerge` | Custom merge config | Not exported |
 | `cx` | Concat only | Concat only |
-| `tv` | Merge enabled by default | No merge |
+| `tv` | Merge enabled by default | No table. Inject with `createTV({ twMerge })` |
+| `twMerge`, `twJoin`, `clsx` | Exported, also on `/merge` | `clsx` only, strings-only shape |
 
-Import from `tailwind-variants` for merge. Import from `tailwind-variants/lite` when bundle size is the priority.
+Import from `tailwind-variants` for the built-in table. Import from `tailwind-variants/lite` when you skip it, or inject a function you already have. See [Configuration](/docs/configuration#lite-build).
 
 ## `twMerge` on `tv`
 
@@ -81,8 +119,8 @@ The second argument to `tv` accepts config:
 ```ts
 const button = tv(
   { base: 'px-2', variants: { size: { lg: 'px-4' } } },
-  { twMerge: true, twMergeConfig: { /* ... */ } }
+  { twMerge: true }
 );
 ```
 
-See [Configuration](/docs/configuration) for shared defaults via `createTV`.
+`twMergeConfig` is accepted by `tv` from `tailwind-variants/config` only. See [Configuration](/docs/configuration) for shared defaults via `createTV`.

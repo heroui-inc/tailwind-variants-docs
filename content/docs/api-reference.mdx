@@ -1,9 +1,9 @@
 ---
 title: "API Reference"
-description: "Reference for tv, createTV, VariantProps, cn/cx/cnMerge, and configuration types exported by Tailwind Variants."
+description: "Reference for tv, createTV, createCN, VariantProps, cn/cx/cnMerge, and configuration types exported by Tailwind Variants."
 ---
 
-Condensed reference for `tailwind-variants` v3.3.
+Condensed reference for `tailwind-variants` v4.0.0.
 
 ```ts
 import {
@@ -12,6 +12,9 @@ import {
   cn,
   cnMerge,
   cx,
+  twMerge,
+  twJoin,
+  clsx,
   type VariantProps
 } from 'tailwind-variants';
 ```
@@ -19,8 +22,19 @@ import {
 Lite build:
 
 ```ts
-import { tv, cx } from 'tailwind-variants/lite';
+import { tv, createTV, createCN, cn, cx } from 'tailwind-variants/lite';
 ```
+
+## Entries
+
+| Entry | Ships | min+gzip |
+| --- | --- | --- |
+| `tailwind-variants` | `tv`, `createTV`, `cn`, `cnMerge`, `cx`, `defaultConfig`, plus `twMerge`, `twJoin`, `clsx` | about 16.6 KB |
+| `tailwind-variants/merge` | `twMerge`, `twJoin`, `clsx`, `cn`, `cx`. No `tv` | about 10.8 KB |
+| `tailwind-variants/config` | Everything on the default entry, with `twMergeConfig` support, plus `createTwMerge`, `extendTailwindMerge`, `createTailwindMerge`, `fromTheme`, `validators`, `mergeConfigs`, `getDefaultConfig` | about 26.6 KB |
+| `tailwind-variants/lite` | `tv`, `createTV`, `createCN`, `cn`, `cx`. No table | about 5.3 KB |
+
+`clsx` is also the default export of the default and merge entries, so `tailwind-merge` and `clsx` can be aliased to this package. See [Migration](/docs/migration#pick-one-engine).
 
 ## `tv`
 
@@ -45,7 +59,7 @@ button.compoundSlots;     // array
 
 ```ts
 type TVOptions = {
-  extend?: TVReturnType;
+  extend?: TVReturnType | TVReturnType[];
   base?: ClassValue;
   slots?: Record<string, ClassValue>;
   variants?: Record<string, Record<string, ClassValue>>;
@@ -57,7 +71,7 @@ type TVOptions = {
 
 | Option | Description |
 | --- | --- |
-| `extend` | Merge another recipe's base, slots, variants, defaults, compounds |
+| `extend` | Merge parent recipes' base, slots, variants, defaults, compounds; non-empty arrays merge left to right |
 | `base` | Shared classes for every call |
 | `slots` | Named parts; `{}` enables implicit `base` slot only |
 | `variants` | Variant axes; per-slot objects when using slots |
@@ -68,11 +82,23 @@ type TVOptions = {
 ### Config (2nd argument)
 
 ```ts
+// tailwind-variants
 type TVConfig = {
-  twMerge?: boolean;
-  twMergeConfig?: TwMergeConfig;
+  twMerge?: boolean | TwMergeFn;
+  debug?: boolean; // experimental; dev and browser only
+};
+
+// tailwind-variants/config
+type TVCustomConfig = TVConfig & {
+  twMergeConfig?: TWMergeConfig;
 };
 ```
+
+`debug` logs how each invocation resolves; it is stripped from production builds. See [Debugging](/docs/debugging).
+
+`twMergeConfig` is only supported by `tailwind-variants/config`. The default entry throws when a recipe is defined with it. See [Configuration](/docs/configuration#twmergeconfig).
+
+Lite config is `{ twMerge?: boolean | TwMergeFn }` only. A function `twMerge` is invoked. `twMergeConfig` and `debug` are not available on lite.
 
 ### Call-site props
 
@@ -90,22 +116,49 @@ Pass variant keys plus optional `class` / `className` overrides.
 Returns a `tv` with default config:
 
 ```ts
+import { createTV } from 'tailwind-variants';
+
+const tv = createTV({ twMerge: true });
+```
+
+For `twMergeConfig`, import from the config entry:
+
+```ts
+import { createTV } from 'tailwind-variants/config';
+
 const tv = createTV({
   twMerge: true,
   twMergeConfig: { extend: { /* ... */ } }
 });
 ```
 
+On `/lite`, pass a merge function. `createTV` does not bind `cn`. See `createCN` below.
+
 ## `cn`
 
-Concatenate and merge with default config. Returns a **string** (v3.2.2+).
+Concatenate and merge with default config:
 
 ```ts
 cn('px-2', 'px-4'); // => "px-4"
 cn('text-sm', { 'font-bold': true }); // => "text-sm font-bold"
+cn(); // => "" (never undefined)
 ```
 
-Default build only.
+On the default build, `cn` returns a `string` directly. An empty class list yields `""`. `cn` follows `clsx`, so a numeric `0` among other arguments is dropped and a lone `0` is `"0"`. Lite exports a curried `cn` that joins; prefer `createCN` when injecting a merger.
+
+## `createCN`
+
+Lite only. Returns a string `cn` bound to a merge function. `createTV` does not bind `cn`:
+
+```ts
+import { createCN, createTV } from 'tailwind-variants/lite';
+import { twMerge } from 'tailwind-merge';
+
+export const tv = createTV({ twMerge });
+export const cn = createCN({ twMerge });
+```
+
+Without a function, `createCN()` is `cx`.
 
 ## `cnMerge`
 
@@ -116,7 +169,7 @@ cnMerge('px-2', 'px-4')(); // => "px-4"
 cnMerge('px-2', 'px-4')({ twMerge: false }); // => "px-2 px-4"
 ```
 
-Default build only. Not exported from `/lite`.
+Default and config entries only. Not exported from `/lite`. The config accepts `twMerge`. `twMergeConfig` is accepted by `cnMerge` from `tailwind-variants/config`.
 
 ## `cx`
 
@@ -126,7 +179,23 @@ Lightweight concat without conflict resolution:
 cx('text-blue-500', 'text-red-500'); // => "text-blue-500 text-red-500"
 ```
 
-Available in default and lite builds. Replaces deprecated `cnBase`.
+Available in default and lite builds. Replaces deprecated `cnBase`. `cx` normalizes whitespace and keeps a numeric `0`.
+
+## `twMerge`, `twJoin`, `clsx`
+
+Merge utilities exported from the default and `/merge` entries:
+
+```ts
+import { twMerge, twJoin, clsx } from 'tailwind-variants';
+// or
+import { twMerge, twJoin, clsx } from 'tailwind-variants/merge';
+
+twMerge('px-2', 'px-4'); // => "px-4"
+twJoin('a', ['b'], false && 'c'); // => "a b"
+clsx('a', 0, { b: true }); // => "a b"
+```
+
+`twMerge` accepts strings and nested arrays, no object syntax. `twJoin` joins strings and arrays. `clsx` follows clsx. See [Class Resolution](/docs/class-resolution#cx-vs-clsx-vs-twjoin).
 
 ## `VariantProps`
 
@@ -144,6 +213,11 @@ type Props = VariantProps<typeof button>;
 | `ClassValue` | `string \| string[] \| Record<string, boolean> \| null \| undefined` |
 | `VariantProps<T>` | Inferred variant keys from recipe `T` |
 | `TVReturnType` | Return type of `tv()` — callable + metadata |
+| `TVConfig` | Default-entry config: `twMerge`, `debug` |
+| `TVCustomConfig` | Config-entry config: `TVConfig` plus `twMergeConfig` |
+| `TWMergeConfig` | Shape of `twMergeConfig`: `{ extend, override, cacheSize, prefix }` or a full config |
+| `TVLiteConfig` | Lite config: `{ twMerge?: boolean \| TwMergeFn }` |
+| `TwMergeFn` | `(classList: string) => string` |
 
 ## Slotted return type
 

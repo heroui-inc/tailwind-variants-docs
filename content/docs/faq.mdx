@@ -9,20 +9,22 @@ Yes. MIT licensed. Use it in commercial and open-source projects.
 
 ## Default build or lite?
 
-**Default** (`tailwind-variants`) when you want automatic Tailwind conflict resolution — included since v3.3, no extra install.
+**Default** (`tailwind-variants`) when you want automatic Tailwind conflict resolution. Included since v3.3, no extra install.
 
-**Lite** (`tailwind-variants/lite`) when bundle size matters and you do not need merge (~80% smaller).
+**Lite** (`tailwind-variants/lite`) when you do not need the table, or you already have `twMerge`.
 
 ```ts
-import { tv } from 'tailwind-variants';       // merge on
-import { tv } from 'tailwind-variants/lite';  // merge off
+import { tv } from 'tailwind-variants';       // built-in merge
+import { tv } from 'tailwind-variants/lite';  // no table
 ```
+
+Inject a merger on lite with `createTV` / `createCN`. See [Configuration](/docs/configuration#lite-build).
 
 ## Do I need tailwind-merge?
 
-**No** — not for Tailwind Variants on v3.3+. Merge is built into the default build.
+**No**, not for the default build on v3.3+. Merge is included.
 
-Keep `tailwind-merge` only if your app imports it directly (`twMerge`, `extendTailwindMerge`, etc.).
+Keep `tailwind-merge` if your app imports it directly (`twMerge`, `extendTailwindMerge`, etc.). On `/lite`, inject that function with `createTV` / `createCN`.
 
 ## Why `slots: {}`?
 
@@ -43,8 +45,9 @@ Omit `slots` when you do not need slot functions.
 | | Merge conflicts | Returns | Build |
 | --- | --- | --- | --- |
 | `cx` | No | String | Default + lite |
-| `cn` | Yes (default config) | String | Default only |
-| `cnMerge` | Yes (custom config) | Curried | Default only |
+| `cn` | Yes (default config) | String | Default |
+| `createCN` | Yes (injected) | String | Lite |
+| `cnMerge` | Yes (custom config) | Curried | Default |
 
 ```ts
 cx('text-blue-500', 'text-red-500');  // both classes
@@ -52,7 +55,7 @@ cn('text-blue-500', 'text-red-500');  // "text-red-500"
 cnMerge('px-2', 'px-4')({ twMerge: false }); // "px-2 px-4"
 ```
 
-Use `cn` for everyday merge. Use `cx` in lite or when classes cannot conflict. Use `cnMerge` when you need per-call config.
+Use `cn` for everyday merge. Use `cx` when classes cannot conflict. On lite, use `createCN` to inject a merger. Use `cnMerge` for per-call config.
 
 ## Framework support?
 
@@ -60,7 +63,21 @@ Tailwind Variants is framework-agnostic. It returns class strings — use with a
 
 ## Can I extend multiple components?
 
-One `extend` parent per recipe. Chain extends or compose class strings manually for multiple bases.
+Yes. Pass a non-empty array and parents merge left to right:
+
+```ts
+const button = tv({ extend: [baseButton, focusRing, pressable] });
+```
+
+On earlier versions, chain extends or compose class strings manually. See [Extending](/docs/extending#multiple-parents).
+
+## Why did a class disappear from the output?
+
+Conflict resolution probably merged it away: the last conflicting utility wins ([Class Resolution](/docs/class-resolution)). To see exactly which classes were dropped, enable the experimental [debug mode](/docs/debugging) in development:
+
+```ts
+const button = tv({ /* ... */ }, { debug: true });
+```
 
 ## TypeScript not inferring variants?
 

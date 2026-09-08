@@ -3,6 +3,59 @@ title: "Releases"
 description: "Notable Tailwind Variants releases and changes, including performance, merge, and API updates."
 ---
 
+## v4.0.0
+
+Major release ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306)). Compiled merge tables, new `/merge` and `/config` entries, multi-extend, experimental debug, and a lite inject path for apps that already have a merger. Faster invocations and more consistent returns.
+
+### Highlights
+
+- **Compiled merge tables**. The default entry exports `twMerge`, `twJoin`, and `clsx` next to `tv`
+- **`tailwind-variants/merge`**. The merger without `tv`
+- **`tailwind-variants/config`**. `twMergeConfig` plus `extendTailwindMerge`, `createTailwindMerge`, `createTwMerge`, `fromTheme`, `validators`, `mergeConfigs`, and `getDefaultConfig`
+- **Multi-extend**. `extend` accepts a non-empty array of parents, merged left to right ([Extending](/docs/extending#multiple-parents))
+- **Debug mode (experimental)**. `debug: true` logs how each invocation resolves; development and browser only ([Debugging](/docs/debugging))
+- **Consistent returns**. `tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` instead of `undefined` for empty class lists
+- **Base-slot targeting**. Array classes in `compoundVariants` and array variant values in slotted recipes apply to the `base` slot, matching string behavior
+- **Composition fixes**. Plain and slotted recipes compose cleanly: string classes fold into the `base` slot instead of producing `[object Object]`
+- **Performance**. Hot `tv()` about 1.6 to 2× vs 3.3.1. `cn()` about 3× on join-and-merge
+- **Lite inject**. `createTV({ twMerge })` and `createCN({ twMerge })` on `/lite` ([Configuration](/docs/configuration#lite-build))
+- **`twMergeConfig` knobs**. `cacheSize` and `prefix` are applied on the config entry
+- **Merge fixes**. Unlabeled `font-[Inter]` is a family and `font-[700]` a weight. Animation names, `contain-*`, `bg-gradient-to-*`, `bg-conic`, `columns-auto`, `max-h-none`, and extra size scales merge correctly
+
+### Multi-extend
+
+Compose several parent recipes in one definition. Parents merge at definition time, so invocation speed is unaffected:
+
+```ts
+const button = tv({
+  extend: [baseButton, focusable, animated],
+  base: "inline-flex items-center",
+});
+```
+
+### Breaking changes
+
+- **`twMergeConfig` moved to `tailwind-variants/config`**. The default entry throws when a recipe is defined with it. Import `tv`, `createTV`, or `cnMerge` from the config entry, or inject a merger from `createTwMerge` through `twMerge`
+- **`experimentalParseClassName` removed**. Compiled tables cannot run a per-class parse hook. Keep `tailwind-merge` and inject it through `twMerge`
+- **`cn` drops a numeric `0`**. `cn("a", 0)` is `"a"`. `cn(0)` is `"0"`. `cx` keeps `0`
+- **Empty string instead of `undefined`**. `tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` when no classes remain, and `CnReturn` is `string`. Use falsy checks instead of `=== undefined`. Patterns like `className={cn(...) || fallback}` keep working
+- **Stricter type checking**. Unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants`, and unknown slot names in slot-shaped class values, fail at compile time
+- **Array classes target the base slot**. In slotted recipes, array-based `compoundVariants` classes and array variant values previously never reached the base slot. Audit slotted recipes that relied on the old behavior
+- **Peers dropped**. `tailwind-merge` and `tailwindcss` are no longer peer dependencies
+- **Lite function `twMerge` is invoked**. In 3.3.1 a function was treated as `true`
+- **`twMerge: false` joins with `cx`**. Class strings are whitespace-normalized once, when a recipe is first used. On the default entry this turns merging off at runtime and does not drop the table. Use `/lite` for that
+
+### Bundle size
+
+| Entry | min+gzip |
+| --- | --- |
+| `tailwind-variants` | about 16.6 KB |
+| `tailwind-variants/merge` | about 10.8 KB |
+| `tailwind-variants/config` | about 26.6 KB |
+| `tailwind-variants/lite` | about 5.3 KB |
+
+See [Migration](/docs/migration#to-v400) for upgrade steps.
+
 ## v3.3.1
 
 Patch release fixing slots shared-state contamination ([#305](https://github.com/heroui-inc/tailwind-variants/issues/305)).

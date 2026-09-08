@@ -41,6 +41,26 @@ const button = tv({
 });
 ```
 
+## With slots
+
+In slotted recipes, a plain `class` value (string or array) applies to the `base` slot. Pass a per-slot object to target other slots:
+
+```ts
+const card = tv({
+  slots: { base: 'rounded-xl border', title: 'font-medium' },
+  variants: {
+    color: { primary: {}, neutral: {} },
+    elevated: { true: {}, false: {} }
+  },
+  compoundVariants: [
+    // string or array → base slot
+    { color: 'primary', elevated: true, class: ['shadow-lg', 'shadow-zinc-900/10'] },
+    // object → any slot
+    { color: 'primary', elevated: true, class: { title: 'text-zinc-950' } }
+  ]
+});
+```
+
 ## When to use them
 
 Use compound variants for styles that depend on more than one axis at once — for example primary + large, or flat + primary. Keep styles that belong to a single axis on that axis.
