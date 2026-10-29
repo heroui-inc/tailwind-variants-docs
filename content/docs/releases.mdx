@@ -17,7 +17,9 @@ Major release ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306))
 - **Consistent returns**. `tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` instead of `undefined` for empty class lists
 - **Base-slot targeting**. Array classes in `compoundVariants` and array variant values in slotted recipes apply to the `base` slot, matching string behavior
 - **Composition fixes**. Plain and slotted recipes compose cleanly: string classes fold into the `base` slot instead of producing `[object Object]`
-- **Performance**. Hot `tv()` about 1.6 to 2× vs 3.3.1. `cn()` about 3× on join-and-merge
+- **Performance**. Hot `tv()` about 4× vs 3.3.1 (slots hot about 4.4×). Matrix and no-merge calls about 4.5 to 5×. Compound-heavy calls about 5.5×, many compound variants about 6.7×. `cn()` about 2× on join-and-merge and unique arbitrary values, about 6× with stable args
+- **Compounds guard**. Unchanged `compoundVariants` and `compoundSlots` reuse their cached result instead of being re-resolved on every call ([#317](https://github.com/heroui-inc/tailwind-variants/pull/317))
+- **`compoundSlots` without `variants`**. Multiple `compoundSlots` entries no longer break type inference when a recipe has no `variants`
 - **Lite inject**. `createTV({ twMerge })` and `createCN({ twMerge })` on `/lite` ([Configuration](/docs/configuration#lite-build))
 - **`twMergeConfig` knobs**. `cacheSize` and `prefix` are applied on the config entry
 - **Merge fixes**. Unlabeled `font-[Inter]` is a family and `font-[700]` a weight. Animation names, `contain-*`, `bg-gradient-to-*`, `bg-conic`, `columns-auto`, `max-h-none`, and extra size scales merge correctly
@@ -49,10 +51,10 @@ const button = tv({
 
 | Entry | min+gzip |
 | --- | --- |
-| `tailwind-variants` | about 16.6 KB |
+| `tailwind-variants` | about 17.0 KB |
 | `tailwind-variants/merge` | about 10.8 KB |
-| `tailwind-variants/config` | about 26.6 KB |
-| `tailwind-variants/lite` | about 5.3 KB |
+| `tailwind-variants/config` | about 27.1 KB |
+| `tailwind-variants/lite` | about 5.7 KB |
 
 See [Migration](/docs/migration#to-v400) for upgrade steps.
 
