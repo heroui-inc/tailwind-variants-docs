@@ -17,7 +17,7 @@ Major release ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306))
 - **Consistent returns**. `tv()`, `cn()`, `cnMerge()`, and `cx()` return `""` instead of `undefined` for empty class lists
 - **Base-slot targeting**. Array classes in `compoundVariants` and array variant values in slotted recipes apply to the `base` slot, matching string behavior
 - **Composition fixes**. Plain and slotted recipes compose cleanly: string classes fold into the `base` slot instead of producing `[object Object]`
-- **Performance**. Hot `tv()` about 4× vs 3.3.1 (slots hot about 4.4×). Matrix and no-merge calls about 4.5 to 5×. Compound-heavy calls about 5.5×, many compound variants about 6.7×. `cn()` about 2× on join-and-merge and unique arbitrary values, about 6× with stable args
+- **Performance**. Hot `tv()` about 3.5× vs 3.3.1 (slots hot about 4×). Matrix and no-merge calls about 4×. Compound-heavy calls about 5×, many compound variants over 6×. `cn()` about 2× on join-and-merge and unique arbitrary values, over 7× on interpolated arguments
 - **Compounds guard**. Unchanged `compoundVariants` and `compoundSlots` reuse their cached result instead of being re-resolved on every call ([#317](https://github.com/heroui-inc/tailwind-variants/pull/317))
 - **`compoundSlots` without `variants`**. Multiple `compoundSlots` entries no longer break type inference when a recipe has no `variants`
 - **Lite inject**. `createTV({ twMerge })` and `createCN({ twMerge })` on `/lite` ([Configuration](/docs/configuration#lite-build))
