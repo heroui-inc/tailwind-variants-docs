@@ -13,22 +13,38 @@ const features = [
   {
     id: 'variants',
     name: 'Variants',
-    description: 'Declare variant, size, and state once as a first-class API.'
+    description:
+      'Declare variant, size, and state axes once as a first-class, fully typed API.'
   },
   {
     id: 'slots',
     name: 'Slots',
-    description: 'Style multi-part components from one shared recipe.'
+    description:
+      'Style every part of a multi-part component from one shared, variant-aware recipe.'
   },
   {
     id: 'compound',
     name: 'Compound',
-    description: 'Styles that only show when variants combine.'
+    description:
+      'Apply extra classes only when specific variant combinations match, declared in the recipe.'
   },
   {
     id: 'defaults',
     name: 'Defaults',
-    description: 'Sensible defaults so every call stays concise.'
+    description:
+      'Set sensible defaults once so every call site stays concise and easy to override.'
+  },
+  {
+    id: 'extend',
+    name: 'Extend',
+    description:
+      'Compose one or more parent recipes into new components without copying any definitions.'
+  },
+  {
+    id: 'types',
+    name: 'Types',
+    description:
+      'Infer typed props from any recipe so components stay in sync automatically.'
   }
 ] as const;
 
@@ -37,6 +53,15 @@ type FeatureId = (typeof features)[number]['id'];
 const requiresVariants = new Set<FeatureId>(['compound', 'defaults']);
 
 const initialSelected = ['variants', 'defaults'] satisfies FeatureId[];
+
+const extendParentsBlock = `const focusRing = tv({
+  base: 'outline-none focus-visible:ring-2 focus-visible:ring-zinc-400',
+});
+
+const animated = tv({
+  base: 'transition-colors duration-150',
+});
+`;
 
 const slotsBlock = `  slots: {
     base: 'inline-flex cursor-pointer items-center gap-2 rounded-full font-medium select-none',
@@ -117,17 +142,26 @@ const compoundBlock = (hasSlots: boolean) => {
 
 const createTvCode = (selected: readonly FeatureId[]) => {
   const hasSlots = selected.includes('slots');
+  const hasExtend = selected.includes('extend');
+  const hasTypes = selected.includes('types');
   const parts: Array<string | null> = [
-    `import { tv } from 'tailwind-variants';`,
+    hasTypes
+      ? `import { tv, type VariantProps } from 'tailwind-variants';`
+      : `import { tv } from 'tailwind-variants';`,
     '',
+    hasExtend ? extendParentsBlock : null,
     'export const button = tv({',
+    hasExtend ? '  extend: [focusRing, animated],' : null,
     hasSlots
       ? slotsBlock
       : `  base: 'inline-flex cursor-pointer items-center rounded-full font-medium select-none',`,
     selected.includes('variants') ? variantsBlock(hasSlots) : null,
     selected.includes('compound') ? compoundBlock(hasSlots) : null,
     selected.includes('defaults') ? defaultsBlock : null,
-    '});'
+    '});',
+    hasTypes
+      ? '\nexport type ButtonVariants = VariantProps<typeof button>;'
+      : null
   ];
 
   return parts.filter((line) => line !== null).join('\n');

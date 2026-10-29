@@ -14,11 +14,13 @@ npm install tailwind-variants
 
 Conflict resolution is included in the default build. You do not need `tailwind-merge` unless your app calls it directly elsewhere.
 
-For the lite build (no merge, smaller bundle):
+For the lite build (no built-in table):
 
 ```ts
 import { tv } from "tailwind-variants/lite";
 ```
+
+If you already have `twMerge`, inject it. See [Configuration](/docs/configuration#lite-build).
 
 ## Your first component
 

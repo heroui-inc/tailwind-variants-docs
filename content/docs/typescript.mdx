@@ -62,6 +62,20 @@ type RequiredSize = Omit<ButtonVariants, 'size'> &
 
 Or model the axis without a default so TypeScript keeps it required.
 
+## Stricter validation
+
+Unknown or misspelled keys in `variants`, `compoundVariants`, and `defaultVariants` fail at compile time, as do unknown slot names in slot-shaped class values. Nothing gets silently ignored:
+
+```ts
+const button = tv({
+  variants: { size: { sm: 'text-sm' } },
+  // ✗ compile error — 'colour' is not a variant key
+  defaultVariants: { colour: 'primary' }
+});
+```
+
+If an upgrade surfaces new type errors here, they almost always point at real typos. See [Migration](/docs/migration#to-v400).
+
 ## Slotted return types
 
 Slotted recipes return an object of slot functions. Destructure once for cleaner types:

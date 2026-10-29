@@ -1,16 +1,16 @@
 ---
 title: "Extending"
-description: "Compose component recipes with extend — inherit base styles, variants, slots, and defaults without copying definitions."
+description: "Compose component recipes with extend — inherit base styles, variants, slots, and defaults from one or more parents without copying definitions."
 ---
 
-import { ExtendingDemo } from '@/components/examples';
-import { extendingButton } from '@/demos/code';
+import { ExtendingDemo, MultiExtendDemo } from '@/components/examples';
+import { extendingButton, extendingMultiButton } from '@/demos/code';
 
-`extend` merges one recipe into another. Start from a base button, then add icon-only sizing or new variant tokens without copying the whole definition.
+`extend` merges one or more recipes into another. Start from a base button, then add icon-only sizing or new variant tokens without copying the whole definition.
 
 ## Basic extend
 
-Pass a parent recipe via the `extend` option:
+Pass a parent recipe via the `extend` option (arrays of parents are covered in [Multiple parents](#multiple-parents)):
 
 <DemoPreview code={extendingButton} lang="ts">
   <ExtendingDemo />
@@ -28,6 +28,27 @@ Pass a parent recipe via the `extend` option:
 - **compoundSlots** — arrays concatenated
 
 The returned object exposes merged metadata: `variants`, `variantKeys`, `defaultVariants`, and slot keys reflect the full composed recipe.
+
+Plain and slotted recipes compose cleanly. When one side of a merge is a plain class string and the other is a per-slot object, the string folds into the `base` slot:
+
+```ts
+import { tv } from 'tailwind-variants';
+
+const plain = tv({
+  base: 'p-1',
+  variants: { size: { sm: 'text-sm' } }
+});
+
+const slotted = tv({
+  extend: plain,
+  slots: { icon: 'size-4' },
+  variants: { size: { sm: { icon: 'size-3' } } }
+});
+
+const { base, icon } = slotted({ size: 'sm' });
+base(); // => "p-1 text-sm" (the parent's string lands on base)
+icon(); // => "size-4 size-3"
+```
 
 ## Extending slotted recipes
 
@@ -57,9 +78,28 @@ const { base, media, title, description } = mediaCard();
 
 `mediaCard` keeps `base` / `description` from `card`, adds `media`, and tightens `title`.
 
-## One parent at a time
+## Multiple parents
 
-You can only `extend` one recipe per definition. To combine multiple bases, call them manually or chain extends:
+Pass a non-empty array to compose several recipes at once. Parents merge left to right, and the child's own options are applied last:
+
+```ts
+const button = tv({
+  extend: [baseButton, focusRing, pressable],
+  base: 'gap-2' // applied after every parent
+});
+```
+
+Merging happens once at definition time, so composing multiple parents doesn't slow down calls.
+
+Small recipes are a natural home for cross-cutting concerns like focus rings, press feedback, and disabled states. Compose them into any interactive component. Try tabbing to and pressing the buttons below:
+
+<DemoPreview code={extendingMultiButton} lang="ts">
+  <MultiExtendDemo />
+</DemoPreview>
+
+When parents overlap, the usual merge rules apply in array order: later parents win for `defaultVariants`, and conflicting classes resolve in favor of the last contributor. If two recipes share a variant axis that should stay independent, keep them separate and join their output with [`cx` / `cn`](/docs/class-resolution) instead.
+
+Before v4.0.0, chain extends to combine multiple bases:
 
 ```ts
 const extended = tv({ extend: baseButton });

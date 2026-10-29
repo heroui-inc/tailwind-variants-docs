@@ -6,6 +6,7 @@ import { RootProvider } from 'fumadocs-ui/provider/next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import {
+  getOrganizationJsonLd,
   getSoftwareApplicationJsonLd,
   getWebsiteJsonLd,
   toJsonLdScript
@@ -99,7 +100,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload
           dangerouslySetInnerHTML={toJsonLdScript([
             getWebsiteJsonLd(),
-            getSoftwareApplicationJsonLd()
+            getSoftwareApplicationJsonLd(),
+            getOrganizationJsonLd()
           ])}
         />
       </head>

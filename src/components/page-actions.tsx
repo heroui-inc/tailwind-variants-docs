@@ -25,7 +25,12 @@ import {
   getCursorMcpInstallUrl,
   getVSCodeMcpInstallUrl
 } from '@/lib/ai-actions';
-import { focusRing, interactive, popoverContentClass } from '@/lib/styles';
+import {
+  easeOut,
+  focusRing,
+  interactive,
+  popoverContentClass
+} from '@/lib/styles';
 
 type PageActionsProps = {
   title: string;
@@ -99,15 +104,22 @@ const ClaudeGlyph = ({ className }: { className?: string }) => {
 };
 
 const splitButtonClass = cn(
-  'inline-flex min-h-10 shrink-0 items-center justify-center self-stretch px-3 text-xs font-medium text-foreground transition-colors',
-  'hover:bg-default hover:text-foreground',
+  'inline-flex h-7 shrink-0 items-center justify-center self-stretch px-2',
+  'gap-1 text-xs font-normal leading-none tracking-tight text-muted',
+  'transition-colors hover:bg-default hover:text-foreground',
+  'motion-reduce:transition-none',
+  easeOut,
   focusRing,
   interactive
 );
 
 const splitTriggerClass = cn(
-  'inline-flex w-10 shrink-0 items-center justify-center self-stretch text-muted transition-colors',
+  'inline-flex h-7 w-7 shrink-0 items-center justify-center self-stretch',
+  'text-subtle transition-colors',
   'hover:bg-default hover:text-foreground',
+  'data-[state=open]:bg-default data-[state=open]:text-foreground',
+  'motion-reduce:transition-none',
+  easeOut,
   focusRing,
   interactive
 );
@@ -199,15 +211,12 @@ export const PageActions = ({
   ];
 
   return (
-    <div className="not-prose flex w-full shrink-0 flex-wrap items-center gap-2 select-none sm:w-auto sm:justify-end">
-      <div className="inline-flex min-h-10 min-w-0 flex-1 items-stretch overflow-hidden rounded-xl border border-border sm:flex-initial">
+    <div className="not-prose flex w-full shrink-0 items-center justify-end select-none sm:w-auto">
+      <div className="inline-flex h-7 items-stretch overflow-hidden rounded-xl border border-border shadow-none">
         <button
           type="button"
           onClick={onCopyMarkdown}
-          className={cn(
-            splitButtonClass,
-            'min-w-0 flex-1 gap-1.5 rounded-none border-0 bg-default/50 shadow-none sm:flex-initial'
-          )}
+          className={cn(splitButtonClass, 'rounded-none')}
           aria-label={
             markdownCopied
               ? 'Markdown copied to clipboard'
@@ -215,12 +224,10 @@ export const PageActions = ({
           }
         >
           <ContextualSwapIcon
-            className="size-3.5"
+            className="size-3"
             active={markdownCopied}
-            activeIcon={<CheckIcon size={14} className="size-3.5 text-muted" />}
-            inactiveIcon={
-              <CopyIcon size={14} className="size-3.5 text-muted" />
-            }
+            activeIcon={<CheckIcon size={12} className="size-3" />}
+            inactiveIcon={<CopyIcon size={12} className="size-3" />}
           />
           {markdownCopied ? 'Copied' : 'Copy Markdown'}
         </button>
@@ -230,10 +237,10 @@ export const PageActions = ({
             aria-label="Open Markdown and AI actions"
             className={cn(
               splitTriggerClass,
-              'rounded-none border-0 border-l border-border bg-background'
+              'rounded-none border-l border-border'
             )}
           >
-            <ChevronDownIcon size={14} className="size-3.5" />
+            <ChevronDownIcon size={12} className="size-3" />
           </PopoverTrigger>
           <PopoverContent
             align="end"

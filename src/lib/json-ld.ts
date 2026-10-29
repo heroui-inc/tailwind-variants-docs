@@ -8,6 +8,22 @@ export const toJsonLdScript = (data: JsonLd | JsonLd[]) => {
   };
 };
 
+// Mirrors the Organization schema published on heroui.com.
+export const getOrganizationJsonLd = (): JsonLd => {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'HeroUI',
+    url: 'https://heroui.com',
+    logo: 'https://heroui.com/icons/favicon.svg',
+    sameAs: [
+      'https://github.com/heroui-inc',
+      'https://x.com/hero_ui',
+      'https://discord.gg/9b6yyZKmH4'
+    ]
+  };
+};
+
 export const getWebsiteJsonLd = (): JsonLd => {
   return {
     '@context': 'https://schema.org',

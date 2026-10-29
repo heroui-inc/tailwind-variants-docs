@@ -11,6 +11,7 @@ import {
   CodeMerge,
   Copy,
   Display,
+  Flask,
   FontCase,
   Layers,
   Link,
@@ -46,6 +47,7 @@ export const CircleDashedIcon = withIconSize(CircleDashed);
 export const CodeMergeIcon = withIconSize(CodeMerge);
 export const CopyIcon = withIconSize(Copy);
 export const DisplayIcon = withIconSize(Display);
+export const FlaskIcon = withIconSize(Flask);
 export const FontCaseIcon = withIconSize(FontCase);
 export const LayersIcon = withIconSize(Layers);
 export const LinkIcon = withIconSize(Link);

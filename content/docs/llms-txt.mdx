@@ -9,10 +9,12 @@ Docs are also available as Markdown so tools can read them without scraping HTML
 
 | URL | Format | Purpose |
 | --- | --- | --- |
-| `/llms.txt` | Markdown | Curated index: project summary plus links to every docs page’s `.md` URL |
+| `/llms.txt` | Markdown | Curated index: when-to-use guidance plus links to every docs page’s `.md` URL |
 | `/llms-full.txt` | Markdown | Entire docs set in one file when you need the full corpus in context |
 | `/docs/{slug}.md` | Markdown | Single page as Markdown — stable URL for fetch, copy, and editor tools |
 | `/docs/{slug}` | HTML | Normal docs page; same Markdown as `.md` when `Accept` prefers it |
+| `/openapi.json` | JSON | OpenAPI 3.1 spec for the search API, Markdown endpoints, and MCP server |
+| `/.well-known/mcp.json` | JSON | MCP server manifest — endpoint, transport, and tool list |
 
 ## Content negotiation
 
@@ -21,7 +23,7 @@ GET /docs/variants HTTP/1.1
 Accept: text/markdown
 ```
 
-Browsers get HTML. Clients that prefer Markdown get the same body as `/docs/variants.md`.
+Browsers get HTML. Clients that prefer Markdown get the same body as `/docs/variants.md`. The homepage (`/`) negotiates to the `llms.txt` index, and negotiated responses send `Vary: Accept` so CDNs cache both representations correctly. Nonexistent `.md` paths return a Markdown `404` body with recovery links.
 
 ## Per-page Markdown
 

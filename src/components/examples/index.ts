@@ -1,7 +1,7 @@
 export { CompoundVariantsDemo } from './compound-variants-demo';
 export { DefaultVariantsDemo } from './default-variants-demo';
 export { DemoRow, DemoStack } from './demo-layout';
-export { ExtendingDemo } from './extending-demo';
+export { ExtendingDemo, MultiExtendDemo } from './extending-demo';
 export { IntroButtonDemo } from './intro-button';
 export { OverridesDemo } from './overrides-demo';
 export { QuickStartButtonDemo } from './quick-start-button';

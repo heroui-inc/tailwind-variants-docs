@@ -1,0 +1,75 @@
+---
+title: "Debugging"
+description: "Trace how a recipe resolves classes with the experimental debug flag — per-invocation logs with zero production or build cost."
+---
+
+Turn on `debug: true` to see how a recipe resolves each invocation: the effective props, which classes each layer contributed, and which ones conflict resolution threw away.
+
+<Callout type="warn" title="Experimental">
+  Debug mode is experimental: the flag and log format may change in minor releases. It never affects production or build performance (see [Zero production cost](#zero-production-cost)).
+</Callout>
+
+## Enable per recipe
+
+Pass `debug` in the config (second argument):
+
+```ts
+import { tv } from 'tailwind-variants';
+
+const button = tv(
+  {
+    base: 'inline-flex rounded bg-red-500 px-2',
+    variants: {
+      color: { primary: 'bg-blue-600 text-white' },
+      size: { sm: 'text-sm px-2', lg: 'text-lg px-6' }
+    },
+    defaultVariants: { size: 'sm' }
+  },
+  { debug: true }
+);
+
+button({ color: 'primary', size: 'lg' });
+```
+
+Each call prints a collapsed `tv` group to the browser console:
+
+```
+tv  ⚠ 2 overrides
+  props       { color: 'primary', size: 'lg' }
+  base        inline-flex rounded bg-red-500 px-2
+  variants    { color: 'bg-blue-600 text-white', size: 'text-lg px-6' }
+  overridden  ['bg-red-500', 'px-2']
+  result      inline-flex rounded bg-blue-600 text-white text-lg px-6
+```
+
+- **props** — the effective props: `defaultVariants` merged with what you passed
+- **base / variants / compounds** — the classes each layer contributed; empty layers are omitted
+- **overridden** — classes that were present in the input but dropped by [conflict resolution](/docs/class-resolution)
+- **result** — exactly the string the caller received
+
+The `⚠ n overrides` badge in the header makes unexpected conflicts easy to spot before expanding the group.
+
+## Slotted recipes
+
+Recipes with `slots` log one nested group per slot, each with its own layer breakdown. Calling a slot function with its own props, like `base({ class: 'mt-2' })`, re-resolves that slot and prints a separate `slot · base` report.
+
+## Enable for every recipe
+
+`debug` works anywhere config does. Set it on a [`createTV`](/docs/configuration) factory to trace every recipe it creates:
+
+```ts
+import { createTV } from 'tailwind-variants';
+
+const tv = createTV({ debug: true });
+```
+
+## Zero production cost
+
+Debug mode is safe to leave in committed code:
+
+- **Development only** — the wrapper only exists when `process.env.NODE_ENV !== 'production'`. Production builds tree-shake the whole debug module, so no logging code ships and recipes behave identically.
+- **Browser only** — logs go to the browser console; SSR passes stay silent.
+- **No overhead when off** — without the flag, recipes are returned untouched.
+- **No build impact** — tracing happens at invocation time in development. It adds nothing to your build pipeline or bundle.
+
+The [lite build](/docs/class-resolution#default-vs-lite) (`tailwind-variants/lite`) ignores the flag.

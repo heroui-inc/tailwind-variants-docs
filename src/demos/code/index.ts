@@ -246,6 +246,42 @@ const iconButton = tv({
   }
 });`;
 
+export const extendingMultiButton = `import { tv } from 'tailwind-variants';
+
+const focusRing = tv({
+  base: 'outline-none focus-visible:ring-2 focus-visible:ring-zinc-400'
+});
+
+const pressable = tv({
+  base: 'transition active:scale-95'
+});
+
+const baseButton = tv({
+  base: 'inline-flex cursor-pointer items-center justify-center rounded-full font-medium select-none',
+  variants: {
+    variant: {
+      primary: 'bg-zinc-900 text-white',
+      secondary: 'border border-zinc-300 bg-zinc-50 text-zinc-900',
+      tertiary: 'text-zinc-700'
+    },
+    size: {
+      sm: 'h-8 px-3 text-sm',
+      md: 'h-10 px-4 text-sm'
+    }
+  },
+  defaultVariants: {
+    variant: 'primary',
+    size: 'md'
+  }
+});
+
+const actionButton = tv({
+  extend: [baseButton, focusRing, pressable]
+});
+
+actionButton(); // base + focus ring + press feedback
+actionButton({ variant: 'secondary' });`;
+
 export const recipesButton = `import { tv, type VariantProps } from 'tailwind-variants';
 
 export const button = tv({

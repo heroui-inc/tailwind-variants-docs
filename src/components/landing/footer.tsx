@@ -4,9 +4,9 @@ import { HeroUILogo } from '@/components/heroui-logo';
 import { easeOut, interactive, landingMax } from '@/components/landing/styles';
 
 const links = [
-  { href: 'https://x.com/hero_ui', label: 'Twitter' },
-  { href: 'https://discord.gg/9b6yyZKmH4', label: 'Discord' },
-  { href: 'https://github.com/heroui-inc', label: 'GitHub' }
+  { href: 'https://x.com/hero_ui', label: 'Twitter', external: true },
+  { href: 'https://discord.gg/9b6yyZKmH4', label: 'Discord', external: true },
+  { href: 'https://github.com/heroui-inc', label: 'GitHub', external: true }
 ] as const;
 
 export const LandingFooter = () => {
@@ -37,15 +37,14 @@ export const LandingFooter = () => {
         </p>
 
         <nav
-          className="flex w-fit items-center justify-center gap-4 justify-self-center sm:justify-self-end"
-          aria-label="Social"
+          className="flex w-fit flex-wrap items-center justify-center gap-4 justify-self-center sm:justify-self-end"
+          aria-label="Footer"
         >
-          {links.map(({ href, label }) => (
+          {links.map(({ href, label, external }) => (
             <a
               key={label}
               href={href}
-              target="_blank"
-              rel="noreferrer"
+              {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
               className={cn(
                 'transition-colors hover:text-foreground',
                 easeOut,
