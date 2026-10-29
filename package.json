@@ -25,34 +25,34 @@
     "clean:cache": "find . \\( -name '.next' -o -name '.source' -o -name 'node_modules' -o -name 'pnpm-lock.yaml' \\) -prune -exec rm -rf '{}' +"
   },
   "dependencies": {
-    "@gravity-ui/icons": "2.22.0",
-    "@modelcontextprotocol/server": "2.0.0",
-    "@paper-design/shaders-react": "0.0.80",
-    "@shikijs/magic-move": "4.4.3",
+    "@gravity-ui/icons": "2.23.0",
+    "@modelcontextprotocol/server": "2.4.0",
+    "@paper-design/shaders-react": "0.0.82",
+    "@shikijs/magic-move": "4.5.0",
     "@vercel/analytics": "2.0.1",
-    "fumadocs-core": "16.15.8",
-    "fumadocs-mdx": "15.4.0",
-    "fumadocs-ui": "16.15.8",
-    "mcp-handler": "2.1.1",
-    "next": "16.3.4",
+    "fumadocs-core": "16.17.9",
+    "fumadocs-mdx": "15.4.10",
+    "fumadocs-ui": "16.17.9",
+    "mcp-handler": "2.3.0",
+    "next": "16.4.3",
     "next-themes": "0.4.6",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "shiki": "4.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "shiki": "4.5.0",
     "tailwind-variants": "https://pkg.pr.new/tailwind-variants@306",
-    "takumi-js": "2.13.7",
-    "zod": "4.5.4"
+    "takumi-js": "2.18.2",
+    "zod": "4.6.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.12",
+    "@biomejs/biome": "2.6.4",
     "@tailwindcss/postcss": "4.3.3",
     "@types/mdx": "2.0.14",
-    "@types/node": "26.5.0",
-    "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.7",
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "babel-plugin-react-compiler": "1.0.0",
     "next-validate-link": "1.6.7",
-    "postcss": "8.5.28",
+    "postcss": "8.5.32",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2"
   },
@@ -60,5 +60,5 @@
     "node": ">=24.x",
     "pnpm": ">=11.x"
   },
-  "packageManager": "pnpm@12.3.4"
+  "packageManager": "pnpm@12.16.1"
 }
