@@ -22,7 +22,8 @@ Major release ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306))
 - **`compoundSlots` without `variants`**. Multiple `compoundSlots` entries no longer break type inference when a recipe has no `variants`
 - **Lite inject**. `createTV({ twMerge })` and `createCN({ twMerge })` on `/lite` ([Configuration](/docs/configuration#lite-build))
 - **`twMergeConfig` knobs**. `cacheSize` and `prefix` are applied on the config entry
-- **Merge fixes**. Unlabeled `font-[Inter]` is a family and `font-[700]` a weight. Animation names, `contain-*`, `bg-gradient-to-*`, `bg-conic`, `columns-auto`, `max-h-none`, and extra size scales merge correctly
+- **Merge fixes**. Unlabeled `font-[Inter]` is a family and `font-[700]` a weight. `contain-*`, `bg-gradient-to-*`, `bg-conic`, `columns-auto`, `max-h-none`, and extra size scales merge correctly
+- **Custom animations**. As in 3.3.1 and `tailwind-merge`, only `animate-spin`, `animate-ping`, `animate-pulse`, and `animate-bounce` conflict by default. Custom names such as `animate-wiggle` and plugin classes such as `animate-in` are kept alongside them. Declare custom names through `twMergeConfig` `extend.theme.animate` on `tailwind-variants/config`
 
 ### Multi-extend
 
@@ -46,15 +47,6 @@ const button = tv({
 - **Peers dropped**. `tailwind-merge` and `tailwindcss` are no longer peer dependencies
 - **Lite function `twMerge` is invoked**. In 3.3.1 a function was treated as `true`
 - **`twMerge: false` joins with `cx`**. Class strings are whitespace-normalized once, when a recipe is first used. On the default entry this turns merging off at runtime and does not drop the table. Use `/lite` for that
-
-### Bundle size
-
-| Entry | min+gzip |
-| --- | --- |
-| `tailwind-variants` | about 17.0 KB |
-| `tailwind-variants/merge` | about 10.8 KB |
-| `tailwind-variants/config` | about 27.1 KB |
-| `tailwind-variants/lite` | about 5.7 KB |
 
 See [Migration](/docs/migration#to-v400) for upgrade steps.
 
