@@ -3,6 +3,14 @@ title: "Releases"
 description: "Notable Tailwind Variants releases and changes, including performance, merge, and API updates."
 ---
 
+## v4.0.1
+
+Patch release. Restores numeric variant keys in props and `VariantProps`.
+
+### Fixes
+
+- **Numeric variant keys**. Options keyed by numbers, such as spacing scales `{ 0: "gap-0", 2: "gap-2" }`, accept number literals again in `tv()` props and `VariantProps`, as in 3.3.1 ([#318](https://github.com/heroui-inc/tailwind-variants/issues/318)). Runtime was unaffected ([Numeric keys](/docs/typescript#numeric-keys))
+
 ## v4.0.0
 
 Major release ([#306](https://github.com/heroui-inc/tailwind-variants/pull/306)). Compiled merge tables, new `/merge` and `/config` entries, multi-extend, experimental debug, and a lite inject path for apps that already have a merger. Faster invocations and more consistent returns.
