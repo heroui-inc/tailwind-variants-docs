@@ -49,6 +49,25 @@ export function Button({ children, className, ...variants }: ButtonProps) {
 
 Keys with `defaultVariants` become optional on the type.
 
+## Numeric keys
+
+Options keyed by numbers, such as spacing scales, stay number literals on the type:
+
+```ts
+const box = tv({
+  variants: {
+    gap: { px: 'gap-px', 0: 'gap-0', 2: 'gap-2' },
+  },
+});
+
+type BoxVariants = VariantProps<typeof box>;
+// gap?: "px" | 0 | 2
+
+box({ gap: 2 }); // "gap-2"
+```
+
+Pass them as numbers. String forms such as `"2"` are not part of the type.
+
 ## Required variants
 
 TV does not have a built-in "required variant" flag. Use TypeScript utilities:
