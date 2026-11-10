@@ -3,6 +3,15 @@ title: "Releases"
 description: "Notable Tailwind Variants releases and changes, including performance, merge, and API updates."
 ---
 
+## v4.0.2
+
+Patch release. Faster type checking for large `compoundVariants` lists.
+
+### Fixes
+
+- **`compoundVariants` type checks**. Each entry is checked once against a shared target, so checks stay fast on TypeScript 5.7+ with many entries, and a typo is reported on its own entry ([#322](https://github.com/heroui-inc/tailwind-variants/issues/322)). Runtime was unaffected
+- **Readonly lists**. `tv()` accepts `as const` and readonly `compoundVariants` and `compoundSlots` lists; exported types stay mutable
+
 ## v4.0.1
 
 Patch release. Restores numeric variant keys in props and `VariantProps`.
