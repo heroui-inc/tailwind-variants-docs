@@ -3,6 +3,44 @@ title: "Releases"
 description: "Notable Tailwind Variants releases and changes, including performance, merge, and API updates."
 ---
 
+## v4.1.0
+
+Minor release. `defineVariants` for options kept apart from `tv()`, a props cache keyed on variant props only, and cache consistency fixes.
+
+### Highlights
+
+- **`defineVariants`**. Checks `tv()` options where they are written and keeps the literal types `tv()` needs, so a theme or shared preset can live in its own file. Returns its argument unchanged, so it has no runtime cost. Exported from the main, `/lite`, and `/config` entries ([#326](https://github.com/heroui-inc/tailwind-variants/pull/326), [#325](https://github.com/heroui-inc/tailwind-variants/issues/325)) ([Defining variants apart from `tv()`](/docs/typescript#defining-variants-apart-from-tv))
+- **`VariantProps` on defined options**. `VariantProps<typeof theme>` reads a `defineVariants` result directly and gives the same type as the recipe built from it. Plain objects and `{}` are still rejected
+- **Props cache keys**. The props cache is keyed only on variant axes and compound condition keys. Pass-through props such as `id`, `aria-label`, `onClick`, and `children` reuse the cached result instead of missing the cache or being serialized ([#327](https://github.com/heroui-inc/tailwind-variants/pull/327))
+- **Compound matching**. String conditions take a fast path
+
+### Fixes
+
+- **Cold and cached calls agree**. Compound conditions match the same way on the first call and on cached calls: `false` and `"false"` also match a `null` prop or an omitted prop with no default, and `1` matches `"1"`. Variants named after prototype members, such as `toString`, resolve the same way too
+- **Cached slot results**. A cached slot result keeps a copy of the props it was called with, so mutating the props object afterwards does not reach it, and in-place `defaultVariants` edits read the same as on an uncached result
+- **Cache-key collisions**. `null` and `"null"`, `NaN` and `"NaN"`, and arrays or objects that serialize alike no longer share a cache entry
+- **Compound defaults**. In-place edits to the default of a compound condition key refresh the static result
+
+### defineVariants
+
+Keep options in their own file and pass them to `tv()`, spread them to override a field, or read `VariantProps` from them:
+
+```ts
+import { defineVariants, tv, type VariantProps } from 'tailwind-variants';
+
+export const buttonTheme = defineVariants({
+  base: 'inline-flex items-center rounded-md',
+  variants: {
+    size: { sm: 'h-8 px-3 text-sm', lg: 'h-12 px-6 text-lg' }
+  },
+  defaultVariants: { size: 'sm' }
+});
+
+export const button = tv(buttonTheme);
+export const largeButton = tv({ ...buttonTheme, defaultVariants: { size: 'lg' } });
+export type ButtonProps = VariantProps<typeof buttonTheme>;
+```
+
 ## v4.0.2
 
 Patch release. Faster type checking for large `compoundVariants` lists.

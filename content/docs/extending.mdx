@@ -16,6 +16,8 @@ Pass a parent recipe via the `extend` option (arrays of parents are covered in [
   <ExtendingDemo />
 </DemoPreview>
 
+`extend` takes `tv()` recipes, so pass a [`defineVariants`](/docs/typescript#defining-variants-apart-from-tv) theme through `tv()` first (`extend: tv(buttonTheme)`). To reuse a theme without a parent recipe, spread it or pass it straight to `tv()`.
+
 ## Merge behavior
 
 `extend` deep-merges:
