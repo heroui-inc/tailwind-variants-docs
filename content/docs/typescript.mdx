@@ -1,6 +1,6 @@
 ---
 title: "TypeScript"
-description: "Extract typed props with VariantProps, work with slotted return types, and keep variant inference reliable."
+description: "Extract typed props with VariantProps, define variants apart from tv() with defineVariants, work with slotted return types, and keep variant inference reliable."
 ---
 
 Tailwind Variants is written in TypeScript. Variant keys and values infer automatically — no code generation required.
@@ -135,7 +135,42 @@ function Alert({ color }: VariantProps<typeof alert>) {
 }
 ```
 
+## Defining variants apart from `tv()`
+
+Keep options in their own file (a theme, a shared preset) with `defineVariants`. It checks them where they are written and keeps the literal types `tv()` needs. A plain object widens `compoundVariants` and `defaultVariants` values to `string`, which `tv()` rejects.
+
+```ts
+// button.theme.ts
+import { defineVariants } from 'tailwind-variants';
+
+export const buttonTheme = defineVariants({
+  base: 'inline-flex items-center rounded-md',
+  variants: {
+    size: { sm: 'h-8 px-3 text-sm', lg: 'h-12 px-6 text-lg' },
+    disabled: { true: 'opacity-50' }
+  },
+  compoundVariants: [{ size: 'lg', disabled: true, class: 'cursor-not-allowed' }],
+  defaultVariants: { size: 'sm' }
+});
+```
+
+```ts
+// button.ts
+import { tv, type VariantProps } from 'tailwind-variants';
+import { buttonTheme } from './button.theme';
+
+export const button = tv(buttonTheme);
+export type ButtonProps = VariantProps<typeof buttonTheme>; // same as VariantProps<typeof button>
+
+// Override a field, keep the rest:
+export const largeButton = tv({ ...buttonTheme, defaultVariants: { size: 'lg' } });
+```
+
+`defineVariants` returns its argument unchanged, so it has no runtime cost. It is exported from the main, `/lite`, and `/config` entries.
+
 ## `as const` for external definitions
+
+`as const` is the zero-runtime alternative without a helper. `tv()` accepts the object, but mistakes are only reported at the `tv()` call, not where the options are written, and `VariantProps` needs the `tv()` result instead of the object.
 
 When variants live outside `tv`, use `as const` so TypeScript preserves literal keys:
 

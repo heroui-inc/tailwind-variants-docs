@@ -1,14 +1,15 @@
 ---
 title: "API Reference"
-description: "Reference for tv, createTV, createCN, VariantProps, cn/cx/cnMerge, and configuration types exported by Tailwind Variants."
+description: "Reference for tv, createTV, createCN, defineVariants, VariantProps, cn/cx/cnMerge, and configuration types exported by Tailwind Variants."
 ---
 
-Condensed reference for `tailwind-variants` v4.0.2.
+Condensed reference for `tailwind-variants` v4.1.0.
 
 ```ts
 import {
   tv,
   createTV,
+  defineVariants,
   cn,
   cnMerge,
   cx,
@@ -22,17 +23,17 @@ import {
 Lite build:
 
 ```ts
-import { tv, createTV, createCN, cn, cx } from 'tailwind-variants/lite';
+import { tv, createTV, createCN, defineVariants, cn, cx } from 'tailwind-variants/lite';
 ```
 
 ## Entries
 
 | Entry | Ships |
 | --- | --- |
-| `tailwind-variants` | `tv`, `createTV`, `cn`, `cnMerge`, `cx`, `defaultConfig`, plus `twMerge`, `twJoin`, `clsx`. Ships the built-in merge table |
+| `tailwind-variants` | `tv`, `createTV`, `defineVariants`, `cn`, `cnMerge`, `cx`, `defaultConfig`, plus `twMerge`, `twJoin`, `clsx`. Ships the built-in merge table |
 | `tailwind-variants/merge` | `twMerge`, `twJoin`, `clsx`, `cn`, `cx`. The merger without the recipe runtime. No `tv` |
-| `tailwind-variants/config` | Everything on the default entry, with `twMergeConfig` support, plus `createTwMerge`, `extendTailwindMerge`, `createTailwindMerge`, `fromTheme`, `validators`, `mergeConfigs`, `getDefaultConfig`. Includes the table compiler, so it is the largest entry |
-| `tailwind-variants/lite` | `tv`, `createTV`, `createCN`, `cn`, `cx`. No table, so it is the smallest entry. Bring your own `twMerge` |
+| `tailwind-variants/config` | Everything on the default entry, including `defineVariants`, with `twMergeConfig` support, plus `createTwMerge`, `extendTailwindMerge`, `createTailwindMerge`, `fromTheme`, `validators`, `mergeConfigs`, `getDefaultConfig`. Includes the table compiler, so it is the largest entry |
+| `tailwind-variants/lite` | `tv`, `createTV`, `createCN`, `defineVariants`, `cn`, `cx`. No table, so it is the smallest entry. Bring your own `twMerge` |
 
 `clsx` is also the default export of the default and merge entries, so `tailwind-merge` and `clsx` can be aliased to this package. See [Migration](/docs/migration#pick-one-engine).
 
@@ -58,7 +59,8 @@ button.compoundSlots;     // array
 ### Options
 
 ```ts
-type TVOptions = {
+// Options shape (illustrative; not an exported type)
+type Options = {
   extend?: TVReturnType | TVReturnType[];
   base?: ClassValue;
   slots?: Record<string, ClassValue>;
@@ -197,6 +199,25 @@ clsx('a', 0, { b: true }); // => "a b"
 
 `twMerge` accepts strings and nested arrays, no object syntax. `twJoin` joins strings and arrays. `clsx` follows clsx. See [Class Resolution](/docs/class-resolution#cx-vs-clsx-vs-twjoin).
 
+## `defineVariants`
+
+Returns `tv()` options unchanged, checked where they are written. Use it for options kept apart from the `tv()` call, such as a theme file or a shared preset:
+
+```ts
+import { defineVariants, tv } from 'tailwind-variants';
+
+const buttonTheme = defineVariants({
+  base: 'font-medium',
+  variants: { size: { sm: 'text-sm', lg: 'text-lg' } },
+  defaultVariants: { size: 'sm' }
+});
+
+const button = tv(buttonTheme);
+const largeButton = tv({ ...buttonTheme, defaultVariants: { size: 'lg' } });
+```
+
+It keeps the literal types `tv()` needs and has no runtime cost. The result works with `tv()`, a `tv` from `createTV`, and spread overrides. Exported from the default, `/config`, and `/lite` entries. See [TypeScript](/docs/typescript#defining-variants-apart-from-tv).
+
 ## `VariantProps`
 
 Extract variant prop types from a recipe:
@@ -206,13 +227,22 @@ type Props = VariantProps<typeof button>;
 // { variant?: 'primary' | 'secondary' | 'tertiary'; size?: 'sm' | 'md' }
 ```
 
+It also reads a `defineVariants` result directly, with the same type as the recipe built from it:
+
+```ts
+type ThemeProps = VariantProps<typeof buttonTheme>; // same as VariantProps<typeof button>
+```
+
+`VariantProps` takes a `tv()` result or a `defineVariants` result. Plain objects and `{}` are rejected.
+
 ## Types
 
 | Type | Description |
 | --- | --- |
 | `ClassValue` | `string \| string[] \| Record<string, boolean> \| null \| undefined` |
-| `VariantProps<T>` | Inferred variant keys from recipe `T` |
+| `VariantProps<T>` | Inferred variant keys from recipe `T` or `defineVariants` result `T` |
 | `TVReturnType` | Return type of `tv()` — callable + metadata |
+| `TVDefineVariants` | Call signature of `defineVariants` |
 | `TVConfig` | Default-entry config: `twMerge`, `debug` |
 | `TVCustomConfig` | Config-entry config: `TVConfig` plus `twMergeConfig` |
 | `TWMergeConfig` | Shape of `twMergeConfig`: `{ extend, override, cacheSize, prefix }` or a full config |

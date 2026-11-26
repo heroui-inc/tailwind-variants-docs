@@ -81,12 +81,17 @@ const button = tv({ /* ... */ }, { debug: true });
 
 ## TypeScript not inferring variants?
 
-Define variants inline inside `tv`, or use `as const` on external objects:
+Define variants inline inside `tv`, wrap external options in `defineVariants`, or use `as const` on external objects:
 
 ```ts
+const badgeTheme = defineVariants({ variants: { tone: { neutral: 'bg-zinc-100', danger: 'bg-red-100' } } });
+const badge = tv(badgeTheme);
+
 const variants = { primary: 'bg-zinc-900 text-white', secondary: 'bg-zinc-100' } as const;
 const button = tv({ variants: { variant: variants } });
 ```
+
+See [Defining variants apart from `tv()`](/docs/typescript#defining-variants-apart-from-tv).
 
 ## Still stuck?
 
